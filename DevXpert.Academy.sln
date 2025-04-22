@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{3F9B212B-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Core.Domain", "src\DevXpert.Academy.Core.Domain\DevXpert.Academy.Core.Domain.csproj", "{A6760EE9-FCBD-4FC0-B24C-E4BBBDCBFD10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Core.EventSourcing", "src\DevXpert.Academy.Core.EventStore\DevXpert.Academy.Core.EventSourcing.csproj", "{2E631F6A-7B28-4F1D-B451-795AD4542A88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Core.EventSourcing", "src\DevXpert.Academy.Core.EventSourcing\DevXpert.Academy.Core.EventSourcing.csproj", "{2E631F6A-7B28-4F1D-B451-795AD4542A88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuilgindBlocks", "BuilgindBlocks", "{210DFE56-154D-468D-B429-B66F1DB6AEB8}"
 EndProject
