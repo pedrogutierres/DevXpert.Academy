@@ -5,13 +5,6 @@ namespace DevXpert.Academy.Core.Domain.Validations
 {
     public abstract class DomainValidator<TEntity> : AbstractValidator<TEntity> where TEntity : Entity<TEntity>
     {
-        protected readonly TEntity _entidade;
-
-        protected DomainValidator(TEntity entidade)
-        {
-            _entidade = entidade;
-        }
-
         protected void ValidarId()
         {
             RuleFor(p => p.Id)

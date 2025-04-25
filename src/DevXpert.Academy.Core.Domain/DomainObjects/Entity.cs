@@ -29,8 +29,7 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
 
         public void AdicionarValidationResultErros(ValidationResult validationResult)
         {
-            foreach (var error in validationResult.Errors)
-                ValidationResult.Errors.Add(error);
+            ValidationResult.Errors.AddRange(validationResult.Errors);
         }
 
         protected void AdicionarErroDeNotificacao(string propriedade, string erro)

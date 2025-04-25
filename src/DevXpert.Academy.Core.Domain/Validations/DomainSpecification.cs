@@ -12,6 +12,6 @@ namespace DevXpert.Academy.Core.Domain.Validations
             _entidade = entidade;
         }
 
-        public abstract Task<bool> IsValid();
+        public abstract Task<bool> IsValidAsync();
     }
 }

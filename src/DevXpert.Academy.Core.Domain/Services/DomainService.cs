@@ -3,6 +3,7 @@ using DevXpert.Academy.Core.Domain.Data;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Validations;
 using FluentValidation.Results;
 using MediatR;
 using System;
@@ -97,6 +98,17 @@ namespace DevXpert.Academy.Core.Domain.Services
 
             NotificarValidacoesErro(entidade.ValidationResult);
             return false;
+        }
+        protected async Task<bool> EntidadeAptaParaTransacionar<T>(T entidade, DomainValidator<T> validator) where T : Entity<T>
+        {
+            var aptoParaTransacionarResult = await validator.ValidateAsync(entidade);
+            if (aptoParaTransacionarResult.IsValid)
+            {
+                NotificarValidacoesErro(aptoParaTransacionarResult);
+                return false;
+            }
+
+            return true;
         }
     }
 }

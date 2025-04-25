@@ -1,13 +1,19 @@
 ﻿using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Validations;
+using System;
 
 namespace FluentValidation
 {
     public static class FluentValidationExtensions
     {
-        public static IRuleBuilderOptions<T, TProperty> IsValid<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, DomainSpecification<T> predicate) where T : Entity<T>
+        public static IRuleBuilderOptions<T, TProperty> IsValidAsync<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, DomainSpecification<T> predicate) where T : Entity<T>
         {
-            return ruleBuilder.MustAsync(async (p, c) => await predicate.IsValid());
+            return ruleBuilder.MustAsync(async (p, c) => await predicate.IsValidAsync());
+        }
+
+        public static IRuleBuilderOptions<T, TProperty> IsValidAsync<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, DomainSpecification<T>> predicate) where T : Entity<T>
+        {
+            return ruleBuilder.MustAsync(async (e, p, c) => await predicate(e).IsValidAsync());
         }
 
         public static IRuleBuilderOptions<T, string> Date<T>(this IRuleBuilder<T, string> ruleBuilder, string expression)
