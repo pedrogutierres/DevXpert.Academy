@@ -12,5 +12,8 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
         bool TemPermissao(string moduloEClaim, bool throwBusinessException = false);
         string Ip();
         IEnumerable<Claim> RetornarClaims();
+
+        bool EhUmAluno();
+        bool EhUmAdministrador();
     }
 }
