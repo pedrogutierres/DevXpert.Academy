@@ -1,4 +1,6 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Validations;
+﻿using DevXpert.Academy.Conteudo.Business.Cursos.Adapters;
+using DevXpert.Academy.Conteudo.Business.Cursos.Events;
+using DevXpert.Academy.Conteudo.Business.Cursos.Validations;
 using DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using System;
@@ -6,29 +8,48 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Conteudo.Business.Cursos
 {
-    public class Curso : Entity<Curso>, IAggregateRoot
+    public sealed class Curso : Entity<Curso>, IAggregateRoot
     {
         public string Titulo { get; private set; }
         public List<Aula> Aulas { get; private set; }
         public ConteudoProgramatico ConteudoProgramatico { get; private set; }
 
-        public Curso(Guid id, string titulo, List<Aula> aulas, ConteudoProgramatico conteudoProgramatico)
+        public Curso(Guid id, string titulo, ConteudoProgramatico conteudoProgramatico, List<Aula> aulas)
         {
             Id = id;
             Titulo = titulo;
-            Aulas = aulas;
             ConteudoProgramatico = conteudoProgramatico;
+            Aulas = aulas;
+
+            AddEvent(CursoAdapter.ToCursoCadastradoEvent(this));
+        }
+
+        public void AlterarTitulo(string titulo)
+        {
+            Titulo = titulo;
+
+            AddEvent(new CursoTituloAlteradoEvent(Id, Titulo));
+        }
+        public void AlterarConteudoProgramatico(ConteudoProgramatico conteudoProgramatico)
+        {
+            ConteudoProgramatico = conteudoProgramatico;
+
+            AddEvent(new CursoConteudoProgramaticoAlteradoEvent(Id, ConteudoProgramatico?.Descricao, ConteudoProgramatico?.CargaHoraria ?? 0));
         }
 
         public void AdicionarAula(Aula aula)
         {
             Aulas ??= [];
             Aulas.Add(aula);
+
+            AddEvent(new AulaCadastradaEvent(Id, aula.Id, aula.Titulo, aula.VideoUrl));
         }
 
         public void RemoverAula(Aula aula)
         {
             Aulas?.Remove(aula);
+
+            AddEvent(new AulaExcluidaEvent(Id, aula.Id));
         }
 
         public override bool EhValido()

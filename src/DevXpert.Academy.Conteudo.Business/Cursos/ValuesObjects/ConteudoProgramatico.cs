@@ -1,4 +1,4 @@
 ﻿namespace DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects
 {
-    public record ConteudoProgramatico(string Descricao, int CargaHoraria);
+    public sealed record ConteudoProgramatico(string Descricao, int CargaHoraria);
 }

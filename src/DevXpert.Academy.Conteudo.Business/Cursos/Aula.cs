@@ -4,7 +4,7 @@ using System;
 
 namespace DevXpert.Academy.Conteudo.Business.Cursos
 {
-    public class Aula : Entity<Aula>
+    public sealed class Aula : Entity<Aula>
     {
         public string Titulo { get; private set; }
         public string VideoUrl { get; private set; }
