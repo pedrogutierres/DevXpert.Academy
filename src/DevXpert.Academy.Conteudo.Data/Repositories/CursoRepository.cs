@@ -11,6 +11,8 @@ namespace DevXpert.Academy.Conteudo.Data.Repositories
         public CursoRepository(ConteudoContext context) : base(context)
         { }
 
+        public override Task Excluir(Guid id) => throw new NotSupportedException("Exclusão de curso não suportada. O curso deve ser inativado.");
+
         public Task<bool> ExistePorTitulo(string titulo, Guid? cursoId = null)
         {
             if (cursoId.HasValue)

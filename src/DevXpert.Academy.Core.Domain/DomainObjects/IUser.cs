@@ -7,7 +7,8 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
     public interface IUser
     {
         string Nome { get; }
-        Guid? UsuarioId();
+        Guid UsuarioId { get; }
+        Guid? UsuarioIdNullValue();
         bool Autenticado();
         bool TemPermissao(string moduloEClaim, bool throwBusinessException = false);
         string Ip();

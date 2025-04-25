@@ -22,7 +22,7 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos.Services
             _cursoRepository = cursoRepository;
         }
 
-        public async Task<bool> CadastrarCurso(Curso curso)
+        public async Task<bool> Cadastrar(Curso curso)
         {
             if (!EntidadeValida(curso))
                 return false;
@@ -32,15 +32,20 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos.Services
 
             await _cursoRepository.Cadastrar(curso);
 
-            return await Commit();
+            return await CommitAsync();
         }
 
-        public Task<bool> AlterarCurso(Curso curso)
+        public Task<bool> Alterar(Curso curso)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExcluirCurso(Guid id)
+        public Task<bool> Ativar(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Inativar(Guid id)
         {
             throw new NotImplementedException();
         }

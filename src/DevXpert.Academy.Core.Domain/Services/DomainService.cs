@@ -48,7 +48,7 @@ namespace DevXpert.Academy.Core.Domain.Services
             return _notifications.HasNotifications();
         }
 
-        protected async Task<bool> Commit(bool ignoreNotifications = false, bool ignoreNoChangeUpdated = false)
+        protected async Task<bool> CommitAsync(bool ignoreNotifications = false, bool ignoreNoChangeUpdated = false)
         {
             if (HasNotifications() && !ignoreNotifications) return false;
             try

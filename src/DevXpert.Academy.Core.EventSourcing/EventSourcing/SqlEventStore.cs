@@ -30,7 +30,7 @@ namespace DevXpert.Academy.Core.EventSourcing.EventStore.EventSourcing
             var storedEvent = new StoredEvent(
                 evento,
                 serializedData,
-                _user?.UsuarioId(),
+                _user?.UsuarioIdNullValue(),
                 _user?.Nome);
 
             return _eventStoreRepository.StoreAsync(storedEvent);
