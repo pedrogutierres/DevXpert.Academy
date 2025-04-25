@@ -49,7 +49,6 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
             Assert.True(curso.Ativo);
         }
 
-
         [Fact(DisplayName = "Validar curso deve entrar como inativado")]
         [Trait("Domain", "Cursos")]
         public void Cursos_ValidarCurso_DeveEntrarComoInativado()

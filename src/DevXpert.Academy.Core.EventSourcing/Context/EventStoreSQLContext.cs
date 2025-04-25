@@ -1,6 +1,6 @@
 ﻿using DevXpert.Academy.Core.EventSourcing.EventStore.Mappings;
 using Microsoft.EntityFrameworkCore;
-using DevXpert.Academy.Core.Domain.Data;
+using DevXpert.Academy.Core.Domain.DataModels;
 
 namespace DevXpert.Academy.Core.EventSourcing.EventStore.Context
 {

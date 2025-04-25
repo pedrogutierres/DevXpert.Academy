@@ -1,4 +1,4 @@
-﻿using DevXpert.Academy.Core.Domain.Data;
+﻿using DevXpert.Academy.Core.Domain.DataModels;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Messages;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Repository;

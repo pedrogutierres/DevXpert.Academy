@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DevXpert.Academy.Core.Domain.Data
+namespace DevXpert.Academy.Core.Domain.DataModels
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : Entity<TEntity>, IAggregateRoot
     {

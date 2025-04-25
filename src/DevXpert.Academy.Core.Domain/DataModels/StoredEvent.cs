@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.Core.Domain.Messages;
 using System;
 
-namespace DevXpert.Academy.Core.Domain.Data
+namespace DevXpert.Academy.Core.Domain.DataModels
 {
     public class StoredEvent : Event
     {

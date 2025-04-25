@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Core.Domain.DomainObjects
 {
-    public abstract class Entity<T> where T : Entity<T>
+    public abstract class Entity<T> : IEntity where T : Entity<T>
     {
         protected Entity()
         {
@@ -101,8 +101,16 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
         }
     }
 
-    public abstract class ReadOnlyEntity<T> : Entity<T> where T : Entity<T>
+    public abstract class ReadOnlyEntity<T> : Entity<T>, IEntity where T : Entity<T>
     {
         public override bool EhValido() => true;
+    }
+
+    public interface IEntity
+    {
+        Guid Id { get; }
+
+        IReadOnlyCollection<Event> Notifications { get; }
+        void ClearEvents();
     }
 }

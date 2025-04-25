@@ -1,5 +1,5 @@
 ﻿using DevXpert.Academy.Core.Domain.Communication.Mediatr;
-using DevXpert.Academy.Core.Domain.Data;
+using DevXpert.Academy.Core.Domain.DataModels;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using DevXpert.Academy.Core.Domain.Messages.Notifications;
