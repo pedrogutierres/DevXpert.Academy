@@ -71,7 +71,7 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
         {
             ValidationResult = new CursoEstaConsistenteValidation().Validate(this);
 
-            foreach (var aula in Aulas)
+            foreach (var aula in Aulas ?? [])
             {
                 if (!aula.EhValido())
                     AdicionarValidationResultErros(aula.ValidationResult);

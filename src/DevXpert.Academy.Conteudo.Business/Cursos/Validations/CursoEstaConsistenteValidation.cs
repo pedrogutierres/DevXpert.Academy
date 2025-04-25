@@ -38,8 +38,8 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos.Validations
             When(p => p.Ativo, () =>
             {
                 RuleFor(p => p.Aulas)
-                    .NotNull().WithMessage(c => $"As aulas do curso {c.Titulo} devem ser informadas quando ativo.")
-                    .NotEmpty().WithMessage(c => $"As aulas do curso {c.Titulo} devem ser informadas quando ativo.");
+                    //.NotNull().WithMessage(c => $"O curso {c.Titulo} deve ter aulas para ser ativado.")
+                    .NotEmpty().WithMessage(c => $"O curso {c.Titulo} deve ter aulas para ser ativado.");
             });
         }
     }

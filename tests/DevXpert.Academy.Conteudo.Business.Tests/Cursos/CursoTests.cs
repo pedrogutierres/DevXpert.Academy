@@ -5,7 +5,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
 {
     public class CursoTests
     {
-        [Fact(DisplayName = "Validar curso")]
+        [Fact(DisplayName = "Validar curso com dados consistentes")]
         [Trait("Domain", "Cursos")]
         public void Cursos_ValidarCurso_DeveEstarValido()
         {
@@ -29,7 +29,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
 
         [Fact(DisplayName = "Validar curso com informações esperadas")]
         [Trait("Domain", "Cursos")]
-        public void Cursos_ValidarCurso_DeveTerInformacoesExperadas()
+        public void Cursos_ValidarCurso_DeveTerInformacoesEsperadas()
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -64,7 +64,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
 
         [Fact(DisplayName = "Validar aula com informações esperadas")]
         [Trait("Domain", "Aulas")]
-        public void Aulas_ValidarAula_DeveTerInformacoesExperadas()
+        public void Aulas_ValidarAula_DeveTerInformacoesEsperadas()
         {
             // Arrange
             Guid cursoId = Guid.NewGuid();
@@ -80,6 +80,22 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
             Assert.Equal(cursoId, aula.CursoId);
             Assert.Equal(titulo, aula.Titulo);
             Assert.Equal(videoUrl, aula.VideoUrl);
+        }
+
+        [Fact(DisplayName = "Validar curso não pode ser ativado sem cursos")]
+        [Trait("Domain", "Cursos")]
+        public void Cursos_ValidarCurso_DeveNaoPodeSerAtivadoSemCursos()
+        {
+            // Arrange
+            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), null);
+
+            // Act
+            curso.Ativar();
+            curso.EhValido();
+
+            // Assert
+            Assert.False(curso.ValidationResult.IsValid);
+            Assert.Contains(curso.ValidationResult.Errors, e => e.ErrorMessage == $"O curso {curso.Titulo} deve ter aulas para ser ativado.");
         }
     }
 }
