@@ -11,8 +11,10 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
     public sealed class Curso : Entity<Curso>, IAggregateRoot
     {
         public string Titulo { get; private set; }
-        public List<Aula> Aulas { get; private set; }
         public ConteudoProgramatico ConteudoProgramatico { get; private set; }
+        public bool Ativo { get; private set; }
+
+        public List<Aula> Aulas { get; private set; }
 
         public Curso(Guid id, string titulo, ConteudoProgramatico conteudoProgramatico, List<Aula> aulas)
         {
@@ -20,6 +22,7 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
             Titulo = titulo;
             ConteudoProgramatico = conteudoProgramatico;
             Aulas = aulas;
+            Ativo = false;
 
             AddEvent(CursoAdapter.ToCursoCadastradoEvent(this));
         }
@@ -35,6 +38,18 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
             ConteudoProgramatico = conteudoProgramatico;
 
             AddEvent(new CursoConteudoProgramaticoAlteradoEvent(Id, ConteudoProgramatico?.Descricao, ConteudoProgramatico?.CargaHoraria ?? 0));
+        }
+        public void Ativar()
+        {
+            Ativo = true;
+
+            AddEvent(new CursoAtivadoEvent(Id));
+        }
+        public void Inativar()
+        {
+            Ativo = false;
+
+            AddEvent(new CursoInativadoEvent(Id));
         }
 
         public void AdicionarAula(Aula aula)

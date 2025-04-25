@@ -10,6 +10,7 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos.Validations
             ValidarId();
             ValidarTitulo();
             ValidarConteudoProgramatico();
+            ValidarAulas();
         }
 
         private void ValidarTitulo()
@@ -30,6 +31,15 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos.Validations
 
                 RuleFor(p => p.ConteudoProgramatico.CargaHoraria)
                     .InclusiveBetween(1, 1000).WithMessage(c => $"A carga horária do curso {c.Titulo} deve ser estar entre {{From}}h e {{To}}hs.");
+            });
+        }
+        private void ValidarAulas()
+        {
+            When(p => p.Ativo, () =>
+            {
+                RuleFor(p => p.Aulas)
+                    .NotNull().WithMessage(c => $"As aulas do curso {c.Titulo} devem ser informadas quando ativo.")
+                    .NotEmpty().WithMessage(c => $"As aulas do curso {c.Titulo} devem ser informadas quando ativo.");
             });
         }
     }

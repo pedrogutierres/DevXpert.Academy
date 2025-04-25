@@ -39,12 +39,28 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
 
             // Act
             var curso = new Curso(id, titulo, new ConteudoProgramatico(descricao, cargaHoraria), null);
+            curso.Ativar();
 
             // Assert
             Assert.Equal(id, curso.Id);
             Assert.Equal(titulo, curso.Titulo);
             Assert.Equal(descricao, curso.ConteudoProgramatico?.Descricao);
             Assert.Equal(cargaHoraria, curso.ConteudoProgramatico?.CargaHoraria ?? 0);
+            Assert.True(curso.Ativo);
+        }
+
+
+        [Fact(DisplayName = "Validar curso deve entrar como inativado")]
+        [Trait("Domain", "Cursos")]
+        public void Cursos_ValidarCurso_DeveEntrarComoInativado()
+        {
+            // Arrange
+            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), null);
+
+            // Act
+
+            // Assert
+            Assert.False(curso.Ativo);
         }
 
         [Fact(DisplayName = "Validar aula com informações esperadas")]
