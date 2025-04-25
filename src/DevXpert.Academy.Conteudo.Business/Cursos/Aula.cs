@@ -6,12 +6,14 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
 {
     public sealed class Aula : Entity<Aula>
     {
+        public Guid CursoId { get; private set; }
         public string Titulo { get; private set; }
         public string VideoUrl { get; private set; }
 
-        public Aula(Guid id, string titulo, string videoUrl)
+        public Aula(Guid id, Guid cursoId,string titulo, string videoUrl)
         {
             Id = id;
+            CursoId = cursoId;
             Titulo = titulo;
             VideoUrl = videoUrl;
         }
