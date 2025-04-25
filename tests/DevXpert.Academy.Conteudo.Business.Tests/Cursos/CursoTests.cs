@@ -69,7 +69,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
             // Arrange
             Guid cursoId = Guid.NewGuid();
             Guid id = Guid.NewGuid();
-            string titulo = "CURSO PARA ASP.NET CORE";
+            string titulo = "Aula 1";
             string videoUrl = "https://www.youtube.com/watch?v=1";
 
             // Act
@@ -96,6 +96,46 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
             // Assert
             Assert.False(curso.ValidationResult.IsValid);
             Assert.Contains(curso.ValidationResult.Errors, e => e.ErrorMessage == $"O curso {curso.Titulo} deve ter aulas para ser ativado.");
+        }
+
+        [Fact(DisplayName = "Validar curso com aula adicionado com sucesso")]
+        [Trait("Domain", "Cursos")]
+        public void Cursos_ValidarCurso_DeveAdicionarAulaComSucesso()
+        {
+            // Arrange
+            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), null);
+
+            var aula = new Aula(Guid.NewGuid(), curso.Id, "Aula 1", "https://www.youtube.com/watch?v=1");
+
+            // Act
+            curso.AdicionarAula(aula);
+            curso.Ativar();
+            curso.EhValido();
+
+            // Assert
+            Assert.True(curso.Ativo);
+            Assert.True(curso.ValidationResult.IsValid);
+            Assert.Contains(curso.Aulas, e => e.Id == aula.Id);
+        }
+
+        [Fact(DisplayName = "Validar curso com aula removida com sucesso")]
+        [Trait("Domain", "Cursos")]
+        public void Cursos_ValidarCurso_DeveRemoverAulaComSucesso()
+        {
+            // Arrange
+            Guid cursoId = Guid.NewGuid();
+            var aula = new Aula(Guid.NewGuid(), cursoId, "Aula 1", "https://www.youtube.com/watch?v=1");
+            var curso = new Curso(cursoId, "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), [aula]);
+
+            // Act
+            curso.RemoverAula(aula);
+            curso.EhValido();
+
+            // Assert
+            Assert.False(curso.Ativo);
+            Assert.True(curso.ValidationResult.IsValid);
+            Assert.DoesNotContain(curso.Aulas, e => e.Id == aula.Id);
+            Assert.True(curso.Aulas.Count == 0);
         }
     }
 }

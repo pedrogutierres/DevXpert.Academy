@@ -64,6 +64,9 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
         {
             Aulas?.Remove(aula);
 
+            if (Aulas?.Count == 0)
+                Inativar();
+
             AddEvent(new AulaExcluidaEvent(Id, aula.Id));
         }
 
