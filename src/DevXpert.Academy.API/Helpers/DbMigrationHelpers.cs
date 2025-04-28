@@ -1,4 +1,5 @@
-﻿using DevXpert.Academy.Alunos.Data;
+﻿using Dapper;
+using DevXpert.Academy.Alunos.Data;
 using DevXpert.Academy.API.Authentication;
 using DevXpert.Academy.Conteudo.Data;
 using DevXpert.Academy.Financeiro.Data;
@@ -46,11 +47,11 @@ namespace DevXpert.Academy.API.Helpers
                 await alunosContext.Database.MigrateAsync();
                 await financeiroContext.Database.MigrateAsync();
 
-                await EnsureSeedProducts(scope, applicationDbContext);
+                await EnsureSeed(scope, applicationDbContext);
             }
         }
 
-        private static async Task EnsureSeedProducts(IServiceScope scope, ApplicationDbContext context)
+        private static async Task EnsureSeed(IServiceScope scope, ApplicationDbContext context)
         {
             if (await context.Users.AnyAsync())
                 return;
@@ -58,7 +59,22 @@ namespace DevXpert.Academy.API.Helpers
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            var user = new IdentityUser
+            if (!await roleManager.RoleExistsAsync("Administrador"))
+            {
+                var role = new IdentityRole();
+                role.Name = "Administrador";
+                await roleManager.CreateAsync(role);
+            }
+
+            if (!await roleManager.RoleExistsAsync("Aluno"))
+            {
+                var role = new IdentityRole();
+                role.Name = "Aluno";
+                await roleManager.CreateAsync(role);
+            }
+
+            #region Criar Usuário Admin
+            var userAdm = new IdentityUser
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = "admin@academy.com",
@@ -73,26 +89,129 @@ namespace DevXpert.Academy.API.Helpers
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var result = await userManager.CreateAsync(user, "Academy@123456");
+            var result = await userManager.CreateAsync(userAdm, "Academy@123456");
 
             if (!result.Succeeded)
                 return;
 
-            if (!await roleManager.RoleExistsAsync("Administrador"))
+            await userManager.AddToRoleAsync(userAdm, "Administrador");
+            #endregion
+
+            #region Aluno Pedro
+            var userAlunoPedro = new IdentityUser
             {
-                var role = new IdentityRole();
-                role.Name = "Administrador";
-                await roleManager.CreateAsync(role);
+                Id = Guid.NewGuid().ToString(),
+                UserName = "pedro@gmail.com",
+                NormalizedUserName = "PEDRO@GMAIL.COM",
+                Email = "PEDRO@GMAIL.COM",
+                NormalizedEmail = "PEDRO@GMAIL.COM",
+                AccessFailedCount = 0,
+                LockoutEnabled = false,
+                TwoFactorEnabled = false,
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            result = await userManager.CreateAsync(userAlunoPedro, "Pedro@123456");
+
+            if (!result.Succeeded)
+                return;
+
+            await userManager.AddToRoleAsync(userAlunoPedro, "Aluno");
+
+            await context.Database.GetDbConnection().ExecuteAsync(@"
+                INSERT INTO Alunos (Id, Nome, DataHoraCriacao)
+                            VALUES (@Id, @Nome, @DataHoraCriacao)",
+                         new
+                         {
+                             Id = userAlunoPedro.Id,
+                             Nome = "Pedro",
+                             DataHoraCriacao = DateTime.UtcNow
+                         });
+            #endregion
+
+            #region Aluno Eduardo
+            var userAlunoEduardo = new IdentityUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "eduardo.pires@desenvolvedor.io",
+                NormalizedUserName = "EDUARDO.PIRES@DESENVOLVEDOR.IO",
+                Email = "EDUARDO.PIRES@DESENVOLVEDOR.IO",
+                NormalizedEmail = "EDUARDO.PIRES@DESENVOLVEDOR.IO",
+                AccessFailedCount = 0,
+                LockoutEnabled = false,
+                TwoFactorEnabled = false,
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            result = await userManager.CreateAsync(userAlunoEduardo, "Eduardo@123456");
+
+            if (!result.Succeeded)
+                return;
+
+            await userManager.AddToRoleAsync(userAlunoEduardo, "Aluno");
+
+            await context.Database.GetDbConnection().ExecuteAsync(@"
+                INSERT INTO Alunos (Id, Nome, DataHoraCriacao)
+                            VALUES (@Id, @Nome, @DataHoraCriacao)",
+                        new
+                        {
+                            Id = userAlunoEduardo.Id,
+                            Nome = "Eduardo",
+                            DataHoraCriacao = DateTime.UtcNow
+                        });
+            #endregion
+
+            #region Criar Cursos Exemplos
+            for (int i = 1; i <= 3; i++)
+            {
+                var id = Guid.NewGuid();
+
+                await context.Database.GetDbConnection().ExecuteAsync(@"
+                    INSERT INTO Cursos (Id, Titulo, Descricao, CargaHoraria, Ativo, DataHoraCriacao)
+                                VALUES (@Id, @Titulo, @Descricao, @CargaHoraria, @Ativo, @DataHoraCriacao)",
+                                new
+                                {
+                                    Id = id,
+                                    Titulo = $"Curso {i}",
+                                    Descricao = $"Descrição do curso {i}\n\nQuebra de linha teste",
+                                    CargaHoraria = (i * 10),
+                                    Ativo = true,
+                                    DataHoraCriacao = DateTime.UtcNow
+                                });
+
+                for (int a = 1; a <= new Random().Next(1, 10); a++)
+                {
+                    await context.Database.GetDbConnection().ExecuteAsync(@"
+                        INSERT INTO CursosAulas (Id, CursoId, Titulo, VideoUrl, DataHoraCriacao)
+                                         VALUES (@Id, @CursoId, @Titulo, @VideoUrl, @DataHoraCriacao)",
+                                   new
+                                   {
+                                       Id = Guid.NewGuid(),
+                                       CursoId = id,
+                                       Titulo = $"Aula {i}",
+                                       VideoUrl = $"https://www.youtube.com/watch?v={i}",
+                                       DataHoraCriacao = DateTime.UtcNow
+                                   });
+                }
             }
 
-            await userManager.AddToRoleAsync(user, "Administrador");
-
-            if (!await roleManager.RoleExistsAsync("Aluno"))
-            {
-                var role = new IdentityRole();
-                role.Name = "Aluno";
-                await roleManager.CreateAsync(role);
-            }
+            await context.Database.GetDbConnection().ExecuteAsync(@"
+                INSERT INTO Cursos (Id, Titulo, Descricao, CargaHoraria, Ativo, DataHoraCriacao)
+                            VALUES (@Id, @Titulo, @Descricao, @CargaHoraria, @Ativo, @DataHoraCriacao)",
+                           new
+                           {
+                               Id = Guid.NewGuid(),
+                               Titulo = $"Curso Inativo",
+                               Descricao = $"Descrição do curso inativo\n\nQuebra de linha teste",
+                               CargaHoraria = 1,
+                               Ativo = false,
+                               DataHoraCriacao = DateTime.UtcNow
+                           });
+            #endregion
 
             await context.SaveChangesAsync();
         }

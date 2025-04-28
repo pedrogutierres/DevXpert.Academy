@@ -72,6 +72,16 @@ A estrutura do projeto é organizada da seguinte forma:
    - `dotnet run`
    - Acesse a documentação da API em: http://localhost:5001/swagger
 
+### **Uso do Blog**
+
+1. **Usuário Administrador Padrão:** Poderá ser utilizado como o administrador da API, onde poderá visualizar, editar e excluir cursos.
+   - email: `admin@academy.com`
+   - senha: `Academy@123456`
+   
+2. **Usuários Alunos:** Poderá ser criado mormalmente através da API, todo novo usuário será um Aluno automaticamente, mas também existem alguns default, como:
+   - email: `eduardo.pires@desenvolvedor.io`
+   - senha: `Eduardo@123456`
+
 ## **7. Instruções de Configuração**
 
 - **JWT para API:** As chaves de configuração do JWT estão no `appsettings.json`.
