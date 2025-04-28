@@ -36,9 +36,6 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             if (!_user.EhUmAdministrador())
                 throw new BusinessException("Você precisa estar logado como administrador para matricular o aluno em um curso.");
 
-            if (!aluno.Ativo)
-                throw new BusinessException("Aluno deve estar com cadastro ativo para se matricular em um curso.");
-
             if (aluno.EstaMatriculado(cursoId))
                 throw new BusinessException("O aluno já está matriculado neste curso.");
 

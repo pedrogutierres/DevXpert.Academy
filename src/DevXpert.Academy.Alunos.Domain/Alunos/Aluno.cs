@@ -9,7 +9,6 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
     public sealed class Aluno : Entity<Aluno>, IAggregateRoot
     {
         public string Nome { get; private set; }
-        public bool Ativo { get; private set; }
 
         public List<Matricula> Matriculas { get; private set; }
 
@@ -17,16 +16,12 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         {
             Id = id;
             Nome = nome;
-            Ativo = ativo;
 
             // TODO: event
         }
 
         public void Matricular(Matricula matricula)
         {
-            if (Ativo)
-                throw new BusinessException("Você deve estar com cadastro ativo para se matricular.");
-
             if (EstaMatriculado(matricula.CursoId))
                 throw new BusinessException("Você já está matriculado neste curso.");
 
