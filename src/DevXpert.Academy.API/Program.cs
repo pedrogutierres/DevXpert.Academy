@@ -1,6 +1,7 @@
 using DevXpert.Academy.API.Configurations;
 using DevXpert.Academy.API.Middlewares;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContextConfig(builder.Configuration, builder.Environment);
 builder.Services.AddApiSecurity(builder.Configuration);
 builder.Services.AddSwaggerConfig();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddDIConfiguration();
 
 var app = builder.Build();

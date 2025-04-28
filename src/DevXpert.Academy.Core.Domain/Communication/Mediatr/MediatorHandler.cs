@@ -10,9 +10,9 @@ namespace DevXpert.Academy.Core.Domain.Communication.Mediatr
     public class MediatorHandler : IMediatorHandler
     {
         private readonly IMediator _mediator;
-        private readonly Lazy<IEventStore> _eventStore;
+        private readonly IEventStore _eventStore;
 
-        public MediatorHandler(IMediator mediator, Lazy<IEventStore> eventStore, IServiceProvider serviceProvider)
+        public MediatorHandler(IMediator mediator, IEventStore eventStore, IServiceProvider serviceProvider)
         {
             _mediator = mediator;
             _eventStore = eventStore;
@@ -26,7 +26,7 @@ namespace DevXpert.Academy.Core.Domain.Communication.Mediatr
         public async Task RaiseEvent<T>(T @event, CancellationToken cancellation = default) where T : Event
         {
             if (!@event.MessageType.Equals("DomainNotification"))
-                await _eventStore?.Value?.SalvarEvento(@event);
+                await _eventStore.SalvarEvento(@event);
 
             await _mediator.Publish(@event, cancellation);
         }

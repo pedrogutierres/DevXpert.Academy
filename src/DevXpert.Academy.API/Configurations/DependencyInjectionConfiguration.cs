@@ -11,6 +11,7 @@ using DevXpert.Academy.Core.Domain.Messages.Notifications;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Context;
 using DevXpert.Academy.Core.EventSourcing.EventStore.EventSourcing;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Repository;
+using DevXpert.Academy.Financeiro.Data.Repositories;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Services;
 using DevXpert.Academy.Financeiro.Shared.Commands;
@@ -56,7 +57,7 @@ namespace DevXpert.Academy.API.Configurations
             services.AddScoped<ICursoService, CursoService>();
 
             // DI / IoC - Financeiro
-            //services.AddScoped<IPagamentoRepository, PagamentoRepository>();
+            services.AddScoped<IPagamentoRepository, PagamentoRepository>();
             services.AddScoped<IPagamentoService, PagamentoService>();
 
             // Handlers
