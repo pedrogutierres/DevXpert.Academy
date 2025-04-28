@@ -5,6 +5,7 @@ using DevXpert.Academy.Core.Domain.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace DevXpert.Academy.Alunos.Data
 {
     public class AlunosContext : SQLDbContext, IUnitOfWork
     {
-        public AlunosContext(IMediatorHandler mediator) : base(mediator)
+        public AlunosContext(IConfiguration options, IMediatorHandler mediator) : base(options, mediator)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

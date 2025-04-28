@@ -4,7 +4,7 @@ using DevXpert.Academy.Core.Domain.Messages;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Polly;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Threading;
@@ -14,16 +14,35 @@ namespace DevXpert.Academy.Core.Data
 {
     public abstract class SQLDbContext : DbContext
     {
+        private readonly IConfiguration _configuration;
         private readonly IMediatorHandler _mediator;
 
-        public SQLDbContext(IMediatorHandler mediator)
+        public SQLDbContext(IConfiguration configuration, IMediatorHandler mediator)
         {
+            _configuration = configuration;
             _mediator = mediator;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (true) // TODO: debito técnico, será resolvido em breve, verificar se é ambiente de desenvolvimento
+            {
+                var connectionString = _configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
+                optionsBuilder.UseSqlite(connectionString);
+
+            }
+            else
+            {
+                var connectionString = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

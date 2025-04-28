@@ -10,6 +10,7 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
         public string Titulo { get; private set; }
         public string VideoUrl { get; private set; }
 
+        private Aula() { }
         public Aula(Guid id, Guid cursoId,string titulo, string videoUrl)
         {
             Id = id;

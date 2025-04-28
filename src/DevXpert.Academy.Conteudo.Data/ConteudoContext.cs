@@ -5,6 +5,7 @@ using DevXpert.Academy.Core.Domain.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace DevXpert.Academy.Conteudo.Data
 {
     public class ConteudoContext : SQLDbContext, IUnitOfWork
     {
-        public ConteudoContext(IMediatorHandler mediator) : base(mediator)
+        public ConteudoContext(IConfiguration configuration, IMediatorHandler mediator) : base(configuration, mediator)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

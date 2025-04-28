@@ -1,4 +1,5 @@
 using DevXpert.Academy.API.Configurations;
+using DevXpert.Academy.API.Helpers;
 using DevXpert.Academy.API.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ builder.Services.AddCorsConfig(builder.Configuration);
 builder.Services.AddOpenApi(); 
 builder.Services.AddDbContextConfig(builder.Configuration, builder.Environment);
 builder.Services.AddApiSecurity(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSwaggerConfig();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddDIConfiguration();
@@ -27,7 +29,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.MapOpenApi();
     app.UseCors("Development");
-    //DbMigrationHelper.SeedDataAsync(app).Wait();
 }
 else
     app.UseCors("Production");
@@ -39,6 +40,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.UseDbMigrationHelper();
+app.UseDbMigrationHelper();
 
 app.Run();

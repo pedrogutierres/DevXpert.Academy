@@ -20,19 +20,21 @@ namespace DevXpert.Academy.API.Configurations
                 if (env.IsDevelopment())
                 {
                     var connectionString = configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
-
                     o.UseSqlite(connectionString);
                     
                 }
                 else
                 {
                     var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
-
                     o.UseSqlServer(connectionString);
                 }
             });
 
-            services.AddDbContext<ConteudoContext>(options =>
+            services.AddDbContext<ConteudoContext>();
+            services.AddDbContext<AlunosContext>();
+            services.AddDbContext<FinanceiroContext>();
+
+            /*services.AddDbContext<ConteudoContext>(options =>
             {
                 if (env.IsDevelopment())
                 {
@@ -75,7 +77,7 @@ namespace DevXpert.Academy.API.Configurations
                     var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
                     options.UseSqlServer(connectionString);
                 }
-            });
+            });*/
 
             return services;
         }

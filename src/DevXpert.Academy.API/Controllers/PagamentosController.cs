@@ -1,0 +1,42 @@
+﻿using AutoMapper;
+using DevXpert.Academy.API.ViewModels.Pagamentos;
+using DevXpert.Academy.Core.Domain.Communication.Mediatr;
+using DevXpert.Academy.Core.Domain.DomainObjects;
+using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace DevXpert.Academy.API.Controllers
+{
+    [Route("api/pagamentos")]
+    public class PagamentosController : MainController
+    {
+        private readonly IPagamentoRepository _pagamentoRepository;
+        private readonly IMapper _mapper;
+
+        public PagamentosController(
+            IPagamentoRepository pagamentoRepository,
+            IMapper mapper,
+            INotificationHandler<DomainNotification> notifications, 
+            IUser user,
+            IMediatorHandler mediator) 
+            : base(notifications, user, mediator)
+        {
+            _pagamentoRepository = pagamentoRepository;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<List<PagamentoViewModel>> ObterPagamentos()
+        {
+            return _mapper.Map<List<PagamentoViewModel>>(await _pagamentoRepository.Buscar(p => true).OrderBy(p => p.DataHoraCriacao).ToListAsync());
+        }
+    }
+}

@@ -14,6 +14,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
 
         public List<PagamentoSituacao> HistoricoTransacoes { get; private set; }
 
+        private Pagamento() { }
         public Pagamento(Guid id, Guid matriculaId, decimal valor, DadosCartao dadosCartao)
         {
             Id = id;

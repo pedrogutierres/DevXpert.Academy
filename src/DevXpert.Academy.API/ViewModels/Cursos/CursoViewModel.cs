@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace DevXpert.Academy.API.ViewModels.Cursos
+{
+    public class CursoViewModel
+    {
+        public Guid Id { get; set; }
+        public string Titulo { get; set; }
+        public ConteudoProgramaticoViewModel ConteudoProgramatico { get; set; }
+        public bool Ativo { get; set; }
+        public List<AulaViewModel> Aulas { get; set; }
+        public DateTime DataHoraCriacao { get; set; }
+        public DateTime DataHoraAlteracao { get; set; }
+    }
+
+    public class ConteudoProgramaticoViewModel
+    {
+        public string Descricao { get; set; }
+        public int CargaHoraria { get; set; }
+    }
+
+    public class AulaViewModel
+    {
+        public Guid Id { get; set; }
+        public string Titulo { get; private set; }
+        public string VideoUrl { get; private set; }
+        public DateTime DataHoraCriacao { get; set; }
+        public DateTime DataHoraAlteracao { get; set; }
+    }
+}

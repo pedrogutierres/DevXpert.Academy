@@ -12,7 +12,8 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
 
         public List<Matricula> Matriculas { get; private set; }
 
-        public Aluno(Guid id, string nome, bool ativo)
+        private Aluno() { }
+        public Aluno(Guid id, string nome)
         {
             Id = id;
             Nome = nome;

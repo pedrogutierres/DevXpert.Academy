@@ -16,6 +16,7 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
 
         public List<Aula> Aulas { get; private set; }
 
+        private Curso() { }
         public Curso(Guid id, string titulo, ConteudoProgramatico conteudoProgramatico, List<Aula> aulas)
         {
             Id = id;

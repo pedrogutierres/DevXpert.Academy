@@ -17,12 +17,14 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         public virtual Aluno Aluno { get; private set; }
         public virtual Curso Curso { get; private set; }
 
+        private Matricula() { }
         public Matricula(Guid id, Guid alunoId, Guid cursoId)
         {
             Id = id;
             AlunoId = alunoId;
             CursoId = cursoId;
             DataHoraCriacao = DateTime.Now;
+            Certificado = null;
             Liberada = false;
             Concluido = false;
 

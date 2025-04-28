@@ -1,4 +1,5 @@
 ﻿using DevXpert.Academy.Alunos.Domain.Alunos;
+using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,6 +10,12 @@ namespace DevXpert.Academy.Alunos.Data.Mappings
         public void Configure(EntityTypeBuilder<Matricula> builder)
         {
             builder.HasKey(p => p.Id);
+
+            builder.OwnsOne(p => p.Certificado, certificado =>
+            {
+                certificado.Property(p => p.Emissao)
+                    .HasColumnName(nameof(Certificado.Emissao));
+            });
 
             builder.HasOne(p => p.Aluno)
                 .WithMany(p => p.Matriculas)
@@ -21,7 +28,7 @@ namespace DevXpert.Academy.Alunos.Data.Mappings
             builder.Navigation(p => p.Aluno).AutoInclude();
             builder.Navigation(p => p.Curso).AutoInclude();
 
-            builder.ToTable("Alunos");
+            builder.ToTable("Matriculas");
         }
     }
 }
