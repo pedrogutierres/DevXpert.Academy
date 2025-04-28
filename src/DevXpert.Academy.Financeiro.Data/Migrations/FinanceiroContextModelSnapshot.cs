@@ -99,21 +99,9 @@ namespace DevXpert.Academy.Financeiro.Data.Migrations
                             b1.Property<Guid>("PagamentoId")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("CcvCvc")
+                            b1.Property<string>("Token")
                                 .HasColumnType("TEXT")
-                                .HasColumnName("CcvCvc");
-
-                            b1.Property<string>("Nome")
-                                .HasColumnType("TEXT")
-                                .HasColumnName("Nome");
-
-                            b1.Property<string>("Numero")
-                                .HasColumnType("TEXT")
-                                .HasColumnName("Numero");
-
-                            b1.Property<string>("Vencimento")
-                                .HasColumnType("TEXT")
-                                .HasColumnName("Vencimento");
+                                .HasColumnName("Token");
 
                             b1.HasKey("PagamentoId");
 

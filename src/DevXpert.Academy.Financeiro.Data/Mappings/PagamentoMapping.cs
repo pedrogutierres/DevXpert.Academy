@@ -11,17 +11,8 @@ namespace DevXpert.Academy.Financeiro.Data.Mappings
         {
             builder.OwnsOne(p => p.DadosCartao, conteudo =>
             {
-                conteudo.Property(p => p.Nome)
-                    .HasColumnName(nameof(DadosCartao.Nome));
-
-                conteudo.Property(p => p.Numero)
-                    .HasColumnName(nameof(DadosCartao.Numero));
-
-                conteudo.Property(p => p.Vencimento)
-                    .HasColumnName(nameof(DadosCartao.Vencimento));
-
-                conteudo.Property(p => p.CcvCvc)
-                    .HasColumnName(nameof(DadosCartao.CcvCvc));
+                conteudo.Property(p => p.Token)
+                    .HasColumnName(nameof(DadosCartao.Token));
             });
 
             builder.OwnsOne(p => p.Situacao, situacao =>

@@ -25,6 +25,8 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
 
         public Task ProcessarPagamento(Guid id)
         {
+            // TODO: comunicar com gateway de pagamento via anticorruption layer
+
             throw new NotImplementedException();
         }
 
@@ -35,6 +37,8 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
 
         public Task EstornarPagamento(Guid id)
         {
+            // TODO: comunicar com gateway de pagamento via anticorruption layer
+
             throw new NotImplementedException();
         }
     }
