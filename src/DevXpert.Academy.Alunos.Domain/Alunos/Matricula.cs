@@ -23,6 +23,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             AlunoId = alunoId;
             CursoId = cursoId;
             DataHoraCriacao = DateTime.Now;
+            Liberada = false;
             Concluido = false;
 
             // TODO: event
@@ -31,6 +32,13 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         public void Liberar()
         {
             Liberada = true;
+
+            // TODO: event
+        }
+
+        public void Bloquear()
+        {
+            Liberada = false;
 
             // TODO: event
         }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Financeiro.Shared.Events
 {
-    public class PagamentoReprovadoEvent : Event
+    public class PagamentoRecusadoEvent : Event
     {
-        public PagamentoReprovadoEvent() : base("Pagamento")
+        public PagamentoRecusadoEvent() : base("Pagamento")
         { }
     }
 }

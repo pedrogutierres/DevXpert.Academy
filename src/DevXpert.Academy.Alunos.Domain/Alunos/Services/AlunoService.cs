@@ -4,13 +4,17 @@ using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using DevXpert.Academy.Core.Domain.Messages.Notifications;
 using DevXpert.Academy.Core.Domain.Services;
+using DevXpert.Academy.Financeiro.Shared.Events;
 using MediatR;
 using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 {
-    public class AlunoService : DomainService, IAlunoService
+    public class AlunoService : DomainService, IAlunoService,
+        INotificationHandler<PagamentoAprovadoEvent>
     {
         private readonly IAlunoRepository _alunoRepository;
         private readonly IUser _user;
@@ -63,6 +67,40 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
                 return false;
 
             return await CommitAsync();
+        }
+
+        public async Task Handle(PagamentoAprovadoEvent notification, CancellationToken cancellationToken)
+        {
+            var aluno = await _alunoRepository.ObterAtravesDaMatricula(notification.MatriculaId) ?? throw new BusinessException("Aluno não encontrado.");
+
+            var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == notification.MatriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
+
+            if (matricula.Liberada)
+                return;
+
+            matricula.Liberar();
+
+            if (!EntidadeValida(aluno))
+                return;
+
+            await CommitAsync();
+        }
+
+        public async Task Handle(PagamentoEstornadoEvent notification, CancellationToken cancellationToken)
+        {
+            var aluno = await _alunoRepository.ObterAtravesDaMatricula(notification.MatriculaId) ?? throw new BusinessException("Aluno não encontrado.");
+
+            var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == notification.MatriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
+
+            if (!matricula.Liberada)
+                return;
+
+            matricula.Bloquear();
+
+            if (!EntidadeValida(aluno))
+                return;
+
+            await CommitAsync();
         }
     }
 }
