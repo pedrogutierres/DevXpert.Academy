@@ -1,4 +1,5 @@
 ﻿using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
+using DevXpert.Academy.Alunos.Domain.Cursos;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using System;
 
@@ -13,6 +14,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         public Certificado Certificado { get; private set; }
 
         public virtual Aluno Aluno { get; private set; }
+        public virtual Curso Curso { get; private set; }
 
         public Matricula(Guid id, Guid alunoId, Guid cursoId)
         {
