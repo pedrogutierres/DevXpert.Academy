@@ -1,23 +1,42 @@
+using DevXpert.Academy.API.Configurations;
+using DevXpert.Academy.API.Middlewares;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddApiConfig();
+builder.Services.AddCorsConfig(builder.Configuration);
+builder.Services.AddOpenApi(); 
+builder.Services.AddDbContextConfig(builder.Configuration, builder.Environment);
+builder.Services.AddApiSecurity(builder.Configuration);
+builder.Services.AddSwaggerConfig();
+builder.Services.AddDIConfiguration();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.ConfigureExceptionHandler(app.Environment, app.Services.GetRequiredService<ILoggerFactory>());
+
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.MapOpenApi();
+    app.UseCors("Development");
+    //DbMigrationHelper.SeedDataAsync(app).Wait();
 }
+else
+    app.UseCors("Production");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//app.UseDbMigrationHelper();
 
 app.Run();

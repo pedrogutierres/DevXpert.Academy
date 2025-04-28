@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 {
     public class AlunoService : DomainService, IAlunoService,
-        INotificationHandler<PagamentoAprovadoEvent>
+        INotificationHandler<PagamentoAprovadoEvent>,
+        INotificationHandler<PagamentoEstornadoEvent>
     {
         private readonly IAlunoRepository _alunoRepository;
         private readonly IUser _user;
