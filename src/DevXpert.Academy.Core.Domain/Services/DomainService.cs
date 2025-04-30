@@ -94,6 +94,12 @@ namespace DevXpert.Academy.Core.Domain.Services
         }
         protected bool EntidadeValida<T>(T entidade) where T : Entity<T>
         {
+            if (entidade == null)
+            {
+                NotificarErro("EntidadeInvalida", "Entidade não pode ser nula.");
+                return false;
+            }
+
             if (entidade.EhValido()) return true;
 
             NotificarValidacoesErro(entidade.ValidationResult);
@@ -101,6 +107,12 @@ namespace DevXpert.Academy.Core.Domain.Services
         }
         protected async Task<bool> EntidadeAptaParaTransacionar<T>(T entidade, DomainValidator<T> validator) where T : Entity<T>
         {
+            if (entidade == null)
+            {
+                await NotificarErro("EntidadeInvalida", "Entidade não pode ser nula.");
+                return false;
+            }
+
             var aptoParaTransacionarResult = await validator.ValidateAsync(entidade);
             if (aptoParaTransacionarResult.IsValid)
             {

@@ -8,6 +8,7 @@ namespace DevXpert.Academy.API.ViewModels.Cursos
         public Guid Id { get; set; }
         public string Titulo { get; set; }
         public ConteudoProgramaticoViewModel ConteudoProgramatico { get; set; }
+        public decimal Valor { get; set; }
         public bool Ativo { get; set; }
         public List<AulaViewModel> Aulas { get; set; }
         public DateTime DataHoraCriacao { get; set; }

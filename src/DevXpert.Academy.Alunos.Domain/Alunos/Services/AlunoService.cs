@@ -21,10 +21,10 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
         private readonly IUser _user;
 
         public AlunoService(
-            IAlunoRepository alunoRepository, 
+            IAlunoRepository alunoRepository,
             IUser user,
-            IMediatorHandler mediator, 
-            INotificationHandler<DomainNotification> notifications) 
+            IMediatorHandler mediator,
+            INotificationHandler<DomainNotification> notifications)
             : base(alunoRepository.UnitOfWork, mediator, notifications)
         {
             _alunoRepository = alunoRepository;
@@ -36,7 +36,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Matricular(Aluno aluno, Guid cursoId)
+        public async Task<Guid?> Matricular(Aluno aluno, Guid cursoId)
         {
             if (!_user.EhUmAdministrador())
                 throw new BusinessException("Você precisa estar logado como administrador para matricular o aluno em um curso.");
@@ -44,15 +44,20 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             if (aluno.EstaMatriculado(cursoId))
                 throw new BusinessException("O aluno já está matriculado neste curso.");
 
-            aluno.Matricular(new Matricula(Guid.NewGuid(), cursoId, aluno.Id));
+            var matricula = new Matricula(Guid.NewGuid(), aluno.Id, cursoId);
+
+            aluno.Matricular(matricula);
 
             if (!EntidadeValida(aluno))
-                return false;
+                return null;
 
-            return await CommitAsync();
+            if (await CommitAsync())
+                return matricula.Id;
+
+            return null;
         }
 
-        public async Task<bool> SeMatricular(Guid cursoId)
+        public async Task<Guid?> SeMatricular(Guid cursoId)
         {
             if (!_user.Autenticado())
                 throw new BusinessException("Você precisa estar logado para se matricular em um curso.");
@@ -62,12 +67,17 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             if (aluno.EstaMatriculado(cursoId))
                 throw new BusinessException("Você já está matriculado neste curso.");
 
-            aluno.Matricular(new Matricula(Guid.NewGuid(), cursoId, aluno.Id));
+            var matricula = new Matricula(Guid.NewGuid(), aluno.Id, cursoId);
+
+            aluno.Matricular(matricula);
 
             if (!EntidadeValida(aluno))
-                return false;
+                return null;
 
-            return await CommitAsync();
+            if (await CommitAsync())
+                return matricula.Id;
+
+            return null;
         }
 
         public async Task Handle(PagamentoAprovadoEvent notification, CancellationToken cancellationToken)

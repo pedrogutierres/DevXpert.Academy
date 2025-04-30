@@ -1,6 +1,7 @@
 ﻿using DevXpert.Academy.Alunos.Data;
 using DevXpert.Academy.API.Authentication;
 using DevXpert.Academy.Conteudo.Data;
+using DevXpert.Academy.Core.EventSourcing.EventStore.Context;
 using DevXpert.Academy.Financeiro.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,21 @@ namespace DevXpert.Academy.API.Configurations
                     var connectionString = configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
                     o.UseSqlite(connectionString);
                     
+                }
+                else
+                {
+                    var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
+                    o.UseSqlServer(connectionString);
+                }
+            });
+
+            services.AddDbContext<EventStoreSQLContext>(o =>
+            {
+                if (env.IsDevelopment())
+                {
+                    var connectionString = configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
+                    o.UseSqlite(connectionString);
+
                 }
                 else
                 {

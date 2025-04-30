@@ -5,11 +5,12 @@ namespace DevXpert.Academy.Financeiro.Shared.Events
 {
     public class PagamentoAprovadoEvent : Event
     {
-        public Guid MatriculaId => AggregateId;
+        public Guid MatriculaId { get; private set; }
 
-        public PagamentoAprovadoEvent(Guid matriculaId) : base("Pagamento")
+        public PagamentoAprovadoEvent(Guid id, Guid matriculaId) : base("Pagamento")
         {
-            AggregateId = matriculaId;
+            AggregateId = id;
+            MatriculaId = matriculaId;
         }
     }
 }

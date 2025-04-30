@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace DevXpert.Academy.Alunos.Data
 {
     public class AlunosContext : SQLDbContext, IUnitOfWork
     {
-        public AlunosContext(IConfiguration options, IMediatorHandler mediator) : base(options, mediator)
+        public AlunosContext(IConfiguration configuration, ILoggerFactory loggerFactory, IMediatorHandler mediator) : base(configuration, loggerFactory, mediator)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

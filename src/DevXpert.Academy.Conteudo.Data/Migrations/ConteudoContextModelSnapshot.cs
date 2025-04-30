@@ -35,6 +35,9 @@ namespace DevXpert.Academy.Conteudo.Data.Migrations
                     b.Property<string>("Titulo")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Cursos", (string)null);

@@ -17,7 +17,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
                 new(Guid.NewGuid(), id, "Aula 2", "https://www.youtube.com/watch?v=2")
             };
 
-            var curso = new Curso(id, "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), aulas);
+            var curso = new Curso(id, "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), 100, aulas);
 
             // Act
             var result = curso.EhValido();
@@ -38,7 +38,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
             int cargaHoraria = 20;
 
             // Act
-            var curso = new Curso(id, titulo, new ConteudoProgramatico(descricao, cargaHoraria), null);
+            var curso = new Curso(id, titulo, new ConteudoProgramatico(descricao, cargaHoraria), 100, null);
             curso.Ativar();
 
             // Assert
@@ -54,7 +54,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
         public void Cursos_ValidarCurso_DeveEntrarComoInativado()
         {
             // Arrange
-            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), null);
+            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), 100, null);
 
             // Act
 
@@ -87,7 +87,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
         public void Cursos_ValidarCurso_DeveNaoPodeSerAtivadoSemCursos()
         {
             // Arrange
-            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), null);
+            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), 100, null);
 
             // Act
             curso.Ativar();
@@ -103,7 +103,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
         public void Cursos_ValidarCurso_DeveAdicionarAulaComSucesso()
         {
             // Arrange
-            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), null);
+            var curso = new Curso(Guid.NewGuid(), "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), 100, null);
 
             var aula = new Aula(Guid.NewGuid(), curso.Id, "Aula 1", "https://www.youtube.com/watch?v=1");
 
@@ -125,7 +125,7 @@ namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
             // Arrange
             Guid cursoId = Guid.NewGuid();
             var aula = new Aula(Guid.NewGuid(), cursoId, "Aula 1", "https://www.youtube.com/watch?v=1");
-            var curso = new Curso(cursoId, "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), [aula]);
+            var curso = new Curso(cursoId, "Curso de ASP.NET", new ConteudoProgramatico("CURSO PARA ASP.NET CORE", 20), 100, [aula]);
 
             // Act
             curso.RemoverAula(aula);

@@ -42,28 +42,18 @@ namespace DevXpert.Academy.Financeiro.Data.Migrations
 
             modelBuilder.Entity("DevXpert.Academy.Financeiro.Domain.Pagamentos.Pagamento", b =>
                 {
-                    b.OwnsMany("DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts.PagamentoSituacao", "HistoricoTransacoes", b1 =>
+                    b.OwnsOne("DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts.DadosCartao", "DadosCartao", b1 =>
                         {
-                            b1.Property<int>("Id")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<DateTime>("DataHoraProcessamento")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Mensagem")
-                                .HasColumnType("TEXT");
-
                             b1.Property<Guid>("PagamentoId")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<int>("Situacao")
-                                .HasColumnType("INTEGER");
+                            b1.Property<string>("Token")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("DadosCartaoToken");
 
-                            b1.HasKey("Id");
+                            b1.HasKey("PagamentoId");
 
-                            b1.HasIndex("PagamentoId");
-
-                            b1.ToTable("PagamentosTransacoes", (string)null);
+                            b1.ToTable("Pagamentos");
 
                             b1.WithOwner()
                                 .HasForeignKey("PagamentoId");
@@ -94,26 +84,7 @@ namespace DevXpert.Academy.Financeiro.Data.Migrations
                                 .HasForeignKey("PagamentoId");
                         });
 
-                    b.OwnsOne("DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts.DadosCartao", "DadosCartao", b1 =>
-                        {
-                            b1.Property<Guid>("PagamentoId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Token")
-                                .HasColumnType("TEXT")
-                                .HasColumnName("Token");
-
-                            b1.HasKey("PagamentoId");
-
-                            b1.ToTable("Pagamentos");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PagamentoId");
-                        });
-
                     b.Navigation("DadosCartao");
-
-                    b.Navigation("HistoricoTransacoes");
 
                     b.Navigation("Situacao");
                 });

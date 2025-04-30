@@ -5,7 +5,10 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,21 +18,33 @@ namespace DevXpert.Academy.Core.Data
     public abstract class SQLDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly IMediatorHandler _mediator;
 
-        public SQLDbContext(IConfiguration configuration, IMediatorHandler mediator)
+        public SQLDbContext(IConfiguration configuration, ILoggerFactory loggerFactory, IMediatorHandler mediator)
         {
             _configuration = configuration;
+            _loggerFactory = loggerFactory;
             _mediator = mediator;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (Debugger.IsAttached)
+            {
+                optionsBuilder.EnableDetailedErrors()
+                              .EnableSensitiveDataLogging();
+            }
+
+            if (_loggerFactory != null)
+                optionsBuilder.UseLoggerFactory(_loggerFactory);
+
             if (true) // TODO: debito técnico, será resolvido em breve, verificar se é ambiente de desenvolvimento
             {
                 var connectionString = _configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");

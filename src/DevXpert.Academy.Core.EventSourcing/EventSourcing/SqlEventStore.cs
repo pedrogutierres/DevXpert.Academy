@@ -12,9 +12,6 @@ namespace DevXpert.Academy.Core.EventSourcing.EventStore.EventSourcing
         private readonly IEventSourcingRepository _eventStoreRepository;
         private readonly IUser _user;
 
-        public bool EventosBloqueados { get; set; } = false;
-        public void BloquearEventos() => EventosBloqueados = true;
-
         public SqlEventStore(IEventSourcingRepository eventStoreRepository, IUser user)
         {
             _eventStoreRepository = eventStoreRepository;
@@ -23,8 +20,6 @@ namespace DevXpert.Academy.Core.EventSourcing.EventStore.EventSourcing
 
         public Task SalvarEvento<T>(T evento) where T : Event
         {
-            if (EventosBloqueados) return Task.CompletedTask;
-
             var serializedData = JsonConvert.SerializeObject(evento);
 
             var storedEvent = new StoredEvent(

@@ -1,12 +1,16 @@
-﻿using DevXpert.Academy.Core.EventSourcing.EventStore.Mappings;
+﻿using DevXpert.Academy.Core.Domain.DataModels;
+using DevXpert.Academy.Core.EventSourcing.EventStore.Mappings;
 using Microsoft.EntityFrameworkCore;
-using DevXpert.Academy.Core.Domain.DataModels;
 
 namespace DevXpert.Academy.Core.EventSourcing.EventStore.Context
 {
     public class EventStoreSQLContext : DbContext
     {
         public DbSet<StoredEvent> StoredEvent { get; set; }
+
+        public EventStoreSQLContext(DbContextOptions<EventStoreSQLContext> options)
+           : base(options)
+        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -12,7 +12,7 @@ namespace DevXpert.Academy.Financeiro.Data.Mappings
             builder.OwnsOne(p => p.DadosCartao, conteudo =>
             {
                 conteudo.Property(p => p.Token)
-                    .HasColumnName(nameof(DadosCartao.Token));
+                    .HasColumnName("DadosCartaoToken");
             });
 
             builder.OwnsOne(p => p.Situacao, situacao =>
@@ -27,7 +27,9 @@ namespace DevXpert.Academy.Financeiro.Data.Mappings
                     .HasColumnName(nameof(PagamentoSituacao.Mensagem));
             });
 
-            builder.OwnsMany(p => p.HistoricoTransacoes, transacao =>
+            builder.Ignore(p => p.HistoricoTransacoes);
+
+            /*builder.OwnsMany(p => p.HistoricoTransacoes, transacao =>
             {
                 transacao.WithOwner().HasForeignKey("PagamentoId").HasPrincipalKey(p => p.Id);
 
@@ -35,7 +37,7 @@ namespace DevXpert.Academy.Financeiro.Data.Mappings
                 transacao.HasKey("Id");
 
                 transacao.ToTable("PagamentosTransacoes");
-            });
+            });*/
 
             builder.HasKey(p => p.Id);
 

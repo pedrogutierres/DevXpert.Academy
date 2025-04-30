@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace DevXpert.Academy.Financeiro.Data
 {
     public class FinanceiroContext : SQLDbContext, IUnitOfWork
     {
-        public FinanceiroContext(IConfiguration configuration, IMediatorHandler mediator) : base(configuration, mediator)
+        public FinanceiroContext(IConfiguration configuration, ILoggerFactory loggerFactory, IMediatorHandler mediator) : base(configuration, loggerFactory, mediator)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

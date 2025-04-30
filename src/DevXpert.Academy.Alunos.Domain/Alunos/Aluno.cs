@@ -1,4 +1,5 @@
-﻿using DevXpert.Academy.Core.Domain.DomainObjects;
+﻿using DevXpert.Academy.Alunos.Domain.Alunos.Validations;
+using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,11 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
 
         public override bool EhValido()
         {
-            throw new NotImplementedException();
+            ValidationResult = new AlunoEstaConsistenteValidation().Validate(this);
+
+            // TODO: validar matriculas
+
+            return ValidationResult.IsValid;
         }
     }
 }

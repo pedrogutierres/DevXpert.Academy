@@ -2,6 +2,7 @@
 using DevXpert.Academy.Alunos.Data;
 using DevXpert.Academy.API.Authentication;
 using DevXpert.Academy.Conteudo.Data;
+using DevXpert.Academy.Core.EventSourcing.EventStore.Context;
 using DevXpert.Academy.Financeiro.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,7 @@ namespace DevXpert.Academy.API.Helpers
             var conteudoContext = scope.ServiceProvider.GetRequiredService<ConteudoContext>();
             var alunosContext = scope.ServiceProvider.GetRequiredService<AlunosContext>();
             var financeiroContext = scope.ServiceProvider.GetRequiredService<FinanceiroContext>();
+            var eventContext = scope.ServiceProvider.GetRequiredService<EventStoreSQLContext>();
 
             if (env.IsDevelopment())
             {
@@ -46,6 +48,7 @@ namespace DevXpert.Academy.API.Helpers
                 await conteudoContext.Database.MigrateAsync();
                 await alunosContext.Database.MigrateAsync();
                 await financeiroContext.Database.MigrateAsync();
+                await eventContext.Database.MigrateAsync();
 
                 await EnsureSeed(scope, applicationDbContext);
             }
@@ -125,7 +128,7 @@ namespace DevXpert.Academy.API.Helpers
                             VALUES (@Id, @Nome, @DataHoraCriacao)",
                          new
                          {
-                             Id = userAlunoPedro.Id,
+                             Id = Guid.Parse(userAlunoPedro.Id),
                              Nome = "Pedro",
                              DataHoraCriacao = DateTime.UtcNow
                          });
@@ -159,7 +162,7 @@ namespace DevXpert.Academy.API.Helpers
                             VALUES (@Id, @Nome, @DataHoraCriacao)",
                         new
                         {
-                            Id = userAlunoEduardo.Id,
+                            Id = Guid.Parse(userAlunoEduardo.Id),
                             Nome = "Eduardo",
                             DataHoraCriacao = DateTime.UtcNow
                         });
@@ -171,14 +174,15 @@ namespace DevXpert.Academy.API.Helpers
                 var id = Guid.NewGuid();
 
                 await context.Database.GetDbConnection().ExecuteAsync(@"
-                    INSERT INTO Cursos (Id, Titulo, Descricao, CargaHoraria, Ativo, DataHoraCriacao)
-                                VALUES (@Id, @Titulo, @Descricao, @CargaHoraria, @Ativo, @DataHoraCriacao)",
+                    INSERT INTO Cursos (Id, Titulo, Descricao, CargaHoraria, Valor, Ativo, DataHoraCriacao)
+                                VALUES (@Id, @Titulo, @Descricao, @CargaHoraria, @Valor, @Ativo, @DataHoraCriacao)",
                                 new
                                 {
                                     Id = id,
                                     Titulo = $"Curso {i}",
                                     Descricao = $"Descrição do curso {i}\n\nQuebra de linha teste",
                                     CargaHoraria = (i * 10),
+                                    Valor = 100,
                                     Ativo = true,
                                     DataHoraCriacao = DateTime.UtcNow
                                 });
@@ -200,14 +204,15 @@ namespace DevXpert.Academy.API.Helpers
             }
 
             await context.Database.GetDbConnection().ExecuteAsync(@"
-                INSERT INTO Cursos (Id, Titulo, Descricao, CargaHoraria, Ativo, DataHoraCriacao)
-                            VALUES (@Id, @Titulo, @Descricao, @CargaHoraria, @Ativo, @DataHoraCriacao)",
+                INSERT INTO Cursos (Id, Titulo, Descricao, CargaHoraria, Valor, Ativo, DataHoraCriacao)
+                            VALUES (@Id, @Titulo, @Descricao, @CargaHoraria, @Valor, @Ativo, @DataHoraCriacao)",
                            new
                            {
                                Id = Guid.NewGuid(),
                                Titulo = $"Curso Inativo",
                                Descricao = $"Descrição do curso inativo\n\nQuebra de linha teste",
                                CargaHoraria = 1,
+                               Valor = 150,
                                Ativo = false,
                                DataHoraCriacao = DateTime.UtcNow
                            });

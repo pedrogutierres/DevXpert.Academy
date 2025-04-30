@@ -12,6 +12,11 @@ namespace DevXpert.Academy.Alunos.Data.Repositories
         public AlunoRepository(AlunosContext context) : base(context)
         { }
 
+        public async Task CadastrarMatricula(Matricula matricula)
+        {
+            await Db.Set<Matricula>().AddAsync(matricula);
+        }
+
         public Task<Aluno> ObterAtravesDaMatricula(Guid matriculaId)
         {
             return DbSet.FirstOrDefaultAsync(p => p.Matriculas.Any(m => m.Id == matriculaId));

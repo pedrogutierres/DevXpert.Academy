@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevXpert.Academy.Conteudo.Data.Migrations
 {
     [DbContext(typeof(ConteudoContext))]
-    [Migration("20250428174254_Inicial")]
+    [Migration("20250430120457_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -36,6 +36,9 @@ namespace DevXpert.Academy.Conteudo.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Titulo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Valor")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

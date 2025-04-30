@@ -12,16 +12,18 @@ namespace DevXpert.Academy.Conteudo.Business.Cursos
     {
         public string Titulo { get; private set; }
         public ConteudoProgramatico ConteudoProgramatico { get; private set; }
+        public decimal Valor { get; private set; }
         public bool Ativo { get; private set; }
 
         public List<Aula> Aulas { get; private set; }
 
         private Curso() { }
-        public Curso(Guid id, string titulo, ConteudoProgramatico conteudoProgramatico, List<Aula> aulas)
+        public Curso(Guid id, string titulo, ConteudoProgramatico conteudoProgramatico, decimal valor, List<Aula> aulas)
         {
             Id = id;
             Titulo = titulo;
             ConteudoProgramatico = conteudoProgramatico;
+            Valor = valor;
             Aulas = aulas;
             Ativo = false;
 

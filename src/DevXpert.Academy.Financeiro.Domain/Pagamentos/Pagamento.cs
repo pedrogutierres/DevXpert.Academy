@@ -1,5 +1,7 @@
 ﻿using DevXpert.Academy.Core.Domain.DomainObjects;
+using DevXpert.Academy.Financeiro.Domain.Pagamentos.Validations;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts;
+using DevXpert.Academy.Financeiro.Shared.Events;
 using System;
 using System.Collections.Generic;
 
@@ -23,11 +25,15 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
             DadosCartao = dadosCartao;
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Pendente, DateTime.Now, "Pagamento pendente");
             HistoricoTransacoes = [Situacao];
+
+            AddEvent(new PagamentoRegistradoEvent(id));
         }
 
         public override bool EhValido()
         {
-            throw new NotImplementedException();
+            ValidationResult = new PagamentoEstaConsistenteValidation().Validate(this);
+
+            return ValidationResult.IsValid;
         }
     }
 }

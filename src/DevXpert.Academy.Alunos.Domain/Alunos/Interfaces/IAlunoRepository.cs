@@ -7,5 +7,6 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Interfaces
     public interface IAlunoRepository : IRepository<Aluno>
     {
         Task<Aluno> ObterAtravesDaMatricula(Guid matriculaId);
+        Task CadastrarMatricula(Matricula matricula);
     }
 }

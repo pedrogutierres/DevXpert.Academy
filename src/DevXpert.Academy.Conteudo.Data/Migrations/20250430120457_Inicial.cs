@@ -19,6 +19,7 @@ namespace DevXpert.Academy.Conteudo.Data.Migrations
                     Titulo = table.Column<string>(type: "TEXT", nullable: true),
                     Descricao = table.Column<string>(type: "TEXT", nullable: true),
                     CargaHoraria = table.Column<int>(type: "INTEGER", nullable: true),
+                    Valor = table.Column<decimal>(type: "TEXT", nullable: false),
                     Ativo = table.Column<bool>(type: "INTEGER", nullable: false),
                     DataHoraCriacao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataHoraAlteracao = table.Column<DateTime>(type: "TEXT", nullable: true)

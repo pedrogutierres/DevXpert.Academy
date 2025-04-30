@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
 {
+    // TODO: Analisar refatoração do handler separando os events e commands em ..CommandHandler e ..EventHandler
     public sealed class PagamentoHandler :
         IRequestHandler<RegistrarPagamentoCommand, bool>,
         INotificationHandler<PagamentoRegistradoEvent>,
@@ -29,10 +30,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
 
         public async Task<bool> Handle(RegistrarPagamentoCommand request, CancellationToken cancellationToken)
         {
-            var pagamento = new Pagamento(request.AggregateId, request.MatriculaId, request.Valor, new ValuesObejcts.DadosCartao(request.DadosCartao_Nome,
-                request.DadosCartao_Numero,
-                request.DadosCartao_Vencimento,
-                request.DadosCartao_CcvCvc));
+            var pagamento = new Pagamento(request.AggregateId, request.MatriculaId, request.Valor, new ValuesObejcts.DadosCartao(request.DadosCartao_Nome, request.DadosCartao_Numero, request.DadosCartao_Vencimento, request.DadosCartao_CcvCvc));
 
             await _pagamentoService.RegistrarPagamento(pagamento);
 

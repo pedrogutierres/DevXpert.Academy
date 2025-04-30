@@ -7,6 +7,7 @@ namespace DevXpert.Academy.Alunos.Domain.Cursos
     public sealed class Curso : ReadOnlyEntity<Curso>, IAggregateRoot
     {
         public string Titulo { get; private set; }
+        public decimal Valor { get; private set; }
         public bool Ativo { get; private set; }
 
         public List<Matricula> Matriculas { get; private set; }

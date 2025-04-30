@@ -1,7 +1,9 @@
 ﻿using DevXpert.Academy.Core.Domain.Communication.Mediatr;
+using DevXpert.Academy.Core.Domain.Exceptions;
 using DevXpert.Academy.Core.Domain.Messages.Notifications;
 using DevXpert.Academy.Core.Domain.Services;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
+using DevXpert.Academy.Financeiro.Shared.Events;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -18,16 +20,25 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
             _pagamentoRepository = pagamentoRepository;
         }
 
-        public Task RegistrarPagamento(Pagamento pagamento)
+        public async Task RegistrarPagamento(Pagamento pagamento)
         {
-            throw new NotImplementedException();
+            if (!EntidadeValida(pagamento))
+                return;
+
+            await _pagamentoRepository.Cadastrar(pagamento);
+
+            await _uow.CommitAsync();
         }
 
-        public Task ProcessarPagamento(Guid id)
+        public async Task ProcessarPagamento(Guid id)
         {
+            var pagamento = await _pagamentoRepository.ObterPorId(id, true);
+            if (pagamento == null)
+                throw new BusinessException("Pagamento não encontrado para processar.");
+
             // TODO: comunicar com gateway de pagamento via anticorruption layer
 
-            throw new NotImplementedException();
+            await _mediator.RaiseEvent(new PagamentoAprovadoEvent(id, pagamento.MatriculaId));
         }
 
         public Task CancelarPagamento(Guid id)
