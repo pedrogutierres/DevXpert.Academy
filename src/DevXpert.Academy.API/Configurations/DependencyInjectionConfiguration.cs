@@ -57,7 +57,6 @@ namespace DevXpert.Academy.API.Configurations
 
             // DI / IoC - Financeiro
             services.AddScoped<IPagamentoRepository, PagamentoRepository>();
-            services.AddScoped<IPagamentoService, PagamentoService>();
 
             // Handlers
             services.AddScoped<IRequestHandler<RegistrarPagamentoCommand, bool>, PagamentoHandler>();

@@ -1,15 +1,17 @@
-﻿using DevXpert.Academy.Core.Domain.Messages;
-using System;
+﻿using System;
 
 namespace DevXpert.Academy.Core.Domain.Messages.CommonMessages.IntegrationEvents
 {
     public class PagamentoEstornadoEvent : Event
     {
-        public Guid MatriculaId => AggregateId;
+        public Guid MatriculaId { get; private set; }
+        public string Motivo { get; private set; }
 
-        public PagamentoEstornadoEvent(Guid matriculaId) : base("Pagamento")
+        public PagamentoEstornadoEvent(Guid id, Guid matriculaId, string motivo) : base("Pagamento")
         {
-            AggregateId = matriculaId;
+            AggregateId = id;
+            MatriculaId = matriculaId;
+            Motivo = motivo;
         }
     }
 }

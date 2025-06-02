@@ -26,7 +26,39 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Pendente, DateTime.Now, "Pagamento pendente");
             HistoricoTransacoes = [Situacao];
 
-            AddEvent(new PagamentoRegistradoEvent(id));
+            AddEvent(new PagamentoRegistradoEvent(id, MatriculaId));
+        }
+
+        public void AprovarPagamento()
+        {
+            Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Aprovado, DateTime.Now, "Pagamento aprovado");
+            HistoricoTransacoes.Add(Situacao);
+
+            AddEvent(new PagamentoAprovadoEvent(Id, MatriculaId));
+        }
+
+        public void RecusarPagamento(string motivo)
+        {
+            Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Recusado, DateTime.Now, motivo);
+            HistoricoTransacoes.Add(Situacao);
+
+            AddEvent(new PagamentoRecusadoEvent(Id, MatriculaId, motivo));
+        }
+
+        public void EstornarPagamento(string motivo)
+        {
+            Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Estornado, DateTime.Now, motivo);
+            HistoricoTransacoes.Add(Situacao);
+
+            AddEvent(new PagamentoEstornadoEvent(Id, MatriculaId, motivo));
+        }
+
+        public void CancelarPagamento(string motivo)
+        {
+            Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Cancelado, DateTime.Now, motivo);
+            HistoricoTransacoes.Add(Situacao);
+
+            AddEvent(new PagamentoCanceladoEvent(Id, MatriculaId, motivo));
         }
 
         public override bool EhValido()

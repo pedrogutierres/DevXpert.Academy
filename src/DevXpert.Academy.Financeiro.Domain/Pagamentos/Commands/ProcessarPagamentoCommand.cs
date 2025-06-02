@@ -5,9 +5,12 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Commands
 {
     public class ProcessarPagamentoCommand : Command<bool>
     {
-        public ProcessarPagamentoCommand(Guid id)
+        public Guid MatriculaId { get; private set; }
+
+        public ProcessarPagamentoCommand(Guid pagamentoId, Guid matriculaId)
         {
-            AggregateId = id;
+            AggregateId = pagamentoId;
+            MatriculaId = matriculaId;
         }
     }
 }

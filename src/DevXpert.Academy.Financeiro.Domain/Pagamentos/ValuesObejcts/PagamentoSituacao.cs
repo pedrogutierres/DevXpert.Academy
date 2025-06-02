@@ -9,6 +9,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts
         Pendente,
         Aprovado,
         Recusado,
-        Cancelado
+        Estornado,
+        Cancelado,
     }
 }

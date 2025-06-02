@@ -97,21 +97,24 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             await CommitAsync();
         }
 
-        public async Task Handle(PagamentoEstornadoEvent notification, CancellationToken cancellationToken)
-        {
-            var aluno = await _alunoRepository.ObterAtravesDaMatricula(notification.MatriculaId) ?? throw new BusinessException("Aluno não encontrado.");
+        public Task Handle(PagamentoEstornadoEvent notification, CancellationToken cancellationToken) => BloquearMatricula(notification.MatriculaId);
+        public Task Handle(PagamentoCanceladoEvent notification, CancellationToken cancellationToken) => BloquearMatricula(notification.MatriculaId);
 
-            var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == notification.MatriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
+        private async Task<bool> BloquearMatricula(Guid matriculaId)
+        {
+            var aluno = await _alunoRepository.ObterAtravesDaMatricula(matriculaId) ?? throw new BusinessException("Aluno não encontrado.");
+
+            var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == matriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
 
             if (!matricula.Liberada)
-                return;
+                return false;
 
             matricula.Bloquear();
 
             if (!EntidadeValida(aluno))
-                return;
+                return false;
 
-            await CommitAsync();
+            return await CommitAsync();
         }
     }
 }

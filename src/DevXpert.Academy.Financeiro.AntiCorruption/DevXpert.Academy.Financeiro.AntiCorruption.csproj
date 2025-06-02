@@ -5,4 +5,8 @@
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\DevXpert.Academy.Financeiro.Domain\DevXpert.Academy.Financeiro.Domain.csproj" />
+	</ItemGroup>
+
 </Project>
