@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.Core.Domain.Messages;
 using System;
 
-namespace DevXpert.Academy.Financeiro.Shared.Events
+namespace DevXpert.Academy.Core.Domain.Messages.CommonMessages.IntegrationEvents
 {
     public class PagamentoEstornadoEvent : Event
     {

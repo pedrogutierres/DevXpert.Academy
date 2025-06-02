@@ -1,4 +1,4 @@
-﻿using DevXpert.Academy.Core.Domain.Messages.Notifications;
+﻿using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;

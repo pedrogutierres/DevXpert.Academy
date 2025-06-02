@@ -2,7 +2,7 @@
 using DevXpert.Academy.API.ViewModels.Pagamentos;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;

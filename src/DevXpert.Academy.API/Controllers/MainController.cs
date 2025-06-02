@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.API.ResponseType;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Http;

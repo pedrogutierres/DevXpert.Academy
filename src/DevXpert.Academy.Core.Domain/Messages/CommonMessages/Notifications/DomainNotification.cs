@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevXpert.Academy.Core.Domain.Messages.Notifications
+namespace DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications
 {
     public class DomainNotification : Event
     {

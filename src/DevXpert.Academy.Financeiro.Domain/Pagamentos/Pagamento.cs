@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.Core.Domain.DomainObjects;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.IntegrationEvents;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Validations;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts;
-using DevXpert.Academy.Financeiro.Shared.Events;
 using System;
 using System.Collections.Generic;
 

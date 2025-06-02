@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevXpert.Academy.Core.Domain.Messages.Notifications
+namespace DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications
 {
     public class DomainNotificationHandler : INotificationHandler<DomainNotification>
     {

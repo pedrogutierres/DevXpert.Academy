@@ -2,9 +2,9 @@
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.IntegrationEvents;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using DevXpert.Academy.Core.Domain.Services;
-using DevXpert.Academy.Financeiro.Shared.Events;
 using MediatR;
 using System;
 using System.Linq;

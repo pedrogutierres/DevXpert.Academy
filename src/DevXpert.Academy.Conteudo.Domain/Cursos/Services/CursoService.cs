@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using DevXpert.Academy.Conteudo.Domain.Cursos.Validations;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using DevXpert.Academy.Core.Domain.Services;
 using MediatR;
 using System;

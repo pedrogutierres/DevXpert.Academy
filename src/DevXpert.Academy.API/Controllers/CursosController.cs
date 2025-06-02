@@ -3,7 +3,7 @@ using DevXpert.Academy.API.ViewModels.Cursos;
 using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

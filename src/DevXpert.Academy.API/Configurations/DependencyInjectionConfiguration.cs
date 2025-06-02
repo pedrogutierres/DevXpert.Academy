@@ -7,17 +7,16 @@ using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using DevXpert.Academy.Conteudo.Domain.Cursos.Services;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.IntegrationEvents;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Context;
 using DevXpert.Academy.Core.EventSourcing.EventStore.EventSourcing;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Repository;
 using DevXpert.Academy.Financeiro.Data.Repositories;
+using DevXpert.Academy.Financeiro.Domain.Pagamentos.Commands;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Services;
-using DevXpert.Academy.Financeiro.Shared.Commands;
-using DevXpert.Academy.Financeiro.Shared.Events;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DevXpert.Academy.API.Configurations

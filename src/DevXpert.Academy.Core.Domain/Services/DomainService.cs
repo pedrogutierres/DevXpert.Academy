@@ -2,7 +2,7 @@
 using DevXpert.Academy.Core.Domain.DataModels;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
-using DevXpert.Academy.Core.Domain.Messages.Notifications;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using DevXpert.Academy.Core.Domain.Validations;
 using FluentValidation.Results;
 using MediatR;
