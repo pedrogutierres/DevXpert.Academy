@@ -12,6 +12,7 @@ using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Context;
 using DevXpert.Academy.Core.EventSourcing.EventStore.EventSourcing;
 using DevXpert.Academy.Core.EventSourcing.EventStore.Repository;
+using DevXpert.Academy.Financeiro.AntiCorruption;
 using DevXpert.Academy.Financeiro.Data.Repositories;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Commands;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
@@ -57,6 +58,7 @@ namespace DevXpert.Academy.API.Configurations
 
             // DI / IoC - Financeiro
             services.AddScoped<IPagamentoRepository, PagamentoRepository>();
+            services.AddScoped<IPagamentoCartaoCreditoFacade, PagamentoCartaoCreditoFacade>();
 
             // Handlers
             services.AddScoped<IRequestHandler<RegistrarPagamentoCommand, bool>, PagamentoHandler>();
