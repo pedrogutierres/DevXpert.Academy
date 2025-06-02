@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Events
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
     internal sealed class CursoCadastradoEvent : Event
     {

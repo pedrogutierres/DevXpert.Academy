@@ -1,12 +1,12 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Adapters;
-using DevXpert.Academy.Conteudo.Business.Cursos.Events;
-using DevXpert.Academy.Conteudo.Business.Cursos.Validations;
-using DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Adapters;
+using DevXpert.Academy.Conteudo.Domain.Cursos.Events;
+using DevXpert.Academy.Conteudo.Domain.Cursos.Validations;
+using DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using System;
 using System.Collections.Generic;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos
+namespace DevXpert.Academy.Conteudo.Domain.Cursos
 {
     public sealed class Curso : Entity<Curso>, IAggregateRoot
     {

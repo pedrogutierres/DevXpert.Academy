@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Alunos", "Alunos", "{3DBF97
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Financeiro", "Financeiro", "{3E8D04BB-4AAE-400F-B464-13004CFBA048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Conteudo.Business", "src\DevXpert.Academy.Conteudo.Business\DevXpert.Academy.Conteudo.Business.csproj", "{9A9312D1-381B-48D2-9FC0-18592E0D03AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Conteudo.Domain", "src\DevXpert.Academy.Conteudo.Domain\DevXpert.Academy.Conteudo.Domain.csproj", "{9A9312D1-381B-48D2-9FC0-18592E0D03AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Conteudo.Data", "src\DevXpert.Academy.Conteudo.Data\DevXpert.Academy.Conteudo.Data.csproj", "{A8EB9F0D-35AB-4579-BB08-AAB48307CC49}"
 EndProject
@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Financeiro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Alunos.Domain.Tests", "tests\DevXpert.Academy.Alunos.Domain.Tests\DevXpert.Academy.Alunos.Domain.Tests.csproj", "{9F74E614-8904-43CB-AAFD-8C72DB423EF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Conteudo.Business.Tests", "tests\DevXpert.Academy.Conteudo.Business.Tests\DevXpert.Academy.Conteudo.Business.Tests.csproj", "{1E34920F-4C39-480C-8EF3-AEACB5EB570A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Conteudo.Domain.Tests", "tests\DevXpert.Academy.Conteudo.Domain.Tests\DevXpert.Academy.Conteudo.Domain.Tests.csproj", "{1E34920F-4C39-480C-8EF3-AEACB5EB570A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevXpert.Academy.Financeiro.Domain.Tests", "tests\DevXpert.Academy.Financeiro.Domain.Tests\DevXpert.Academy.Financeiro.Domain.Tests.csproj", "{A42C3972-F170-439A-8230-75D1670A6D11}"
 EndProject

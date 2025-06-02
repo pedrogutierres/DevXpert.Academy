@@ -1,8 +1,8 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Validations;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Validations;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using System;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos
+namespace DevXpert.Academy.Conteudo.Domain.Cursos
 {
     public sealed class Aula : Entity<Aula>
     {

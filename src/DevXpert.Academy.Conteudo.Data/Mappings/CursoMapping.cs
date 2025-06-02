@@ -1,5 +1,5 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos;
-using DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos;
+using DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

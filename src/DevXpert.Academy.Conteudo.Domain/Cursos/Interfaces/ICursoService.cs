@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Interfaces
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces
 {
     public interface ICursoService
     {

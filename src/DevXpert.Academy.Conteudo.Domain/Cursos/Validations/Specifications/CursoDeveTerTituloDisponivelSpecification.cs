@@ -1,8 +1,8 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Interfaces;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using DevXpert.Academy.Core.Domain.Validations;
 using System.Threading.Tasks;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Validations.Specifications
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Validations.Specifications
 {
     public class CursoDeveTerTituloDisponivelSpecification : DomainSpecification<Curso>
     {

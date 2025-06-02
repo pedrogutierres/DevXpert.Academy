@@ -1,5 +1,5 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Interfaces;
-using DevXpert.Academy.Conteudo.Business.Cursos.Validations;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
+using DevXpert.Academy.Conteudo.Domain.Cursos.Validations;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.Messages.Notifications;
 using DevXpert.Academy.Core.Domain.Services;
@@ -7,7 +7,7 @@ using MediatR;
 using System;
 using System.Threading.Tasks;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Services
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Services
 {
     public class CursoService : DomainService, ICursoService
     {

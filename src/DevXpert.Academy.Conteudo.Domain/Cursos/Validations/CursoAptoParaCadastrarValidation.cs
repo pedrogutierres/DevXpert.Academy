@@ -1,9 +1,9 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Interfaces;
-using DevXpert.Academy.Conteudo.Business.Cursos.Validations.Specifications;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
+using DevXpert.Academy.Conteudo.Domain.Cursos.Validations.Specifications;
 using DevXpert.Academy.Core.Domain.Validations;
 using FluentValidation;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Validations
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Validations
 {
     public class CursoAptoParaCadastrarValidation : DomainValidator<Curso>
     {

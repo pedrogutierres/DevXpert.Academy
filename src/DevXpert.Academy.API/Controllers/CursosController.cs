@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DevXpert.Academy.API.ViewModels.Cursos;
-using DevXpert.Academy.Conteudo.Business.Cursos.Interfaces;
+using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Messages.Notifications;

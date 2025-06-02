@@ -1,7 +1,7 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos;
-using DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos;
+using DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects;
 
-namespace DevXpert.Academy.Conteudo.Business.Tests.Cursos
+namespace DevXpert.Academy.Conteudo.Domain.Tests.Cursos
 {
     public class CursoTests
     {

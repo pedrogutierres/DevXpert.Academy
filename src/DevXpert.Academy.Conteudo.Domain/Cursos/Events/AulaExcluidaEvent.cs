@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.Core.Domain.Messages;
 using System;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Events
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
     internal sealed class AulaExcluidaEvent : Event
     {

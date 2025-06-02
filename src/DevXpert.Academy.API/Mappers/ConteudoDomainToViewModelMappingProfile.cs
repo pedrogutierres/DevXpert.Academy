@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DevXpert.Academy.API.ViewModels.Cursos;
-using DevXpert.Academy.Conteudo.Business.Cursos;
-using DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects;
+using DevXpert.Academy.Conteudo.Domain.Cursos;
+using DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects;
 
 namespace DevXpert.Academy.API.Mappers
 {

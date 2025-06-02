@@ -1,5 +1,5 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos;
-using DevXpert.Academy.Conteudo.Business.Cursos.Interfaces;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos;
+using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;

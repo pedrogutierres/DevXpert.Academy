@@ -1,7 +1,7 @@
-﻿using DevXpert.Academy.Conteudo.Business.Cursos.Events;
+﻿using DevXpert.Academy.Conteudo.Domain.Cursos.Events;
 using System.Linq;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Adapters
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Adapters
 {
     internal static class CursoAdapter
     {

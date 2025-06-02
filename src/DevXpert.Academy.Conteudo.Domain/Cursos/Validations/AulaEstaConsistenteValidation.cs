@@ -1,7 +1,7 @@
 ﻿using DevXpert.Academy.Core.Domain.Validations;
 using FluentValidation;
 
-namespace DevXpert.Academy.Conteudo.Business.Cursos.Validations
+namespace DevXpert.Academy.Conteudo.Domain.Cursos.Validations
 {
     public class AulaEstaConsistenteValidation : DomainValidator<Aula>
     {

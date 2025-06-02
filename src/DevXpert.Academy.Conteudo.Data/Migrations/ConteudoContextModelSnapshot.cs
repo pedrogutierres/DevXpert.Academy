@@ -17,7 +17,7 @@ namespace DevXpert.Academy.Conteudo.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
-            modelBuilder.Entity("DevXpert.Academy.Conteudo.Business.Cursos.Curso", b =>
+            modelBuilder.Entity("DevXpert.Academy.Conteudo.Domain.Cursos.Curso", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,9 +43,9 @@ namespace DevXpert.Academy.Conteudo.Data.Migrations
                     b.ToTable("Cursos", (string)null);
                 });
 
-            modelBuilder.Entity("DevXpert.Academy.Conteudo.Business.Cursos.Curso", b =>
+            modelBuilder.Entity("DevXpert.Academy.Conteudo.Domain.Cursos.Curso", b =>
                 {
-                    b.OwnsMany("DevXpert.Academy.Conteudo.Business.Cursos.Aula", "Aulas", b1 =>
+                    b.OwnsMany("DevXpert.Academy.Conteudo.Domain.Cursos.Aula", "Aulas", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -76,7 +76,7 @@ namespace DevXpert.Academy.Conteudo.Data.Migrations
                                 .HasForeignKey("CursoId");
                         });
 
-                    b.OwnsOne("DevXpert.Academy.Conteudo.Business.Cursos.ValuesObjects.ConteudoProgramatico", "ConteudoProgramatico", b1 =>
+                    b.OwnsOne("DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects.ConteudoProgramatico", "ConteudoProgramatico", b1 =>
                         {
                             b1.Property<Guid>("CursoId")
                                 .HasColumnType("TEXT");
