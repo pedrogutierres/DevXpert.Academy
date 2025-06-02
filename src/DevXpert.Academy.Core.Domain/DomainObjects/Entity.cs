@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Core.Domain.DomainObjects
 {
-    public abstract class Entity<T> : IEntity where T : Entity<T>
+    public abstract class Entity : IEntity
     {
         protected Entity()
         {
@@ -20,7 +20,7 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
         public abstract bool EhValido();
         public ValidationResult ValidationResult { get; protected set; }
 
-        public static implicit operator bool(Entity<T> @this) => @this != null && @this.EhValido();
+        public static implicit operator bool(Entity @this) => @this != null && @this.EhValido();
 
         public void NovoValidationResult(ValidationResult validationResult)
         {
@@ -65,7 +65,7 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
         #region Comparações
         public override bool Equals(object obj)
         {
-            var compareTo = obj as Entity<T>;
+            var compareTo = obj as Entity;   
 
             if (ReferenceEquals(this, compareTo)) return true;
             if (ReferenceEquals(null, compareTo)) return false;
@@ -73,7 +73,7 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
             return Id.Equals(compareTo.Id);
         }
 
-        public static bool operator ==(Entity<T> a, Entity<T> b)
+        public static bool operator ==(Entity a, Entity b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
@@ -84,7 +84,7 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
             return a.Equals(b);
         }
 
-        public static bool operator !=(Entity<T> a, Entity<T> b)
+        public static bool operator !=(Entity a, Entity b)
         {
             return !(a == b);
         }
@@ -101,7 +101,7 @@ namespace DevXpert.Academy.Core.Domain.DomainObjects
         }
     }
 
-    public abstract class ReadOnlyEntity<T> : Entity<T>, IEntity where T : Entity<T>
+    public abstract class ReadOnlyEntity : Entity, IEntity
     {
         public override bool EhValido() => true;
     }

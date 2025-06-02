@@ -4,7 +4,7 @@ using System;
 
 namespace DevXpert.Academy.Conteudo.Domain.Cursos
 {
-    public sealed class Aula : Entity<Aula>
+    public sealed class Aula : Entity
     {
         public Guid CursoId { get; private set; }
         public string Titulo { get; private set; }

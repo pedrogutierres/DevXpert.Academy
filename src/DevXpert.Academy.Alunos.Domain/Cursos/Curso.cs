@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Alunos.Domain.Cursos
 {
-    public sealed class Curso : ReadOnlyEntity<Curso>, IAggregateRoot
+    public sealed class Curso : ReadOnlyEntity, IAggregateRoot
     {
         public string Titulo { get; private set; }
         public decimal Valor { get; private set; }

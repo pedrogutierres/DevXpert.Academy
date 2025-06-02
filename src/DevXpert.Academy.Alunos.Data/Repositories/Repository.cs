@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Alunos.Data.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<TEntity>, IAggregateRoot
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
         protected AlunosContext Db;
         protected DbSet<TEntity> DbSet;

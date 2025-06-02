@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Financeiro.Data.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<TEntity>, IAggregateRoot
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
         protected FinanceiroContext Db;
         protected DbSet<TEntity> DbSet;

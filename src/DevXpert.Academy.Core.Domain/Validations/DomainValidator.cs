@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DevXpert.Academy.Core.Domain.Validations
 {
-    public abstract class DomainValidator<TEntity> : AbstractValidator<TEntity> where TEntity : Entity<TEntity>
+    public abstract class DomainValidator<TEntity> : AbstractValidator<TEntity> where TEntity : Entity
     {
         protected void ValidarId()
         {

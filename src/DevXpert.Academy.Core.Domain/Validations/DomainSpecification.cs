@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Core.Domain.Validations
 {
-    public abstract class DomainSpecification<TEntity> where TEntity : Entity<TEntity>
+    public abstract class DomainSpecification<TEntity> where TEntity : Entity
     {
         protected readonly TEntity _entidade;
 

@@ -6,7 +6,7 @@ namespace DevXpert.Academy.Core.EventSourcing.EventStore.Extensions
     public static class EntityTypeExtensions
     {
         public static void IgnoreFluentValidation<TEntity>(this EntityTypeBuilder<TEntity> modelBuilder)
-            where TEntity : Entity<TEntity>
+            where TEntity : Entity
         {
             modelBuilder.Ignore(p => p.ValidationResult);
         }

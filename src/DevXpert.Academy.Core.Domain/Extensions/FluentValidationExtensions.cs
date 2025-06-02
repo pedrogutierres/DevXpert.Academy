@@ -6,12 +6,12 @@ namespace FluentValidation
 {
     public static class FluentValidationExtensions
     {
-        public static IRuleBuilderOptions<T, TProperty> IsValidAsync<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, DomainSpecification<T> predicate) where T : Entity<T>
+        public static IRuleBuilderOptions<T, TProperty> IsValidAsync<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, DomainSpecification<T> predicate) where T : Entity
         {
             return ruleBuilder.MustAsync(async (p, c) => await predicate.IsValidAsync());
         }
 
-        public static IRuleBuilderOptions<T, TProperty> IsValidAsync<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, DomainSpecification<T>> predicate) where T : Entity<T>
+        public static IRuleBuilderOptions<T, TProperty> IsValidAsync<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, DomainSpecification<T>> predicate) where T : Entity
         {
             return ruleBuilder.MustAsync(async (e, p, c) => await predicate(e).IsValidAsync());
         }

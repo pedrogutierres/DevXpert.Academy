@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
 {
-    public class Pagamento : Entity<Pagamento>, IAggregateRoot
+    public class Pagamento : Entity, IAggregateRoot
     {
         public Guid MatriculaId { get; private set; }
         public decimal Valor { get; private set; }

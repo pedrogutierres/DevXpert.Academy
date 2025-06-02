@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Conteudo.Data.Repositories
 {
-    public abstract class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity<TEntity>, IEntity
+    public abstract class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity, IEntity
     {
         protected ConteudoContext Db;
         protected DbSet<TEntity> DbSet;

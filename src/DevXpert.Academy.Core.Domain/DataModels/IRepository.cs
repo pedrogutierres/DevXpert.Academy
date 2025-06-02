@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Core.Domain.DataModels
 {
-    public interface IRepository<TEntity> : IDisposable where TEntity : Entity<TEntity>, IAggregateRoot
+    public interface IRepository<TEntity> : IDisposable where TEntity : Entity, IAggregateRoot
     {
         IUnitOfWork UnitOfWork { get; }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Alunos.Data.Repositories
 {
-    public abstract class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity<TEntity>, IEntity
+    public abstract class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity, IEntity
     {
         protected AlunosContext Db;
         protected DbSet<TEntity> DbSet;

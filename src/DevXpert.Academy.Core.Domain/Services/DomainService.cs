@@ -83,7 +83,7 @@ namespace DevXpert.Academy.Core.Domain.Services
             return false;
         }
 
-        protected async Task<T> ObterEntidade<T>(IRepository<T> repository, Guid id, string messageType, string message, bool tracking = false) where T : Entity<T>, IAggregateRoot
+        protected async Task<T> ObterEntidade<T>(IRepository<T> repository, Guid id, string messageType, string message, bool tracking = false) where T : Entity, IAggregateRoot
         {
             var entidade = await repository.ObterPorId(id, tracking);
 
@@ -92,7 +92,7 @@ namespace DevXpert.Academy.Core.Domain.Services
             await _mediator.RaiseEvent(new DomainNotification(messageType, message));
             return null;
         }
-        protected bool EntidadeValida<T>(T entidade) where T : Entity<T>
+        protected bool EntidadeValida<T>(T entidade) where T : Entity
         {
             if (entidade == null)
             {
@@ -105,7 +105,7 @@ namespace DevXpert.Academy.Core.Domain.Services
             NotificarValidacoesErro(entidade.ValidationResult);
             return false;
         }
-        protected async Task<bool> EntidadeAptaParaTransacionar<T>(T entidade, DomainValidator<T> validator) where T : Entity<T>
+        protected async Task<bool> EntidadeAptaParaTransacionar<T>(T entidade, DomainValidator<T> validator) where T : Entity
         {
             if (entidade == null)
             {

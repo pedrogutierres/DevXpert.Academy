@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Core.Domain.DataModels
 {
-    public interface IReadOnlyRepository<TEntity> : IDisposable where TEntity : Entity<TEntity>, IEntity
+    public interface IReadOnlyRepository<TEntity> : IDisposable where TEntity : Entity, IEntity
     {
         Task<TEntity> ObterPorId(Guid id);
         Task<bool> ExistePorId(Guid id);

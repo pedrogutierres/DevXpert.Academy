@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Conteudo.Domain.Cursos
 {
-    public sealed class Curso : Entity<Curso>, IAggregateRoot
+    public sealed class Curso : Entity, IAggregateRoot
     {
         public string Titulo { get; private set; }
         public ConteudoProgramatico ConteudoProgramatico { get; private set; }

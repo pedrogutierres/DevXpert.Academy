@@ -5,7 +5,7 @@ using System;
 
 namespace DevXpert.Academy.Alunos.Domain.Alunos
 {
-    public class Matricula : Entity<Matricula>
+    public class Matricula : Entity
     {
         public Guid AlunoId { get; private set; }
         public Guid CursoId { get; private set; }

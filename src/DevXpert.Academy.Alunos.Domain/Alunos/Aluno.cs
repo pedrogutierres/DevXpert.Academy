@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DevXpert.Academy.Alunos.Domain.Alunos
 {
-    public sealed class Aluno : Entity<Aluno>, IAggregateRoot
+    public sealed class Aluno : Entity, IAggregateRoot
     {
         public string Nome { get; private set; }
 

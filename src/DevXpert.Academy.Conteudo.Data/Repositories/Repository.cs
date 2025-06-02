@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.Conteudo.Data.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<TEntity>, IAggregateRoot
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
         protected ConteudoContext Db;
         protected DbSet<TEntity> DbSet;
