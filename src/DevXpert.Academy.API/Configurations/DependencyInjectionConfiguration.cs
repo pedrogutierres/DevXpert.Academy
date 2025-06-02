@@ -73,6 +73,7 @@ namespace DevXpert.Academy.API.Configurations
             services.AddScoped<INotificationHandler<PagamentoEstornadoEvent>, PagamentoHandler>();
             services.AddScoped<INotificationHandler<PagamentoEstornadoEvent>, AlunoService>();
             services.AddScoped<INotificationHandler<PagamentoCanceladoEvent>, PagamentoHandler>();
+            services.AddScoped<INotificationHandler<PagamentoCanceladoEvent>, AlunoService>();
         }
     }
 }

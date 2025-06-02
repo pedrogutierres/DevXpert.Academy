@@ -15,7 +15,8 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 {
     public class AlunoService : DomainService, IAlunoService,
         INotificationHandler<PagamentoAprovadoEvent>,
-        INotificationHandler<PagamentoEstornadoEvent>
+        INotificationHandler<PagamentoEstornadoEvent>,
+        INotificationHandler<PagamentoCanceladoEvent>
     {
         private readonly IAlunoRepository _alunoRepository;
         private readonly IUser _user;
