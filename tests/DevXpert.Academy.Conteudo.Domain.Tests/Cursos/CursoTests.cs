@@ -351,7 +351,8 @@ namespace DevXpert.Academy.Conteudo.Domain.Tests.Cursos
             Assert.Equal(titulo, domainEvent.Titulo);
             Assert.Equal(conteudo.Descricao, domainEvent.Descricao);
             Assert.Equal(conteudo.CargaHoraria, domainEvent.CargaHoraria);
-            Assert.Equal(100, domainEvent.Valor);
+            Assert.Equal(curso.Valor, domainEvent.Valor);
+            Assert.Equal(curso.Aulas.Count, domainEvent.Aulas?.Count ?? 0);
         }
 
         [Fact(DisplayName = "AlterarTitulo deve adicionar CursoTituloAlteradoEvent")]

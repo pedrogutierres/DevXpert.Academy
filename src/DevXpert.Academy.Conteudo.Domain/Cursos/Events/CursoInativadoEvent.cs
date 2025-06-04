@@ -5,8 +5,6 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
     public sealed class CursoInativadoEvent : Event
     {
-        public Guid Id => AggregateId;
-
         public CursoInativadoEvent(Guid id) : base("Curso")
         {
             AggregateId = id;

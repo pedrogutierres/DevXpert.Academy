@@ -5,11 +5,11 @@ using FluentValidation;
 
 namespace DevXpert.Academy.Conteudo.Domain.Cursos.Validations
 {
-    public class CursoAptoParaCadastrarValidation : DomainValidator<Curso>
+    public class CursoAptoParaAlterarValidation : DomainValidator<Curso>
     {
         private readonly ICursoRepository _cursoRepository;
 
-        public CursoAptoParaCadastrarValidation(ICursoRepository cursoRepository) : base()
+        public CursoAptoParaAlterarValidation(ICursoRepository cursoRepository) : base()
         {
             _cursoRepository = cursoRepository;
 

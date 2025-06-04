@@ -6,7 +6,6 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
     public sealed class CursoCadastradoEvent : Event
     {
-        public Guid Id => AggregateId;
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public int CargaHoraria { get; private set; }

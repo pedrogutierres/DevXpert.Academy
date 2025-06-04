@@ -114,7 +114,7 @@ namespace DevXpert.Academy.Core.Domain.Services
             }
 
             var aptoParaTransacionarResult = await validator.ValidateAsync(entidade);
-            if (aptoParaTransacionarResult.IsValid)
+            if (!aptoParaTransacionarResult.IsValid)
             {
                 NotificarValidacoesErro(aptoParaTransacionarResult);
                 return false;

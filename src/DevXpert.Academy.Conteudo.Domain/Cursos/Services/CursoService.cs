@@ -35,19 +35,40 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Services
             return await CommitAsync();
         }
 
-        public Task<bool> Alterar(Curso curso)
+        /// <summary>
+        /// A entidade curso deve estar já adicionado ao rastreador do ef core
+        /// </summary>
+        public async Task<bool> Alterar(Curso curso)
         {
-            throw new NotImplementedException();
+            if (!EntidadeValida(curso))
+                return false;
+
+            if (!await EntidadeAptaParaTransacionar(curso, new CursoAptoParaAlterarValidation(_cursoRepository)))
+                return false;
+
+            return await CommitAsync();
         }
 
-        public Task<bool> Ativar(Guid id)
+        public async Task<bool> Ativar(Guid id)
         {
-            throw new NotImplementedException();
+            var curso = await ObterEntidade(_cursoRepository, id, "Ativar", "Curso não encontrado", true);
+            if (curso == null)
+                return false;
+
+            curso.Ativar();
+
+            return await CommitAsync(ignoreNoChangeUpdated: true);
         }
 
-        public Task<bool> Inativar(Guid id)
+        public async Task<bool> Inativar(Guid id)
         {
-            throw new NotImplementedException();
+            var curso = await ObterEntidade(_cursoRepository, id, "Inativar", "Curso não encontrado", true);
+            if (curso == null)
+                return false;
+
+            curso.Inativar();
+
+            return await CommitAsync(ignoreNoChangeUpdated: true);
         }
     }
 }
