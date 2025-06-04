@@ -42,7 +42,7 @@ namespace DevXpert.Academy.API.Helpers
             var financeiroContext = scope.ServiceProvider.GetRequiredService<FinanceiroContext>();
             var eventContext = scope.ServiceProvider.GetRequiredService<EventStoreSQLContext>();
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.EnvironmentName == "Test")
             {
                 await applicationDbContext.Database.MigrateAsync();
                 await conteudoContext.Database.MigrateAsync();

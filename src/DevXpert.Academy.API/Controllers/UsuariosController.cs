@@ -20,14 +20,14 @@ namespace DevXpert.Academy.API.Controllers
 
         public UsuariosController(
             JwtTokenGenerate jwtTokenGenerate,
-            SignInManager<IdentityUser> _signInManager,
+            SignInManager<IdentityUser> signInManager,
             INotificationHandler<DomainNotification> notifications,
             IUser user,
             IMediatorHandler mediator)
             : base(notifications, user, mediator)
         {
             _jwtTokenGenerate = jwtTokenGenerate;
-            this._signInManager = _signInManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("login")]
