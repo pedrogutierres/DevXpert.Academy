@@ -9,6 +9,12 @@ namespace DevXpert.Academy.API.Configurations
         {
             services.AddCors(options =>
             {
+                options.AddPolicy("Test", builder =>
+                            builder
+                                .WithOrigins(configuration.GetSection("AllowedHosts").Get<string>())
+                                .AllowAnyMethod()
+                                .AllowAnyHeader());
+
                 options.AddPolicy("Development", builder =>
                             builder
                                 .WithOrigins(configuration.GetSection("AllowedHosts").Get<string>())

@@ -18,7 +18,7 @@ namespace DevXpert.Academy.API.Configurations
         {
             services.AddDbContext<ApplicationDbContext>(o =>
             {
-                if (env.IsDevelopment())
+                if (env.IsDevelopment() || env.EnvironmentName == "Test")
                 {
                     var connectionString = configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
                     o.UseSqlite(connectionString);
@@ -33,7 +33,7 @@ namespace DevXpert.Academy.API.Configurations
 
             services.AddDbContext<EventStoreSQLContext>(o =>
             {
-                if (env.IsDevelopment())
+                if (env.IsDevelopment() || env.EnvironmentName == "Test")
                 {
                     var connectionString = configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
                     o.UseSqlite(connectionString);
