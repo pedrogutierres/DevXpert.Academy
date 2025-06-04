@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
-    internal sealed class CursoCadastradoEvent : Event
+    public sealed class CursoCadastradoEvent : Event
     {
         public Guid Id => AggregateId;
         public string Titulo { get; private set; }

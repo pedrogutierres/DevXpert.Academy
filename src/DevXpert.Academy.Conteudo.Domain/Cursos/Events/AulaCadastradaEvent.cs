@@ -3,7 +3,7 @@ using System;
 
 namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
-    internal sealed class AulaCadastradaEvent : Event
+    public sealed class AulaCadastradaEvent : Event
     {
         public Guid Id { get; private set; }
         public string Titulo { get; private set; }

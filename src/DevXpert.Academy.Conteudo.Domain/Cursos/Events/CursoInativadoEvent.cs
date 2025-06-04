@@ -3,7 +3,7 @@ using System;
 
 namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
 {
-    internal sealed class CursoInativadoEvent : Event
+    public sealed class CursoInativadoEvent : Event
     {
         public Guid Id => AggregateId;
 
