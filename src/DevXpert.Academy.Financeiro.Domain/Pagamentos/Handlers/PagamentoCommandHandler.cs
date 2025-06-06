@@ -99,10 +99,8 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Handlers
 
         public async Task<bool> Handle(SolicitarEstornoPagamentoDaMatriculaCommand request, CancellationToken cancellationToken)
         {
-            var pagamento = _pagamentoRepository.Buscar(p => p.MatriculaId == request.MatriculaId, true).FirstOrDefault() ?? throw new BusinessException("Pagamento vinculado a matrícula não encontrado para estornar.");
-
-            if (!PagamentoSituacaoEnum.Aprovado.Equals(pagamento.Situacao.Situacao))
-                throw new BusinessException("Somente pagamentos aprovados podem ser estornados.");
+            // Considerando que a matrícula só terá um pagamento aprovado, busca o primeiro pagamento aprovado vinculado à matrícula
+            var pagamento = _pagamentoRepository.Buscar(p => p.MatriculaId == request.MatriculaId && p.Situacao.Situacao == PagamentoSituacaoEnum.Aprovado, true).FirstOrDefault() ?? throw new BusinessException("Pagamento vinculado a matrícula não encontrado para estornar.");
 
             return await _mediator.SendCommand(new EstornarPagamentoCommand(pagamento.Id, request.Motivo), cancellationToken);
         }
