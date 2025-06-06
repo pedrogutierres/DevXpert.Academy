@@ -58,7 +58,7 @@ namespace DevXpert.Academy.API.Tests.Config
 
             Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
         }
-        public async Task RealizarLoginDeUsuario()
+        public async Task RealizarLoginDeAluno()
         {
             var userData = new
             {

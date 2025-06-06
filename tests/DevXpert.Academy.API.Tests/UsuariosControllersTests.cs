@@ -6,11 +6,11 @@ namespace DevXpert.Academy.API.Tests
 {
     [TestCaseOrderer("DevXpert.Academy.API.Tests.Config.PriorityOrderer", "DevXpert.Academy.API.Tests")]
     [Collection(nameof(IntegrationWebTestsFixtureCollection))]
-    public class UsuariosTests
+    public class UsuariosControllersTests
     {
         private readonly IntegrationTestsFixture<Program> _testsFixture;
 
-        public UsuariosTests(IntegrationTestsFixture<Program> testsFixture)
+        public UsuariosControllersTests(IntegrationTestsFixture<Program> testsFixture)
         {
             _testsFixture = testsFixture;
         }

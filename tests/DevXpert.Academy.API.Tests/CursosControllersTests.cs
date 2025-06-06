@@ -2,33 +2,27 @@
 using DevXpert.Academy.API.Tests.Config;
 using DevXpert.Academy.API.ViewModels.Cursos;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace DevXpert.Academy.API.Tests
 {
     [TestCaseOrderer("DevXpert.Academy.API.Tests.Config.PriorityOrderer", "DevXpert.Academy.API.Tests")]
     [Collection(nameof(IntegrationWebTestsFixtureCollection))]
-    public class CursosTests
+    public class CursosControllersTests
     {
         private readonly IntegrationTestsFixture<Program> _testsFixture;
-        private static Guid _cursoId = Guid.Empty; // Variável estática para armazenar o ID do curso criado
-        private static Guid _aulaId = Guid.Empty; // Variável estática para armazenar o ID da aula criada
+        private static Guid _cursoId = Guid.Empty;
+        private static Guid _aulaId = Guid.Empty;
 
-        public CursosTests(IntegrationTestsFixture<Program> testsFixture)
+        public CursosControllersTests(IntegrationTestsFixture<Program> testsFixture)
         {
             _testsFixture = testsFixture;
         }
 
         [Fact(DisplayName = "Obter cursos como anônimo deve retornar sucesso (Sem cursos cadastrados)")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(10)] // Prioridade baixa, pode ser executado a qualquer momento
+        [TestPriority(10)]
         public async Task Cursos_ObterCursosAnonimo_DeveRetornarSucesso()
         {
             // Arrange & Act
@@ -38,12 +32,11 @@ namespace DevXpert.Academy.API.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var cursos = await response.Content.ReadFromJsonAsync<List<CursoViewModel>>();
             Assert.NotNull(cursos);
-            // Não esperamos cursos aqui necessariamente, apenas que o endpoint funcione
         }
 
         [Fact(DisplayName = "Cadastrar curso como Administrador com dados válidos deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(20)] // Primeira ação importante: criar um curso
+        [TestPriority(20)]
         public async Task Cursos_CadastrarCurso_ComoAdministrador_ComDadosValidos_DeveRetornarSucesso()
         {
             // Arrange
@@ -74,16 +67,16 @@ namespace DevXpert.Academy.API.Tests
             Assert.NotNull(responseContent);
             Assert.NotNull(responseContent.Id);
             Assert.NotEqual(Guid.Empty, responseContent.Id);
-            _cursoId = responseContent.Id.Value; // Armazena o ID do curso para testes futuros
+            _cursoId = responseContent.Id.Value;
         }
 
         [Fact(DisplayName = "Obter curso por ID como anônimo com ID válido (criado) deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(25)] // Depende da criação do curso
+        [TestPriority(25)]
         public async Task Cursos_ObterCursoPorIdAnonimo_ComIdValido_DeveRetornarSucesso()
         {
             // Arrange
-            Assert.NotEqual(Guid.Empty, _cursoId); // Garante que o curso foi criado
+            Assert.NotEqual(Guid.Empty, _cursoId);
 
             // Act
             var response = await _testsFixture.Client.GetAsync($"/api/cursos/{_cursoId}");
@@ -97,7 +90,7 @@ namespace DevXpert.Academy.API.Tests
 
         [Fact(DisplayName = "Obter curso por ID para Admin como Administrador com ID válido (criado) deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(30)] // Depende da criação do curso
+        [TestPriority(30)]
         public async Task Cursos_ObterCursoPorIdParaAdmin_ComoAdministrador_ComIdValido_DeveRetornarSucesso()
         {
             // Arrange
@@ -116,7 +109,7 @@ namespace DevXpert.Academy.API.Tests
 
         [Fact(DisplayName = "Alterar curso como Administrador com dados válidos deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(35)] // Depende da criação do curso
+        [TestPriority(35)]
         public async Task Cursos_AlterarCurso_ComoAdministrador_ComDadosValidos_DeveRetornarSucesso()
         {
             // Arrange
@@ -147,7 +140,7 @@ namespace DevXpert.Academy.API.Tests
 
         [Fact(DisplayName = "Adicionar aula a curso como Administrador com dados válidos deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(40)] // Depende da criação do curso
+        [TestPriority(40)]
         public async Task Cursos_AdicionarAula_ComoAdministrador_ComDadosValidos_DeveRetornarSucesso()
         {
             // Arrange
@@ -169,19 +162,18 @@ namespace DevXpert.Academy.API.Tests
             Assert.NotNull(responseContent);
             Assert.NotNull(responseContent.Id);
             Assert.NotEqual(Guid.Empty, responseContent.Id);
-            _aulaId = responseContent.Id.Value; // Armazena o ID da aula
+            _aulaId = responseContent.Id.Value;
         }
 
         [Fact(DisplayName = "Ativar curso como Administrador com ID válido (criado) deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(50)] // Depende da criação do curso. A ativação pode ocorrer a qualquer momento depois do curso existir.
+        [TestPriority(50)]
         public async Task Cursos_AtivarCurso_ComoAdministrador_ComIdValido_DeveRetornarSucesso()
         {
             // Arrange
             await _testsFixture.RealizarLoginDeAdministrador();
             Assert.NotEqual(Guid.Empty, _cursoId);
 
-            // Assegure que o curso está inativo antes de ativar (opcional, para testar a transição)
             var getCursoResponse = await _testsFixture.Client.GetAsync($"/api/cursos/{_cursoId}/admin");
             getCursoResponse.EnsureSuccessStatusCode();
             var cursoAtual = await getCursoResponse.Content.ReadFromJsonAsync<CursoAdmViewModel>();
@@ -203,14 +195,13 @@ namespace DevXpert.Academy.API.Tests
 
         [Fact(DisplayName = "Inativar curso como Administrador com ID válido (criado) deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(60)] // Depende da criação do curso
+        [TestPriority(60)]
         public async Task Cursos_InativarCurso_ComoAdministrador_ComIdValido_DeveRetornarSucesso()
         {
             // Arrange
             await _testsFixture.RealizarLoginDeAdministrador();
             Assert.NotEqual(Guid.Empty, _cursoId);
 
-            // Assegure que o curso está ativo antes de inativar (opcional, para testar a transição)
             var getCursoResponse = await _testsFixture.Client.GetAsync($"/api/cursos/{_cursoId}/admin");
             getCursoResponse.EnsureSuccessStatusCode();
             var cursoAtual = await getCursoResponse.Content.ReadFromJsonAsync<CursoAdmViewModel>();
@@ -232,7 +223,7 @@ namespace DevXpert.Academy.API.Tests
 
         [Fact(DisplayName = "Remover aula de curso como Administrador com IDs válidos (criados) deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(70)] // Depende da criação do curso e da aula
+        [TestPriority(70)]
         public async Task Cursos_RemoverAula_ComoAdministrador_ComIdsValidos_DeveRetornarSucesso()
         {
             // Arrange
@@ -249,7 +240,6 @@ namespace DevXpert.Academy.API.Tests
             Assert.NotNull(responseContent);
         }
 
-        // Testes de validação (podem ter prioridades mais baixas, pois não dependem de entidades criadas)
         [Fact(DisplayName = "Cadastrar curso como Administrador sem título deve retornar BadRequest")]
         [Trait("Cursos", "Integração API - Cursos")]
         [TestPriority(80)]
@@ -344,7 +334,7 @@ namespace DevXpert.Academy.API.Tests
 
         [Fact(DisplayName = "Obter cursos para Admin como Administrador deve retornar sucesso")]
         [Trait("Cursos", "Integração API - Cursos")]
-        [TestPriority(100)] // Este pode ser executado depois de algumas operações, para ver o estado atual
+        [TestPriority(100)]
         public async Task Cursos_ObterCursosParaAdmin_ComoAdministrador_DeveRetornarSucesso()
         {
             // Arrange
