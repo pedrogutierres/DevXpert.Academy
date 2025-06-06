@@ -37,15 +37,16 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Guid?> Matricular(Aluno aluno, Guid cursoId)
+        public async Task<Guid?> Matricular(Guid alunoId, Guid cursoId)
         {
-            if (!_user.EhUmAdministrador())
-                throw new BusinessException("Você precisa estar logado como administrador para matricular o aluno em um curso.");
+            var aluno = await _alunoRepository.ObterPorId(alunoId, true) ?? throw new BusinessException("Aluno não encontrado.");
 
             if (aluno.EstaMatriculado(cursoId))
                 throw new BusinessException("O aluno já está matriculado neste curso.");
 
             var matricula = new Matricula(Guid.NewGuid(), aluno.Id, cursoId);
+
+            matricula.Ativar();
 
             aluno.Matricular(matricula);
 
@@ -60,10 +61,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 
         public async Task<Guid?> SeMatricular(Guid cursoId)
         {
-            if (!_user.Autenticado())
-                throw new BusinessException("Você precisa estar logado para se matricular em um curso.");
-
-            var aluno = await _alunoRepository.ObterPorId(_user.UsuarioId, true) ?? throw new BusinessException("Aluno não encontrado.");
+            var aluno = await _alunoRepository.ObterPorId(_user.UsuarioId, true) ?? throw new BusinessException("Seu cadastro de aluno não foi encontrado.");
 
             if (aluno.EstaMatriculado(cursoId))
                 throw new BusinessException("Você já está matriculado neste curso.");
@@ -87,10 +85,10 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 
             var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == notification.MatriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
 
-            if (matricula.Liberada)
+            if (matricula.Ativa)
                 return;
 
-            matricula.Liberar();
+            matricula.Ativar();
 
             if (!EntidadeValida(aluno))
                 return;
@@ -107,7 +105,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 
             var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == matriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
 
-            if (!matricula.Liberada)
+            if (!matricula.Ativa)
                 return false;
 
             matricula.Bloquear();

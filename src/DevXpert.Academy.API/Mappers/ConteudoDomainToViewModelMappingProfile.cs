@@ -9,6 +9,10 @@ namespace DevXpert.Academy.API.Mappers
     {
         public ConteudoDomainToViewModelMappingProfile()
         {
+            CreateMap<Curso, CursoAdmViewModel>();
+            CreateMap<ConteudoProgramatico, ConteudoProgramaticoAdmViewModel>();
+            CreateMap<Aula, AulaAdmViewModel>();
+
             CreateMap<Curso, CursoViewModel>();
             CreateMap<ConteudoProgramatico, ConteudoProgramaticoViewModel>();
             CreateMap<Aula, AulaViewModel>();

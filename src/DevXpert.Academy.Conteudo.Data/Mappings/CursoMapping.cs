@@ -25,6 +25,7 @@ namespace DevXpert.Academy.Conteudo.Data.Mappings
                 aula.WithOwner().HasForeignKey(p => p.CursoId).HasPrincipalKey(p => p.Id);
 
                 aula.HasKey(p => p.Id);
+                aula.Property(p => p.Id).ValueGeneratedNever();
 
                 aula.ToTable("CursosAulas");
             });

@@ -1,4 +1,9 @@
 ﻿using AutoMapper;
+using DevXpert.Academy.API.ViewModels.Cursos;
+using DevXpert.Academy.Conteudo.Domain.Cursos;
+using DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects;
+using System;
+using System.Linq;
 
 namespace DevXpert.Academy.API.Mappers
 {
@@ -6,6 +11,12 @@ namespace DevXpert.Academy.API.Mappers
     {
         public ConteudoViewModelToDomainMappingProfile()
         {
+            CreateMap<CadastrarCursoViewModel, Curso>()
+                .ConstructUsing(c => new Curso(c.Id, c.Titulo, new ConteudoProgramatico(c.ConteudoProgramatico.Descricao, c.ConteudoProgramatico.CargaHoraria), c.Valor, c.Aulas.Select(a => new Aula(a.Id, c.Id, a.Titulo, a.VideoUrl)).ToList()));
+            CreateMap<CadastrarConteudoProgramaticoViewModel, ConteudoProgramatico>()
+                .ConstructUsing(c => new ConteudoProgramatico(c.Descricao, c.CargaHoraria));
+            CreateMap<CadastrarAulaViewModel, Aula>()
+                .ConstructUsing(a => new Aula(a.Id, Guid.Empty, a.VideoUrl, a.VideoUrl)); 
         }
     }
 }

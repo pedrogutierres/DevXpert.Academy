@@ -3,6 +3,7 @@ using DevXpert.Academy.Conteudo.Domain.Cursos.Events;
 using DevXpert.Academy.Conteudo.Domain.Cursos.Validations;
 using DevXpert.Academy.Conteudo.Domain.Cursos.ValuesObjects;
 using DevXpert.Academy.Core.Domain.DomainObjects;
+using DevXpert.Academy.Core.Domain.Messages.CommonMessages.Notifications;
 using System;
 using System.Collections.Generic;
 
@@ -36,6 +37,12 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos
 
             AddEvent(new CursoTituloAlteradoEvent(Id, Titulo));
         }
+        public void AlterarValor(decimal valor)
+        {
+            Valor = valor;
+
+            AddEvent(new CursoValorAlteradoEvent(Id, Valor));
+        }
         public void AlterarConteudoProgramatico(ConteudoProgramatico conteudoProgramatico)
         {
             ConteudoProgramatico = conteudoProgramatico;
@@ -68,7 +75,10 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos
             Aulas?.Remove(aula);
 
             if (Aulas?.Count == 0)
+            {
                 Inativar();
+                AddEvent(new DomainNotification("RemoverAula", "O curso foi inativado pois não tem nenhuma aula mais.", false));
+            }
 
             AddEvent(new AulaExcluidaEvent(Id, aula.Id));
         }

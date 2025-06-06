@@ -62,24 +62,13 @@ namespace DevXpert.Academy.Core.Domain.Services
             }
             catch (Exception ex)
             {
-                var msg = new StringBuilder(ex.Message);
-
-                var tmp = ex;
-                while (tmp.InnerException != null)
-                {
-                    tmp = tmp.InnerException;
-
-                    msg.AppendLine(tmp.Message);
-                }
-
-                await NotificarErro("Commit", "Erro ao tentar salvar os dados no banco de dados, erro: " + msg);
-                return false;
+                throw new BusinessException("Não foi possível salvar as informação na base de dados, por favor tente novamente ou contate o suporte.", ex);
             }
 
             if (ignoreNoChangeUpdated)
                 return true;
 
-            await NotificarErro("CommitSemAlteracoes", "Nenhuma alteração identificada ao tentar salvar os dados.");
+            await NotificarErro("CommitSemAlteracoes", "Não foi identificada nenhuma alteração nos dados.");
             return false;
         }
 

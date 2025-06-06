@@ -10,7 +10,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         public Guid AlunoId { get; private set; }
         public Guid CursoId { get; private set; }
         public DateTime? DataHoraConclusao { get; private set; }
-        public bool Liberada { get; private set; }
+        public bool Ativa { get; private set; }
         public bool Concluido { get; private set; }
         public Certificado Certificado { get; private set; }
 
@@ -25,22 +25,22 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             CursoId = cursoId;
             DataHoraCriacao = DateTime.Now;
             Certificado = null;
-            Liberada = false;
+            Ativa = false;
             Concluido = false;
 
             // TODO: event
         }
 
-        public void Liberar()
+        public void Ativar()
         {
-            Liberada = true;
+            Ativa = true;
 
             // TODO: event
         }
 
         public void Bloquear()
         {
-            Liberada = false;
+            Ativa = false;
 
             // TODO: event
         }

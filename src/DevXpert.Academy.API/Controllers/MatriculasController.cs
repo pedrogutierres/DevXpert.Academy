@@ -55,5 +55,22 @@ namespace DevXpert.Academy.API.Controllers
 
             return Response(matriculaId);
         }
+
+        [Authorize(Roles = "Administrador")]
+        [HttpPost("cursos/{cursoId:guid}/matricular-aluno/{alunoId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AlunoSeMatricular([FromRoute] Guid cursoId, [FromRoute] Guid alunoId, [FromServices] ICursoReadOnlyRepository cursoRepository)
+        {
+            var curso = await cursoRepository.ObterPorId(cursoId);
+            if (curso == null)
+                return BadRequest("Curso não encontrado.");
+
+            var matriculaId = await _alunoService.Matricular(alunoId, cursoId);
+            if (!matriculaId.HasValue)
+                return BadRequest();
+
+            return Response(matriculaId);
+        }
     }
 }
