@@ -26,7 +26,7 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos
             ConteudoProgramatico = conteudoProgramatico;
             Valor = valor;
             Aulas = aulas;
-            Ativo = false;
+            Ativo = Aulas?.Count > 0;
 
             AddEvent(CursoAdapter.ToCursoCadastradoEvent(this));
         }

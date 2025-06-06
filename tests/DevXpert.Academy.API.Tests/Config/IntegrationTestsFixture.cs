@@ -36,6 +36,28 @@ namespace DevXpert.Academy.API.Tests.Config
             Client = _factory.CreateClient(clientOptions);
         }
 
+        public async Task RealizarLoginDeAdministrador()
+        {
+            var userData = new
+            {
+                Email = "admin@academy.com",
+                Senha = "Academy@123456"
+            };
+
+            //_client = _factory.CreateClient();
+
+            var response = await Client.PostAsJsonAsync("/api/usuarios/login", userData);
+
+            response.EnsureSuccessStatusCode();
+
+            var contentString = await response.Content.ReadAsStringAsync();
+            var authToken = JsonConvert.DeserializeObject<AuthToken>(contentString) ?? throw new Exception($"Não foi possível realizar o login do usuário {userData.Email}");
+
+            Token = authToken.Result.Access_token;
+            UsuarioId = authToken.Result.User.Id;
+
+            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+        }
         public async Task RealizarLoginDeUsuario()
         {
             var userData = new
@@ -55,6 +77,8 @@ namespace DevXpert.Academy.API.Tests.Config
 
             Token = authToken.Result.Access_token;
             UsuarioId = authToken.Result.User.Id;
+
+            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
         }
 
         public void Dispose()

@@ -12,7 +12,7 @@ namespace DevXpert.Academy.API.Mappers
         public ConteudoViewModelToDomainMappingProfile()
         {
             CreateMap<CadastrarCursoViewModel, Curso>()
-                .ConstructUsing(c => new Curso(c.Id, c.Titulo, new ConteudoProgramatico(c.ConteudoProgramatico.Descricao, c.ConteudoProgramatico.CargaHoraria), c.Valor, c.Aulas.Select(a => new Aula(a.Id, c.Id, a.Titulo, a.VideoUrl)).ToList()));
+                .ConstructUsing(c => new Curso(c.Id, c.Titulo, c.ConteudoProgramatico != null ? new ConteudoProgramatico(c.ConteudoProgramatico.Descricao, c.ConteudoProgramatico.CargaHoraria) : null, c.Valor, c.Aulas.Select(a => new Aula(a.Id, c.Id, a.Titulo, a.VideoUrl)).ToList()));
             CreateMap<CadastrarConteudoProgramaticoViewModel, ConteudoProgramatico>()
                 .ConstructUsing(c => new ConteudoProgramatico(c.Descricao, c.CargaHoraria));
             CreateMap<CadastrarAulaViewModel, Aula>()
