@@ -61,16 +61,13 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
         {
             var pagamento = await _pagamentoRepository.ObterPorId(request.AggregateId, true) ?? throw new BusinessException("Pagamento não encontrado para processar.");
 
-            if (pagamento.Situacao.Situacao.SwitchInline(PagamentoSituacaoEnum.Pendente, PagamentoSituacaoEnum.Recusado))
+            if (!pagamento.Situacao.Situacao.SwitchInline(PagamentoSituacaoEnum.Pendente, PagamentoSituacaoEnum.Recusado))
             {
                 await NotificarErro("Pagamento", "Apenas pagamento pendente ou recusado anteriormente pode ser processado novamente.");
                 return false;
             }
 
             pagamento = _pagamentoCartaoCredito.ProcessarPagamento(pagamento);
-
-            if (pagamento.Situacao.Situacao.SwitchInline(PagamentoSituacaoEnum.Aprovado, PagamentoSituacaoEnum.Recusado))
-                throw new NotImplementedException($"Situação esperada: aprovado ou recusado. Recebida: {pagamento.Situacao.Situacao}");
             
             if (await _uow.CommitAsync())
             {

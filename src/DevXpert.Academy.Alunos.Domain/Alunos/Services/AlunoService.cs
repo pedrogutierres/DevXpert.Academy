@@ -32,9 +32,14 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             _user = user;
         }
 
-        public Task<bool> Cadastrar(Aluno aluno)
+        public async Task<bool> Cadastrar(Aluno aluno)
         {
-            throw new NotImplementedException();
+            if (!EntidadeValida(aluno))
+                return false;
+
+            await _alunoRepository.Cadastrar(aluno);
+
+            return await CommitAsync();
         }
 
         public async Task<Guid?> Matricular(Guid alunoId, Guid cursoId)
@@ -114,6 +119,11 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
                 return false;
 
             return await CommitAsync();
+        }
+
+        public Task<bool> RemoverNovoCadastro(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

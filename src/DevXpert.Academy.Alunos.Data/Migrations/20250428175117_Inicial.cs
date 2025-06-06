@@ -33,7 +33,7 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     AlunoId = table.Column<Guid>(type: "TEXT", nullable: false),
                     CursoId = table.Column<Guid>(type: "TEXT", nullable: false),
                     DataHoraConclusao = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Liberada = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Ativa = table.Column<bool>(type: "INTEGER", nullable: false),
                     Concluido = table.Column<bool>(type: "INTEGER", nullable: false),
                     Emissao = table.Column<DateTime>(type: "TEXT", nullable: true),
                     DataHoraCriacao = table.Column<DateTime>(type: "TEXT", nullable: false),

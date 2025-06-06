@@ -1,6 +1,6 @@
 ﻿namespace DevXpert.Academy.API.ViewModels.Matriculas
 {
-    public class SeMatricularViewModel
+    public class RealizarPagamentoViewModel
     {
         public string DadosCartao_Nome { get; set; }
         public string DadosCartao_Numero { get; set; }

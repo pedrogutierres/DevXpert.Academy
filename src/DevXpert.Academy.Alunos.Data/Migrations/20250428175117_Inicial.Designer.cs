@@ -64,7 +64,7 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.Property<DateTime>("DataHoraCriacao")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Liberada")
+                    b.Property<bool>("Ativa")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

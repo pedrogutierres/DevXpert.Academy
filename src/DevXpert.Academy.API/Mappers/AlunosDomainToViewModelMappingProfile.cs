@@ -14,6 +14,10 @@ namespace DevXpert.Academy.API.Mappers
             CreateMap<Matricula, MatriculaViewModel>();
             CreateMap<Certificado, CertificadoViewModel>();
             CreateMap<Curso, CursoViewModel>();
+
+            CreateMap<Aluno, MeuPerfilViewModel>();
+            CreateMap<Matricula, MeuPerfilMatriculaViewModel>();
+            CreateMap<Certificado, MeuPerfilCertificadoViewModel>();
         }
     }
 }

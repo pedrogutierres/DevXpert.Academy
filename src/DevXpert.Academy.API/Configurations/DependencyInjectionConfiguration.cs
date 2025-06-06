@@ -2,6 +2,7 @@
 using DevXpert.Academy.Alunos.Domain.Alunos.Interfaces;
 using DevXpert.Academy.Alunos.Domain.Alunos.Services;
 using DevXpert.Academy.Alunos.Domain.Cursos.Interfaces;
+using DevXpert.Academy.API.Authentication;
 using DevXpert.Academy.API.Models;
 using DevXpert.Academy.Conteudo.Domain.Cursos.Interfaces;
 using DevXpert.Academy.Conteudo.Domain.Cursos.Services;
@@ -46,6 +47,7 @@ namespace DevXpert.Academy.API.Configurations
 
             // Infra - Identity
             services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<AutenticacaoService>();
 
             // DI / IoC - Alunos
             services.AddScoped<IAlunoRepository, AlunoRepository>();

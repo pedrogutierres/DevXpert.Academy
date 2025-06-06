@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace DevXpert.Academy.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     [Route("api/cursos")]
     public class CursosController : MainController
     {
@@ -62,7 +62,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpGet("admin")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<CursoAdmViewModel>> ObterCursosParaAdmin([FromQuery] bool? ativo = null)
         {
@@ -75,7 +74,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpGet("{id:guid}/admin")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<CursoAdmViewModel>> ObterPorIdParaAdmin([FromRoute] Guid id)
         {
@@ -87,7 +85,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CadastrarCurso([FromBody] CadastrarCursoViewModel viewModel)
@@ -100,7 +97,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpPut("{cursoId:guid}")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -126,7 +122,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpPatch("{cursoId:guid}/ativar")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -138,7 +133,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpDelete("{cursoId:guid}/inativar")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -150,7 +144,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpPost("{cursoId:guid}/aulas")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CadastrarAula([FromRoute] Guid cursoId, [FromBody] CadastrarAulaViewModel viewModel)
@@ -163,7 +156,6 @@ namespace DevXpert.Academy.API.Controllers
         }
 
         [HttpDelete("{cursoId:guid}/aulas/{aulaId:guid}")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RemoverAula([FromRoute] Guid cursoId, [FromRoute] Guid aulaId)

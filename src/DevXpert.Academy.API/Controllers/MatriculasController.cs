@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevXpert.Academy.API.Controllers
@@ -41,7 +42,7 @@ namespace DevXpert.Academy.API.Controllers
         [HttpPost("cursos/{cursoId:guid}/se-matricular")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AlunoSeMatricular([FromRoute] Guid cursoId, [FromBody] SeMatricularViewModel pagamento, [FromServices] ICursoReadOnlyRepository cursoRepository)
+        public async Task<IActionResult> AlunoSeMatricular([FromRoute] Guid cursoId, [FromBody] RealizarPagamentoViewModel pagamento, [FromServices] ICursoReadOnlyRepository cursoRepository)
         {
             var curso = await cursoRepository.ObterPorId(cursoId);
             if (curso == null)
@@ -54,6 +55,34 @@ namespace DevXpert.Academy.API.Controllers
             await _mediator.SendCommand(new RegistrarPagamentoCommand(Guid.NewGuid(), matriculaId.Value, curso.Valor, pagamento.DadosCartao_Nome, pagamento.DadosCartao_Numero, pagamento.DadosCartao_Vencimento, pagamento.DadosCartao_CcvCvc));
 
             return Response(matriculaId);
+        }
+
+        [Authorize(Roles = "Aluno")]
+        [HttpPost("cursos/{cursoId:guid}/matricula/{matriculaId:guid}/realizar-pagamento")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RealizarPagamentoMatricula([FromRoute] Guid cursoId, [FromRoute] Guid matriculaId, RealizarPagamentoViewModel pagamento, [FromServices] ICursoReadOnlyRepository cursoRepository)
+        {
+            var curso = await cursoRepository.ObterPorId(cursoId);
+            if (curso == null)
+                return BadRequest("Curso não encontrado.");
+
+            var aluno = await _alunoRepository.ObterPorId(_user.UsuarioId);
+            if (aluno == null)
+                return BadRequest("Seu cadastro de aluno não foi encontrado.");
+
+            var matricula = aluno.Matriculas?.FirstOrDefault(p => p.Id == matriculaId);
+            if (matricula == null)
+                return BadRequest("Matrícula não encontrada, realize uma nova matricula.");
+
+            if (matricula.Ativa)
+                return BadRequest("Matrícula já está ativa, não é necessário realizar um novo pagamento.");
+
+            var pagamentoCommand = new RegistrarPagamentoCommand(Guid.NewGuid(), matriculaId, curso.Valor, pagamento.DadosCartao_Nome, pagamento.DadosCartao_Numero, pagamento.DadosCartao_Vencimento, pagamento.DadosCartao_CcvCvc);
+
+            await _mediator.SendCommand(pagamentoCommand);
+
+            return Response(pagamentoCommand.AggregateId);
         }
 
         [Authorize(Roles = "Administrador")]
