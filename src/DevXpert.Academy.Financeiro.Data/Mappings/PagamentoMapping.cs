@@ -27,7 +27,7 @@ namespace DevXpert.Academy.Financeiro.Data.Mappings
                     .HasColumnName(nameof(PagamentoSituacao.Mensagem));
             });
 
-            builder.Ignore(p => p.HistoricoTransacoes);
+            //builder.Ignore(p => p.HistoricoTransacoes);
 
             /*builder.OwnsMany(p => p.HistoricoTransacoes, transacao =>
             {

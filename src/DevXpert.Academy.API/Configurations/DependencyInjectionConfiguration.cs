@@ -1,4 +1,5 @@
 ﻿using DevXpert.Academy.Alunos.Data.Repositories;
+using DevXpert.Academy.Alunos.Domain.Alunos.Handlers;
 using DevXpert.Academy.Alunos.Domain.Alunos.Interfaces;
 using DevXpert.Academy.Alunos.Domain.Alunos.Services;
 using DevXpert.Academy.Alunos.Domain.Cursos.Interfaces;
@@ -16,8 +17,8 @@ using DevXpert.Academy.Core.EventSourcing.EventStore.Repository;
 using DevXpert.Academy.Financeiro.AntiCorruption;
 using DevXpert.Academy.Financeiro.Data.Repositories;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Commands;
+using DevXpert.Academy.Financeiro.Domain.Pagamentos.Handlers;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
-using DevXpert.Academy.Financeiro.Domain.Pagamentos.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -65,19 +66,20 @@ namespace DevXpert.Academy.API.Configurations
             services.AddScoped<IPayPalGateway, PayPalGateway>();
 
             // Handlers
-            services.AddScoped<IRequestHandler<RegistrarPagamentoCommand, bool>, PagamentoHandler>();
-            services.AddScoped<IRequestHandler<ProcessarPagamentoCommand, bool>, PagamentoHandler>();
-            services.AddScoped<IRequestHandler<EstornarPagamentoCommand, bool>, PagamentoHandler>();
+            services.AddScoped<IRequestHandler<RegistrarPagamentoCommand, bool>, PagamentoCommandHandler>();
+            services.AddScoped<IRequestHandler<ProcessarPagamentoCommand, bool>, PagamentoCommandHandler>();
+            services.AddScoped<IRequestHandler<SolicitarEstornoPagamentoDaMatriculaCommand, bool>, PagamentoCommandHandler>();
+            services.AddScoped<IRequestHandler<EstornarPagamentoCommand, bool>, PagamentoCommandHandler>();
 
             // Events
-            services.AddScoped<INotificationHandler<PagamentoRegistradoEvent>, PagamentoHandler>();
-            services.AddScoped<INotificationHandler<PagamentoAprovadoEvent>, PagamentoHandler>();
-            services.AddScoped<INotificationHandler<PagamentoAprovadoEvent>, AlunoService>();
-            services.AddScoped<INotificationHandler<PagamentoRecusadoEvent>, PagamentoHandler>();
-            services.AddScoped<INotificationHandler<PagamentoEstornadoEvent>, PagamentoHandler>();
-            services.AddScoped<INotificationHandler<PagamentoEstornadoEvent>, AlunoService>();
-            services.AddScoped<INotificationHandler<PagamentoCanceladoEvent>, PagamentoHandler>();
-            services.AddScoped<INotificationHandler<PagamentoCanceladoEvent>, AlunoService>();
+            services.AddScoped<INotificationHandler<PagamentoRegistradoEvent>, PagamentoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoAprovadoEvent>, PagamentoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoRecusadoEvent>, PagamentoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoEstornadoEvent>, PagamentoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoCanceladoEvent>, PagamentoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoAprovadoEvent>, AlunoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoEstornadoEvent>, AlunoEventHandler>();
+            services.AddScoped<INotificationHandler<PagamentoCanceladoEvent>, AlunoEventHandler>();
         }
     }
 }

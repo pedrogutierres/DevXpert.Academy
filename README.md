@@ -34,7 +34,6 @@ O projeto consiste em:
 
 A estrutura do projeto é organizada da seguinte forma:
 
-
 - src/
   - [em construção] ...
 - README.md - Arquivo de Documentação do Projeto
@@ -43,10 +42,17 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## **5. Funcionalidades Implementadas**
 
-- **[em construção]...** ...
 - **Autenticação e Autorização:** Diferenciação entre usuários comuns e administradores.
 - **API RESTful:** Exposição de endpoints para operações CRUD via API.
 - **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
+
+### Decisões de negócios:
+- **Administrador:** O administrador terá apenas um cadastro no IdentityServer como Usuário e perfil Administrador;
+- **Alunos:** Um aluno terá um cadastro na base de negócio como Aluno e um cadastro no IdentityServer como Usuário, com perfil Aluno;
+- **Matriculas:** As matriculas são vinculadas ao agregador Aluno
+  - Cada matricula terá um curso vinculado
+  - O aluno poderá ter apenas uma matrícula por curso
+- **Pagamentos:** Os pagamentos serão vínculados à matrícula, e não ao aluno, pois o aluno poderá ter várias matrículas, mas cada matrícula terá apenas um pagamento vinculado;
 
 ## **6. Como Executar o Projeto**
 

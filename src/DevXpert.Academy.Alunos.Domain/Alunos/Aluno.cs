@@ -1,4 +1,5 @@
-﻿using DevXpert.Academy.Alunos.Domain.Alunos.Validations;
+﻿using DevXpert.Academy.Alunos.Domain.Alunos.Events;
+using DevXpert.Academy.Alunos.Domain.Alunos.Validations;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using System;
@@ -19,7 +20,14 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             Id = id;
             Nome = nome;
 
-            // TODO: event
+            AddEvent(new AlunoCadastradoEvent(Id, Nome));
+        }
+
+        public void AlterarNome(string nome)
+        {
+            Nome = nome;
+
+            AddEvent(new AlunoNomeAlteradoEvent(Id, Nome));
         }
 
         public void Matricular(Matricula matricula)
@@ -30,7 +38,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             Matriculas ??= [];
             Matriculas.Add(matricula);
 
-            // TODO: event
+            AddEvent(new MatriculaVinculadaAoAlunoEvent(matricula.Id, Id, matricula.CursoId));
         }
         public bool EstaMatriculado(Guid cursoId) => Matriculas?.Any(p => p.CursoId == cursoId) ?? false;
 
@@ -38,7 +46,11 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         {
             ValidationResult = new AlunoEstaConsistenteValidation().Validate(this);
 
-            // TODO: validar matriculas
+            foreach (var matricula in Matriculas ?? [])
+            {
+                if (!matricula.EhValido())
+                    AdicionarValidationResultErros(matricula.ValidationResult);
+            }
 
             return ValidationResult.IsValid;
         }

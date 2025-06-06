@@ -14,7 +14,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
         public DadosCartao DadosCartao { get; private set; }
         public PagamentoSituacao Situacao { get; private set; }
 
-        public List<PagamentoSituacao> HistoricoTransacoes { get; private set; }
+        // public List<PagamentoSituacao> HistoricoTransacoes { get; private set; } // Para uma próxima versão
 
         private Pagamento() { }
         public Pagamento(Guid id, Guid matriculaId, decimal valor, DadosCartao dadosCartao)
@@ -24,7 +24,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
             Valor = valor;
             DadosCartao = dadosCartao;
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Pendente, DateTime.Now, "Pagamento pendente");
-            HistoricoTransacoes = [Situacao];
+            //HistoricoTransacoes = [Situacao];
 
             AddEvent(new PagamentoRegistradoEvent(id, MatriculaId));
         }
@@ -32,7 +32,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
         public void AprovarPagamento()
         {
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Aprovado, DateTime.Now, "Pagamento aprovado");
-            HistoricoTransacoes.Add(Situacao);
+            //HistoricoTransacoes.Add(Situacao);
 
             AddEvent(new PagamentoAprovadoEvent(Id, MatriculaId));
         }
@@ -40,7 +40,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
         public void RecusarPagamento(string motivo)
         {
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Recusado, DateTime.Now, motivo);
-            HistoricoTransacoes.Add(Situacao);
+            //HistoricoTransacoes.Add(Situacao);
 
             AddEvent(new PagamentoRecusadoEvent(Id, MatriculaId, motivo));
         }
@@ -48,7 +48,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
         public void EstornarPagamento(string motivo)
         {
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Estornado, DateTime.Now, motivo);
-            HistoricoTransacoes.Add(Situacao);
+            //HistoricoTransacoes.Add(Situacao);
 
             AddEvent(new PagamentoEstornadoEvent(Id, MatriculaId, motivo));
         }
@@ -56,7 +56,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
         public void CancelarPagamento(string motivo)
         {
             Situacao = new PagamentoSituacao(PagamentoSituacaoEnum.Cancelado, DateTime.Now, motivo);
-            HistoricoTransacoes.Add(Situacao);
+            //HistoricoTransacoes.Add(Situacao);
 
             AddEvent(new PagamentoCanceladoEvent(Id, MatriculaId, motivo));
         }

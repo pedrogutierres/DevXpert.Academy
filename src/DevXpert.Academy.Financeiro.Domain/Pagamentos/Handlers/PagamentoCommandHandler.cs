@@ -8,28 +8,23 @@ using DevXpert.Academy.Financeiro.Domain.Pagamentos.Commands;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Interfaces;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts;
 using MediatR;
-using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
+namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Handlers
 {
     // TODO: Analisar refatoração do handler separando os events e commands em ..CommandHandler e ..EventHandler
-    public sealed class PagamentoHandler :
-        DomainService,
+    public sealed class PagamentoCommandHandler : DomainService,
         IRequestHandler<RegistrarPagamentoCommand, bool>,
-        INotificationHandler<PagamentoRegistradoEvent>,
         IRequestHandler<ProcessarPagamentoCommand, bool>,
-        INotificationHandler<PagamentoAprovadoEvent>,
-        INotificationHandler<PagamentoRecusadoEvent>,
-        INotificationHandler<PagamentoCanceladoEvent>,
-        IRequestHandler<EstornarPagamentoCommand, bool>,
-        INotificationHandler<PagamentoEstornadoEvent>
+        IRequestHandler<SolicitarEstornoPagamentoDaMatriculaCommand, bool>,
+        IRequestHandler<EstornarPagamentoCommand, bool>
     {
         private readonly IPagamentoRepository _pagamentoRepository;
         private readonly IPagamentoCartaoCreditoFacade _pagamentoCartaoCredito;
 
-        public PagamentoHandler(
+        public PagamentoCommandHandler(
             IPagamentoRepository pagamentoRepository,
             IPagamentoCartaoCreditoFacade pagamentoCartaoCredito,
             IMediatorHandler mediator,
@@ -68,10 +63,10 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
             }
 
             pagamento = _pagamentoCartaoCredito.ProcessarPagamento(pagamento);
-            
+
             if (await _uow.CommitAsync())
             {
-                if (PagamentoSituacaoEnum.Recusado.Equals(pagamento.Situacao))
+                if (PagamentoSituacaoEnum.Recusado.Equals(pagamento.Situacao.Situacao))
                 {
                     await NotificarErro("Pagamento", "O pagamento foi recusado.");
                     return false;
@@ -85,12 +80,14 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
 
         public Task Handle(PagamentoAprovadoEvent notification, CancellationToken cancellationToken)
         {
+            // Enviar e-mail ao aluno informando que o pagamento foi aprovado e o curso está liberado
+
             return Task.CompletedTask;
         }
 
         public Task Handle(PagamentoRecusadoEvent notification, CancellationToken cancellationToken)
         {
-            // TODO: notificar usuário sobre o motivo da recusa
+            // Enviar e-mail ao aluno informando que o pagamento foi recusado e o curso está liberado
 
             return Task.CompletedTask;
         }
@@ -100,27 +97,37 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Services
             return Task.CompletedTask;
         }
 
+        public async Task<bool> Handle(SolicitarEstornoPagamentoDaMatriculaCommand request, CancellationToken cancellationToken)
+        {
+            var pagamento = _pagamentoRepository.Buscar(p => p.MatriculaId == request.MatriculaId, true).FirstOrDefault() ?? throw new BusinessException("Pagamento vinculado a matrícula não encontrado para estornar.");
+
+            if (!PagamentoSituacaoEnum.Aprovado.Equals(pagamento.Situacao.Situacao))
+                throw new BusinessException("Somente pagamentos aprovados podem ser estornados.");
+
+            return await _mediator.SendCommand(new EstornarPagamentoCommand(pagamento.Id, request.Motivo), cancellationToken);
+        }
+
         public async Task<bool> Handle(EstornarPagamentoCommand request, CancellationToken cancellationToken)
         {
-            var pagamento = await _pagamentoRepository.ObterPorId(request.AggregateId, true) ?? throw new BusinessException("Pagamento não encontrado para processar.");
+            var pagamento = await _pagamentoRepository.ObterPorId(request.AggregateId, true) ?? throw new BusinessException("Pagamento não encontrado para estornar.");
 
-            if (!PagamentoSituacaoEnum.Aprovado.Equals(pagamento.Situacao))
+            if (!PagamentoSituacaoEnum.Aprovado.Equals(pagamento.Situacao.Situacao))
                 throw new BusinessException("Somente pagamentos aprovados podem ser estornados.");
 
             pagamento = _pagamentoCartaoCredito.EstornarPagamento(pagamento, request.Motivo);
 
-            if (PagamentoSituacaoEnum.Estornado.Equals(pagamento.Situacao))
+            if (await _uow.CommitAsync())
             {
-                await NotificarErro("Pagamento", "O pagamento não pôde ser estornado.");
-                return false;
+                if (!PagamentoSituacaoEnum.Estornado.Equals(pagamento.Situacao.Situacao))
+                {
+                    await NotificarErro("Pagamento", "O pagamento não pôde ser estornado.");
+                    return false;
+                }
+
+                return true;
             }
 
-            return await _uow.CommitAsync();
-        }
-
-        public Task Handle(PagamentoEstornadoEvent notification, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+            return false;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
         public decimal Valor { get; private set; }
         public List<AulaCadastradaEvent> Aulas { get; private set; }
 
-        public CursoCadastradoEvent(Guid id, string titulo, string descricao, int cargaHorario, decimal valor, List<AulaCadastradaEvent> aulas) : base("Curso")
+        public CursoCadastradoEvent(Guid id, string titulo, string descricao, int cargaHorario, decimal valor, List<AulaCadastradaEvent> aulas) : base(nameof(Curso))
         {
             AggregateId = id;
             Titulo = titulo;

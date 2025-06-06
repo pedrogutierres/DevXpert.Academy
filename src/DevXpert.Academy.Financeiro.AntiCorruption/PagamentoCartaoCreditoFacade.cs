@@ -23,7 +23,7 @@ namespace DevXpert.Academy.Financeiro.AntiCorruption
             var serviceKey = _payPalGateway.GetPayPalServiceKey(apiKey, encriptionKey);
             var cardHashKey = _payPalGateway.GetCardHashKey(serviceKey, pagamento.DadosCartao.Token);
 
-            var pagamentoResult = _payPalGateway.CommitTransaction(cardHashKey, pagamento.Id.ToString(), pagamento.Valor);
+            var pagamentoResult = _payPalGateway.CommitTransaction(cardHashKey, pagamento.DadosCartao.Token == "-1" ? "-1" : pagamento.Id.ToString(), pagamento.Valor); // A regra -1 é para simular um pagamento recusado
 
             if (pagamentoResult)
                 pagamento.AprovarPagamento();
@@ -38,7 +38,9 @@ namespace DevXpert.Academy.Financeiro.AntiCorruption
             var apiKey = _configManager.GetValue("apiKey");
             var encriptionKey = _configManager.GetValue("encriptionKey");
 
-            if (_payPalGateway.RollbackTransaction(pagamento.Id.ToString()))
+            var estornoResult = _payPalGateway.RollbackTransaction(pagamento.DadosCartao.Token == "-1" ? "-1" : pagamento.Id.ToString()); // A regra -1 é para simular um pagamento recusado
+
+            if (estornoResult)
                 pagamento.EstornarPagamento(motivo ?? "Pagamento estornado");
 
             return pagamento;

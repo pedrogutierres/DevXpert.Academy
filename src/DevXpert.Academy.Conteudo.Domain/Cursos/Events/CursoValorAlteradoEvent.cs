@@ -7,7 +7,7 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
     {
         public decimal Valor { get; private set; }
 
-        public CursoValorAlteradoEvent(Guid id, decimal valor) : base("Curso")
+        public CursoValorAlteradoEvent(Guid id, decimal valor) : base(nameof(Curso))
         {
             AggregateId = id;
             Valor = valor;

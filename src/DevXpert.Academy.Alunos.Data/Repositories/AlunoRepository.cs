@@ -17,9 +17,16 @@ namespace DevXpert.Academy.Alunos.Data.Repositories
             await Db.Set<Matricula>().AddAsync(matricula);
         }
 
-        public Task<Aluno> ObterAtravesDaMatricula(Guid matriculaId)
+        public Task<Aluno> ObterAtravesDaMatricula(Guid matriculaId, bool tracking = false)
         {
-            return DbSet.FirstOrDefaultAsync(p => p.Matriculas.Any(m => m.Id == matriculaId));
+            if (tracking)
+                return DbSet.FirstOrDefaultAsync(p => p.Matriculas.Any(m => m.Id == matriculaId));
+            return DbSet.AsNoTracking().FirstOrDefaultAsync(p => p.Matriculas.Any(m => m.Id == matriculaId));
+        }
+
+        public Task<Matricula> ObterMatricula(Guid matriculaId)
+        {
+            return Db.Set<Matricula>().AsNoTracking().FirstOrDefaultAsync(p => p.Id == matriculaId);
         }
     }
 }

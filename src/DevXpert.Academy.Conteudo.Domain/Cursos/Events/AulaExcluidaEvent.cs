@@ -7,7 +7,7 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
     {
         public Guid Id { get; private set; }
 
-        public AulaExcluidaEvent(Guid aggregateId, Guid id) : base("Curso")
+        public AulaExcluidaEvent(Guid aggregateId, Guid id) : base(nameof(Curso))
         {
             AggregateId = aggregateId;
             Id = id;

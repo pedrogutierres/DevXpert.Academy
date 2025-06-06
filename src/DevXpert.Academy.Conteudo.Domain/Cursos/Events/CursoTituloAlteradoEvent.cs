@@ -7,7 +7,7 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
     {
         public string Titulo { get; private set; }
 
-        public CursoTituloAlteradoEvent(Guid id, string titulo) : base("Curso")
+        public CursoTituloAlteradoEvent(Guid id, string titulo) : base(nameof(Curso))
         {
             AggregateId = id;
             Titulo = titulo;

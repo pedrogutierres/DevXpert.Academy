@@ -95,7 +95,7 @@ namespace DevXpert.Academy.API.Authentication
                 {
                     await _userManager.DeleteAsync(user);
 
-                    await _alunoService.RemoverNovoCadastro(Guid.Parse(user.Id));
+                    await _alunoService.ExcluirNovoCadastro(Guid.Parse(user.Id));
                 }
                 catch { }
 

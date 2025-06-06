@@ -14,7 +14,8 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Validations
         private void ValidateNome()
         {
             RuleFor(x => x.Nome)
-                .NotEmpty().WithMessage("O nome do aluno deve ser informado.");
+                .NotEmpty().WithMessage("O nome do aluno deve ser informado.")
+                .MaximumLength(200).WithMessage("O nome do aluno deve conter no máximo {MaxLength} caracteres.");
         }
     }
 }

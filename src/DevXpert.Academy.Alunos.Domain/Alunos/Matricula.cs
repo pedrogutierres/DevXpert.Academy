@@ -1,4 +1,6 @@
-﻿using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
+﻿using DevXpert.Academy.Alunos.Domain.Alunos.Events;
+using DevXpert.Academy.Alunos.Domain.Alunos.Validations;
+using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
 using DevXpert.Academy.Alunos.Domain.Cursos;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using System;
@@ -28,21 +30,21 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             Ativa = false;
             Concluido = false;
 
-            // TODO: event
+            AddEvent(new MatriculaCadastradaEvent(Id, AlunoId, CursoId));
         }
 
         public void Ativar()
         {
             Ativa = true;
 
-            // TODO: event
+            AddEvent(new MatriculaAtivadaEvent(Id, AlunoId, CursoId));
         }
 
         public void Bloquear()
         {
             Ativa = false;
 
-            // TODO: event
+            AddEvent(new MatriculaBloqueadaEvent(Id, AlunoId, CursoId));
         }
 
         public void Concluir()
@@ -51,12 +53,14 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             DataHoraConclusao = DateTime.Now;
             Certificado = new Certificado(DataHoraConclusao.Value);
 
-            // TODO: event
+            AddEvent(new MatriculaConcluidaEvent(Id, AlunoId, CursoId, DataHoraConclusao.Value));
         }
 
         public override bool EhValido()
         {
-            throw new NotImplementedException();
+            ValidationResult = new MatriculaEstaConsistenteValidation().Validate(this);
+
+            return ValidationResult.IsValid;
         }
     }
 }

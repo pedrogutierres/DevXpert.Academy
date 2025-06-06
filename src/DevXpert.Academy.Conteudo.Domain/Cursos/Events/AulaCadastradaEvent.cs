@@ -9,7 +9,7 @@ namespace DevXpert.Academy.Conteudo.Domain.Cursos.Events
         public string Titulo { get; private set; }
         public string VideoUrl { get; private set; }
 
-        public AulaCadastradaEvent(Guid aggregateId, Guid id, string titulo, string videoUrl) : base("Curso")
+        public AulaCadastradaEvent(Guid aggregateId, Guid id, string titulo, string videoUrl) : base(nameof(Curso))
         {
             AggregateId = aggregateId;
             Id = id;

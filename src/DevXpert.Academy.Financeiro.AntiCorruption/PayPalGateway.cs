@@ -19,12 +19,18 @@ namespace DevXpert.Academy.Financeiro.AntiCorruption
 
         public bool CommitTransaction(string cardHashKey, string orderId, decimal amount)
         {
-            return new Random().Next(200) > 0;
+            if (orderId == "-1") // Apenas exemplo, simula erro de transação
+                return false;
+
+            return true;
         }
 
         public bool RollbackTransaction(string orderId)
         {
-            return new Random().Next(200) > 0;
+            if (orderId == "-1") // Apenas exemplo, simula erro de transação
+                return false;
+
+            return true;
         }
     }
 }
