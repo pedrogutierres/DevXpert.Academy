@@ -33,6 +33,24 @@ namespace DevXpert.Academy.API.Tests
             Assert.True(response.StatusCode == HttpStatusCode.OK);
         }
 
+        [Fact(DisplayName = "Realizar login de usuario inexistente invalido")]
+        [Trait("Usuarios", "Integração API - Usuario")]
+        public async Task Usuarios_ValidarLogin_NaoDeveLogar()
+        {
+            // Arrange
+            var dados = new // LoginViewModel - Não estou utilizando a view model default, para o teste falhar se houver mudanças não previstas
+            {
+                Email = "xxx@gmail.com",
+                Senha = "Pedro@123456"
+            };
+
+            // Act
+            var response = await _testsFixture.Client.PostAsJsonAsync("/api/usuarios/login", dados);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
         [Fact(DisplayName = "Registrar novo aluno com sucesso")]
         [Trait("Usuarios", "Integração API - Usuario")]
         public async Task Usuarios_NovoAluno_DeveRegistrarComSucesso()
