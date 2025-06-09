@@ -14,7 +14,12 @@ namespace DevXpert.Academy.Alunos.Data.Mappings
                 .WithOne(p => p.Aluno)
                 .HasForeignKey(p => p.AlunoId);
 
+            builder.HasMany(p => p.AulasConcluidas)
+                .WithOne(p => p.Aluno)
+                .HasForeignKey(p => p.AlunoId);
+
             builder.Navigation(p => p.Matriculas).AutoInclude();
+            builder.Navigation(p => p.AulasConcluidas).AutoInclude();
 
             builder.ToTable("Alunos");
         }

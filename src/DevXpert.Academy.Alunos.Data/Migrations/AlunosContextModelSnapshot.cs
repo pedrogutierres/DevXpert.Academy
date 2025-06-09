@@ -39,16 +39,13 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
 
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.AulaConcluida", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("AlunoId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("AulaId")
+                    b.Property<Guid>("CursoId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CursoId")
+                    b.Property<Guid>("AulaId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("DataHoraAlteracao")
@@ -60,12 +57,7 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.Property<DateTime>("DataHoraCriacao")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("MatriculaId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MatriculaId");
+                    b.HasKey("AlunoId", "CursoId", "AulaId");
 
                     b.ToTable("AlunosAulasConcluidas", (string)null);
                 });
@@ -105,11 +97,41 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.ToTable("Matriculas", (string)null);
                 });
 
+            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Cursos.Curso", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DataHoraAlteracao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataHoraCriacao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cursos", (string)null);
+                });
+
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.AulaConcluida", b =>
                 {
-                    b.HasOne("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", null)
+                    b.HasOne("DevXpert.Academy.Alunos.Domain.Alunos.Aluno", "Aluno")
                         .WithMany("AulasConcluidas")
-                        .HasForeignKey("MatriculaId");
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
                 });
 
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", b =>
@@ -159,13 +181,9 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.OwnsMany("DevXpert.Academy.Alunos.Domain.Cursos.Aula", "Aulas", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT");
 
                             b1.Property<Guid>("CursoId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<Guid?>("CursoId1")
                                 .HasColumnType("TEXT");
 
                             b1.Property<DateTime?>("DataHoraAlteracao")
@@ -178,18 +196,10 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
 
                             b1.HasIndex("CursoId");
 
-                            b1.HasIndex("CursoId1");
-
-                            b1.ToTable("Aulas", (string)null);
+                            b1.ToTable("CursosAulas", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CursoId");
-
-                            b1.HasOne("DevXpert.Academy.Alunos.Domain.Cursos.Curso", "Curso")
-                                .WithMany()
-                                .HasForeignKey("CursoId1");
-
-                            b1.Navigation("Curso");
                         });
 
                     b.Navigation("Aulas");
@@ -197,12 +207,9 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
 
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Aluno", b =>
                 {
-                    b.Navigation("Matriculas");
-                });
-
-            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", b =>
-                {
                     b.Navigation("AulasConcluidas");
+
+                    b.Navigation("Matriculas");
                 });
 
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Cursos.Curso", b =>

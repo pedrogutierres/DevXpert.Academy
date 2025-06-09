@@ -18,8 +18,6 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         public bool Concluido { get; private set; }
         public Certificado Certificado { get; private set; }
 
-        public List<AulaConcluida> AulasConcluidas { get; private set; }
-
         public virtual Aluno Aluno { get; private set; }
         public virtual Curso Curso { get; private set; }
 
@@ -49,21 +47,6 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             Ativa = false;
 
             AddEvent(new MatriculaBloqueadaEvent(Id, AlunoId, CursoId));
-        }
-
-        public void RegistrarAulaAssistida(Guid aulaId)
-        {
-            AulasConcluidas ??= [];
-
-            if (AulasConcluidas.Any(a => a.AulaId == aulaId))
-                return;
-
-            AulasConcluidas.Add(new AulaConcluida(AlunoId, CursoId, aulaId, DateTime.Now));
-
-            AddEvent(new MatriculaAulaConcluidaEvent(Id, AlunoId, CursoId, aulaId, DateTime.Now));
-
-            if (Curso?.Aulas?.Count == AulasConcluidas.Count)
-                EmitirCertificado();
         }
 
         public void EmitirCertificado()

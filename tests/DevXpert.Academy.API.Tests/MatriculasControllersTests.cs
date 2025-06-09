@@ -237,9 +237,59 @@ namespace DevXpert.Academy.API.Tests
             Assert.Equal(aulaId, responseContent.Id);
         }
 
-        [Fact(DisplayName = "Aluno registrar aula concluida em matricula inexistente deve retornar BadRequest")]
+        [Fact(DisplayName = "Aluno obter certificado de matricula não concluida deve retornar BadRequest")]
         [Trait("Matriculas", "Integração API - Matrículas")]
         [TestPriority(36)]
+        public async Task Matriculas_AlunoObterCertificado_MatriculaNaoConcluida_DeveRetornarBadRequest()
+        {
+            // Arrange
+            await _testsFixture.RealizarLoginDeAluno();
+            Assert.NotEqual(Guid.Empty, _matriculaId);
+
+            // Act
+            var response = await _testsFixture.Client.PostAsync($"/api/matriculas/{_matriculaId}/certificado", null);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Aluno obter certificado de matricula ativa e concluida deve retornar sucesso e URL do certificado")]
+        [Trait("Matriculas", "Integração API - Matrículas")]
+        [TestPriority(37)]
+        public async Task Matriculas_AlunoObterCertificado_MatriculaConcluida_DeveRetornarSucessoEUrl()
+        {
+            // Arrange
+            await _testsFixture.RealizarLoginDeAluno();
+
+            Assert.NotEqual(Guid.Empty, _matriculaId);
+            Assert.NotEqual(Guid.Empty, _cursoId);
+
+            var responseGetCourse = await _testsFixture.Client.GetAsync($"/api/cursos/{_cursoId}");
+            responseGetCourse.EnsureSuccessStatusCode(); // Assert success for fetching course
+            var courseContent = await responseGetCourse.Content.ReadAsStringAsync();
+            dynamic cursoDetails = JsonConvert.DeserializeObject(courseContent);
+            Assert.NotNull(cursoDetails);
+            Assert.NotNull(cursoDetails.aulas);
+            Assert.True(cursoDetails.aulas.Count > 0);
+
+            foreach (var aula in cursoDetails.aulas)
+            {
+                var aulaId = Guid.Parse(aula.id.ToString());
+
+                var registrarAulaResponse = await _testsFixture.Client.PostAsync($"/api/matriculas/{_matriculaId}/registrar-aula-concluida/{aulaId}", null);
+                registrarAulaResponse.EnsureSuccessStatusCode();
+            }
+
+            // Act
+            var response = await _testsFixture.Client.PostAsync($"/api/matriculas/{_matriculaId}/certificado", null);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Aluno registrar aula concluida em matricula inexistente deve retornar BadRequest")]
+        [Trait("Matriculas", "Integração API - Matrículas")]
+        [TestPriority(38)]
         public async Task Matriculas_AlunoRegistrarAulaConcluida_MatriculaInexistente_DeveRetornarBadRequest()
         {
             // Arrange
@@ -282,6 +332,24 @@ namespace DevXpert.Academy.API.Tests
             var responseContent = await response.Content.ReadFromJsonAsync<ResponseSuccess>();
             Assert.NotNull(responseContent);
             Assert.Equal(_matriculaId, responseContent.Id);
+        }
+
+        [Fact(DisplayName = "Aluno obter certificado de matricula inexistente deve retornar BadRequest")]
+        [Trait("Matriculas", "Integração API - Matrículas")]
+        [TestPriority(60)]
+        public async Task Matriculas_AlunoObterCertificado_MatriculaInexistente_DeveRetornarBadRequest()
+        {
+            // Arrange
+            await _testsFixture.RealizarLoginDeAluno();
+            var matriculaIdInexistente = Guid.NewGuid();
+
+            // Act
+            var response = await _testsFixture.Client.PostAsync($"/api/matriculas/{matriculaIdInexistente}/certificado", null);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var errorContent = JsonConvert.DeserializeObject<ResponseError>(await response.Content.ReadAsStringAsync());
+            Assert.Contains("Matrícula não encontrada.", errorContent.Errors.SelectMany(v => v.Value));
         }
     }
 }

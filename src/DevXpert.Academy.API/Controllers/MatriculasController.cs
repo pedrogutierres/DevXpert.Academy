@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevXpert.Academy.API.Controllers
@@ -136,21 +137,22 @@ namespace DevXpert.Academy.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AlunoObterCertificado([FromRoute] Guid matriculaId)
         {
-            var matricula = await _alunoRepository.ObterMatricula(matriculaId);
-            if (matricula == null)
+            var aluno = await _alunoRepository.ObterAtravesDaMatricula(matriculaId, true);
+            if (aluno == null)
                 return BadRequest("Matrícula não encontrada.");
 
-            if (matricula.AlunoId != _user.UsuarioId)
+            if (aluno.Id != _user.UsuarioId)
                 return BadRequest("Você não tem permissão para visualizar o certificado pois você não é o aluno vinculado a esta matrícula.");
 
-            if (!matricula.Concluido)
-                return BadRequest($"Conclua a aulas do curso {matricula.Curso.Titulo} para obter o certificado.");
+            var matricula = aluno.Matriculas.First(m => m.Id == matriculaId);
+            if (matricula.Concluido)
+                return Response(matricula.Certificado.CertificadoUrl);
 
             // Apenas para garantir caso o certificado não tenha sido emitido ainda corretamente
-            if (matricula.Curso.Aulas.Count == matricula.AulasConcluidas.Count)
-                return Redirect(await _alunoService.EmitirCertificado(matricula.Id));
-            
-            return Redirect(matricula.Certificado.CertificadoUrl);
+            if (matricula.Curso.Aulas.Count == aluno.AulasConcluidas.Count)
+                return Response(await _alunoService.EmitirCertificado(matricula.Id));
+
+            return BadRequest($"Conclua a aulas do curso {matricula.Curso.Titulo} para obter o certificado.");
         }
     }
 }

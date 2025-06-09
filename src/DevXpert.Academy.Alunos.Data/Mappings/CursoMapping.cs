@@ -10,18 +10,21 @@ namespace DevXpert.Academy.Alunos.Data.Mappings
         {
             builder.HasKey(p => p.Id);
 
-            builder.OwnsMany(p => p.Aulas, aula => 
+            builder.OwnsMany(p => p.Aulas, aula =>
             {
-                aula.WithOwner().HasForeignKey("CursoId");
+                aula.WithOwner().HasForeignKey("CursoId").HasPrincipalKey(p => p.Id);
 
                 aula.HasKey(p => p.Id);
+                aula.Property(p => p.Id).ValueGeneratedNever();
 
-                aula.ToTable("Aulas");
+                aula.ToTable("CursosAulas");
             });
 
             builder.HasMany(p => p.Matriculas)
                 .WithOne(p => p.Curso)
                 .HasForeignKey(p => p.CursoId);
+
+            builder.Navigation(p => p.Aulas).AutoInclude();
 
             builder.ToTable("Cursos");
         }

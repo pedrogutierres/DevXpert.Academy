@@ -1,6 +1,5 @@
 ﻿using DevXpert.Academy.Alunos.Domain.Alunos.Events;
 using DevXpert.Academy.Alunos.Domain.Alunos.Validations;
-using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using System;
@@ -14,6 +13,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
         public string Nome { get; private set; }
 
         public List<Matricula> Matriculas { get; private set; }
+        public List<AulaConcluida> AulasConcluidas { get; private set; }
 
         private Aluno() { }
         public Aluno(Guid id, string nome)
@@ -42,6 +42,23 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             AddEvent(new MatriculaVinculadaAoAlunoEvent(matricula.Id, Id, matricula.CursoId));
         }
         public bool EstaMatriculado(Guid cursoId) => Matriculas?.Any(p => p.CursoId == cursoId) ?? false;
+
+        public void RegistrarAulaAssistida(Guid cursoId, Guid aulaId)
+        {
+            AulasConcluidas ??= [];
+
+            var matricula = (Matriculas?.FirstOrDefault(p => p.CursoId == cursoId)) ?? throw new BusinessException("Matrícula não encontrada para o curso especificado.");
+
+            if (AulasConcluidas.Any(a => a.AulaId == aulaId))
+                return;
+
+            AulasConcluidas.Add(new AulaConcluida(Id, cursoId, aulaId, DateTime.Now));
+
+            AddEvent(new AulaConcluidaEvent(Id, matricula.Id, cursoId, aulaId, DateTime.Now));
+
+            if (matricula.Curso?.Aulas?.Count == AulasConcluidas.Count)
+                matricula.EmitirCertificado();
+        }
 
         public override bool EhValido()
         {

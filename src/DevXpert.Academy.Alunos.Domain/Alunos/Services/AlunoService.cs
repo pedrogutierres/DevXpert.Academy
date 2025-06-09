@@ -106,7 +106,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
             if (!matricula.Ativa)
                 throw new BusinessException("A matrícula não está ativa, não é possível registrar a conclusão da aula.");
 
-            matricula.RegistrarAulaAssistida(aulaId);
+            aluno.RegistrarAulaAssistida(matricula.CursoId, aulaId);
 
             if (!EntidadeValida(aluno))
                 return false;

@@ -8,8 +8,9 @@ namespace DevXpert.Academy.Alunos.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<AulaConcluida> builder)
         {
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id).ValueGeneratedNever();
+            builder.HasKey(p => new { p.AlunoId, p.CursoId, p.AulaId });
+
+            builder.Ignore(p => p.Id);
 
             builder.ToTable("AlunosAulasConcluidas");
         }
