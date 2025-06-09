@@ -11,5 +11,8 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Interfaces
         Task<Matricula> Matricular(Guid alunoId, Guid cursoId);
         Task<bool> AprovarMatricula(Guid matriculaId);
         Task<bool> BloquearMatricula(Guid matriculaId);
+
+        Task<bool> RegistrarAulaConcluida(Guid matriculaId, Guid aulaId);
+        Task<string> EmitirCertificado(Guid matriculaId);
     }
 }

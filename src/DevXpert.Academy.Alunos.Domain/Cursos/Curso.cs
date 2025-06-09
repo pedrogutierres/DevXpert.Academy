@@ -11,6 +11,7 @@ namespace DevXpert.Academy.Alunos.Domain.Cursos
         public bool Ativo { get; private set; }
 
         public List<Matricula> Matriculas { get; private set; }
+        public List<Aula> Aulas { get; private set; }
 
         private Curso() { }
     }

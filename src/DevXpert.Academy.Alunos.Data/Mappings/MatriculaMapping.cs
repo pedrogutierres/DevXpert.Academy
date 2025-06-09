@@ -14,8 +14,11 @@ namespace DevXpert.Academy.Alunos.Data.Mappings
 
             builder.OwnsOne(p => p.Certificado, certificado =>
             {
-                certificado.Property(p => p.Emissao)
-                    .HasColumnName(nameof(Certificado.Emissao));
+                certificado.Property(p => p.CertificadoUrl)
+                    .HasColumnName(nameof(Certificado.CertificadoUrl));
+
+                certificado.Property(p => p.DataHoraEmissao)
+                    .HasColumnName(nameof(Certificado.DataHoraEmissao));
             });
 
             builder.HasOne(p => p.Aluno)

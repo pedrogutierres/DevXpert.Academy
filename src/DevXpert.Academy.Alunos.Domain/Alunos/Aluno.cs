@@ -1,5 +1,6 @@
 ﻿using DevXpert.Academy.Alunos.Domain.Alunos.Events;
 using DevXpert.Academy.Alunos.Domain.Alunos.Validations;
+using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Exceptions;
 using System;

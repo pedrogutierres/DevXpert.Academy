@@ -96,5 +96,42 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Services
 
             return await CommitAsync();
         }
+
+        public async Task<bool> RegistrarAulaConcluida(Guid matriculaId, Guid aulaId)
+        {
+            var aluno = await _alunoRepository.ObterAtravesDaMatricula(matriculaId, true) ?? throw new BusinessException("Aluno não encontrado.");
+
+            var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == matriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
+
+            if (!matricula.Ativa)
+                throw new BusinessException("A matrícula não está ativa, não é possível registrar a conclusão da aula.");
+
+            matricula.RegistrarAulaAssistida(aulaId);
+
+            if (!EntidadeValida(aluno))
+                return false;
+
+            return await CommitAsync(ignoreNoChangeUpdated: true);
+        }
+
+        public async Task<string> EmitirCertificado(Guid matriculaId)
+        {
+            var aluno = await _alunoRepository.ObterAtravesDaMatricula(matriculaId, true) ?? throw new BusinessException("Aluno não encontrado.");
+
+            var matricula = aluno.Matriculas.FirstOrDefault(p => p.Id == matriculaId) ?? throw new BusinessException("Matrícula não encontrada.");
+
+            if (!matricula.Ativa)
+                throw new BusinessException("A matrícula não está ativa, não é possível registrar a conclusão da aula.");
+
+            matricula.EmitirCertificado();
+
+            if (!EntidadeValida(aluno))
+                throw new BusinessException(string.Join('.', aluno.ValidationResult.Errors.Select(p => p.ErrorMessage)));
+
+            if (await CommitAsync())
+                return matricula.Certificado.CertificadoUrl;
+
+            throw new BusinessException("Não foi possível emitir o certificado, tente novamente mais tarde ou contate os administradores da plataforma.");
+        }
     }
 }

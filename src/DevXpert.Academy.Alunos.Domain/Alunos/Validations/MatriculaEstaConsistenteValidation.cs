@@ -28,7 +28,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Validations
         {
             When(p => p.Concluido, () =>
             {
-                RuleFor(x => x.DataHoraConclusao)
+                RuleFor(x => x.DataHoraConclusaoDoCurso)
                     .NotEmpty().WithMessage("A data de conclusão deve ser informada oara cursos concluídos.");
 
                 RuleFor(x => x.Certificado)
@@ -37,7 +37,7 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos.Validations
 
             When(p => !p.Concluido, () =>
             {
-                RuleFor(x => x.DataHoraConclusao)
+                RuleFor(x => x.DataHoraConclusaoDoCurso)
                     .Null().WithMessage("A data de conclusão não deve ser informada para cursos não concluídos.");
             }); 
         }

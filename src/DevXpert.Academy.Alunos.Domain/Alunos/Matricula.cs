@@ -4,6 +4,8 @@ using DevXpert.Academy.Alunos.Domain.Alunos.ValuesObjects;
 using DevXpert.Academy.Alunos.Domain.Cursos;
 using DevXpert.Academy.Core.Domain.DomainObjects;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevXpert.Academy.Alunos.Domain.Alunos
 {
@@ -11,10 +13,12 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
     {
         public Guid AlunoId { get; private set; }
         public Guid CursoId { get; private set; }
-        public DateTime? DataHoraConclusao { get; private set; }
+        public DateTime? DataHoraConclusaoDoCurso { get; private set; }
         public bool Ativa { get; private set; }
         public bool Concluido { get; private set; }
         public Certificado Certificado { get; private set; }
+
+        public List<AulaConcluida> AulasConcluidas { get; private set; }
 
         public virtual Aluno Aluno { get; private set; }
         public virtual Curso Curso { get; private set; }
@@ -47,13 +51,28 @@ namespace DevXpert.Academy.Alunos.Domain.Alunos
             AddEvent(new MatriculaBloqueadaEvent(Id, AlunoId, CursoId));
         }
 
-        public void Concluir()
+        public void RegistrarAulaAssistida(Guid aulaId)
+        {
+            AulasConcluidas ??= [];
+
+            if (AulasConcluidas.Any(a => a.AulaId == aulaId))
+                return;
+
+            AulasConcluidas.Add(new AulaConcluida(AlunoId, CursoId, aulaId, DateTime.Now));
+
+            AddEvent(new MatriculaAulaConcluidaEvent(Id, AlunoId, CursoId, aulaId, DateTime.Now));
+
+            if (Curso?.Aulas?.Count == AulasConcluidas.Count)
+                EmitirCertificado();
+        }
+
+        public void EmitirCertificado()
         {
             Concluido = true;
-            DataHoraConclusao = DateTime.Now;
-            Certificado = new Certificado(DataHoraConclusao.Value);
+            DataHoraConclusaoDoCurso = DateTime.Now;
+            Certificado = new Certificado("gerar-link", DataHoraConclusaoDoCurso.Value);
 
-            AddEvent(new MatriculaConcluidaEvent(Id, AlunoId, CursoId, DataHoraConclusao.Value));
+            AddEvent(new MatriculaCursoConcluidoEvent(Id, AlunoId, CursoId, DataHoraConclusaoDoCurso.Value));
         }
 
         public override bool EhValido()

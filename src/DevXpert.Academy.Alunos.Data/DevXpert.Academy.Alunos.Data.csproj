@@ -10,4 +10,8 @@
 	  <ProjectReference Include="..\DevXpert.Academy.Core.Data\DevXpert.Academy.Core.Data.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
 </Project>

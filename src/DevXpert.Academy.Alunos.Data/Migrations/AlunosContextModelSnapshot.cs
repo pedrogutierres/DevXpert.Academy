@@ -37,14 +37,49 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.ToTable("Alunos", (string)null);
                 });
 
-            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", b =>
+            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.AulaConcluida", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("AlunoId")
                         .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AulaId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CursoId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataHoraAlteracao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataHoraConclusao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataHoraCriacao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("MatriculaId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatriculaId");
+
+                    b.ToTable("AlunosAulasConcluidas", (string)null);
+                });
+
+            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AlunoId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Ativa")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Concluido")
                         .HasColumnType("INTEGER");
@@ -55,14 +90,11 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.Property<DateTime?>("DataHoraAlteracao")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DataHoraConclusao")
+                    b.Property<DateTime?>("DataHoraConclusaoDoCurso")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataHoraCriacao")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Ativa")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -71,6 +103,13 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.HasIndex("CursoId");
 
                     b.ToTable("Matriculas", (string)null);
+                });
+
+            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.AulaConcluida", b =>
+                {
+                    b.HasOne("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", null)
+                        .WithMany("AulasConcluidas")
+                        .HasForeignKey("MatriculaId");
                 });
 
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", b =>
@@ -92,9 +131,13 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                             b1.Property<Guid>("MatriculaId")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<DateTime>("Emissao")
+                            b1.Property<string>("CertificadoUrl")
                                 .HasColumnType("TEXT")
-                                .HasColumnName("Emissao");
+                                .HasColumnName("CertificadoUrl");
+
+                            b1.Property<DateTime>("DataHoraEmissao")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("DataHoraEmissao");
 
                             b1.HasKey("MatriculaId");
 
@@ -111,9 +154,55 @@ namespace DevXpert.Academy.Alunos.Data.Migrations
                     b.Navigation("Curso");
                 });
 
+            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Cursos.Curso", b =>
+                {
+                    b.OwnsMany("DevXpert.Academy.Alunos.Domain.Cursos.Aula", "Aulas", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid>("CursoId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid?>("CursoId1")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTime?>("DataHoraAlteracao")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTime>("DataHoraCriacao")
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CursoId");
+
+                            b1.HasIndex("CursoId1");
+
+                            b1.ToTable("Aulas", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("CursoId");
+
+                            b1.HasOne("DevXpert.Academy.Alunos.Domain.Cursos.Curso", "Curso")
+                                .WithMany()
+                                .HasForeignKey("CursoId1");
+
+                            b1.Navigation("Curso");
+                        });
+
+                    b.Navigation("Aulas");
+                });
+
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Aluno", b =>
                 {
                     b.Navigation("Matriculas");
+                });
+
+            modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Alunos.Matricula", b =>
+                {
+                    b.Navigation("AulasConcluidas");
                 });
 
             modelBuilder.Entity("DevXpert.Academy.Alunos.Domain.Cursos.Curso", b =>

@@ -21,6 +21,7 @@ namespace DevXpert.Academy.API.ViewModels.Cursos
 
     public class AulaViewModel
     {
+        public Guid Id { get; set; }
         public string Titulo { get; set; }
         public string VideoUrl { get; set; }
     }

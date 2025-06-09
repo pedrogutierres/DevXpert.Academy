@@ -206,6 +206,56 @@ namespace DevXpert.Academy.API.Tests
             Assert.Contains("Aluno não encontrado.", errorContent.Errors.SelectMany(v => v.Value)); // Mensagem da BusinessException
         }
 
+        [Fact(DisplayName = "Aluno registrar aula concluida em matricula ativa deve retornar sucesso")]
+        [Trait("Matriculas", "Integração API - Matrículas")]
+        [TestPriority(35)]
+        public async Task Matriculas_AlunoRegistrarAulaConcluida_EmMatriculaAtiva_DeveRetornarSucesso()
+        {
+            // Arrange
+            await _testsFixture.RealizarLoginDeAluno();
+
+            Assert.NotEqual(Guid.Empty, _cursoId);
+
+            var responseGetCourse = await _testsFixture.Client.GetAsync($"/api/cursos/{_cursoId}");
+            responseGetCourse.EnsureSuccessStatusCode(); // Assert success for fetching course
+            var courseContent = await responseGetCourse.Content.ReadAsStringAsync();
+            dynamic cursoDetails = JsonConvert.DeserializeObject(courseContent);
+            Assert.NotNull(cursoDetails);
+            Assert.NotNull(cursoDetails.aulas);
+            Assert.True(cursoDetails.aulas.Count > 0);
+
+            var aulaId = Guid.Parse(cursoDetails.aulas[0].id.ToString());
+            Assert.NotEqual(Guid.Empty, aulaId); 
+
+            // Act
+            var response = await _testsFixture.Client.PostAsync($"/api/matriculas/{_matriculaId}/registrar-aula-concluida/{aulaId}", null);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var responseContent = await response.Content.ReadFromJsonAsync<ResponseSuccess>();
+            Assert.NotNull(responseContent);
+            Assert.Equal(aulaId, responseContent.Id);
+        }
+
+        [Fact(DisplayName = "Aluno registrar aula concluida em matricula inexistente deve retornar BadRequest")]
+        [Trait("Matriculas", "Integração API - Matrículas")]
+        [TestPriority(36)]
+        public async Task Matriculas_AlunoRegistrarAulaConcluida_MatriculaInexistente_DeveRetornarBadRequest()
+        {
+            // Arrange
+            await _testsFixture.RealizarLoginDeAluno();
+            var matriculaIdInexistente = Guid.NewGuid();
+            var aulaId = Guid.NewGuid();
+
+            // Act
+            var response = await _testsFixture.Client.PostAsync($"/api/matriculas/{matriculaIdInexistente}/registrar-aula-concluida/{aulaId}", null);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var errorContent = JsonConvert.DeserializeObject<ResponseError>(await response.Content.ReadAsStringAsync());
+            Assert.Contains("Matrícula não encontrada.", errorContent.Errors.SelectMany(v => v.Value));
+        }
+
         [Fact(DisplayName = "Cancelar matricula por Aluno deve retornar sucesso e solicitar estorno")]
         [Trait("Matriculas", "Integração API - Matrículas")]
         [TestPriority(40)]

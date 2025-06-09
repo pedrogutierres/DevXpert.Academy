@@ -10,7 +10,7 @@ namespace DevXpert.Academy.Alunos.Domain.Tests.Alunos
             var mat = new Matricula(id ?? Guid.NewGuid(), alunoId ?? Guid.NewGuid(), cursoId ?? Guid.NewGuid());
             if (concluido)
             {
-                mat.Concluir();
+                mat.EmitirCertificado();
             }
             return mat;
         }
@@ -48,7 +48,7 @@ namespace DevXpert.Academy.Alunos.Domain.Tests.Alunos
             Assert.Equal(cursoId, matricula.CursoId);
             Assert.False(matricula.Ativa);
             Assert.False(matricula.Concluido);
-            Assert.Null(matricula.DataHoraConclusao);
+            Assert.Null(matricula.DataHoraConclusaoDoCurso);
             Assert.Null(matricula.Certificado);
             Assert.NotEqual(default(DateTime), matricula.DataHoraCriacao);
         }
@@ -117,26 +117,26 @@ namespace DevXpert.Academy.Alunos.Domain.Tests.Alunos
             // Arrange
             var matricula = CriarMatriculaValida();
             Assert.False(matricula.Concluido);
-            Assert.Null(matricula.DataHoraConclusao);
+            Assert.Null(matricula.DataHoraConclusaoDoCurso);
             Assert.Null(matricula.Certificado);
 
             // Act
             var dataHoraAntesConclusao = DateTime.Now;
-            matricula.Concluir();
+            matricula.EmitirCertificado();
 
             // Assert
             Assert.True(matricula.Concluido);
-            Assert.NotNull(matricula.DataHoraConclusao);
-            Assert.True(matricula.DataHoraConclusao.Value >= dataHoraAntesConclusao);
+            Assert.NotNull(matricula.DataHoraConclusaoDoCurso);
+            Assert.True(matricula.DataHoraConclusaoDoCurso.Value >= dataHoraAntesConclusao);
             Assert.NotNull(matricula.Certificado);
-            Assert.Equal(matricula.DataHoraConclusao.Value, matricula.Certificado.Emissao);
+            Assert.Equal(matricula.DataHoraConclusaoDoCurso.Value, matricula.Certificado.DataHoraEmissao);
 
-            var domainEvent = matricula.Notifications.OfType<MatriculaConcluidaEvent>().FirstOrDefault();
+            var domainEvent = matricula.Notifications.OfType<MatriculaCursoConcluidoEvent>().FirstOrDefault();
             Assert.NotNull(domainEvent);
             Assert.Equal(matricula.Id, domainEvent.MatriculaId);
             Assert.Equal(matricula.AlunoId, domainEvent.AggregateId);
             Assert.Equal(matricula.CursoId, domainEvent.CursoId);
-            Assert.Equal(matricula.DataHoraConclusao.Value, domainEvent.DataHoraConclusao);
+            Assert.Equal(matricula.DataHoraConclusaoDoCurso.Value, domainEvent.DataHoraConclusao);
         }
 
         [Fact(DisplayName = "Matrícula deve ser inválida quando AlunoId é vazio")]
@@ -175,10 +175,10 @@ namespace DevXpert.Academy.Alunos.Domain.Tests.Alunos
         {
             // Arrange
             var matricula = CriarMatriculaValida();
-            matricula.Concluir();
+            matricula.EmitirCertificado();
             var matriculaInvalida = new Matricula(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
             typeof(Matricula).GetProperty(nameof(Matricula.Concluido))?.SetValue(matriculaInvalida, true);
-            typeof(Matricula).GetProperty(nameof(Matricula.DataHoraConclusao))?.SetValue(matriculaInvalida, null);
+            typeof(Matricula).GetProperty(nameof(Matricula.DataHoraConclusaoDoCurso))?.SetValue(matriculaInvalida, null);
             typeof(Matricula).GetProperty(nameof(Matricula.Certificado))?.SetValue(matriculaInvalida, null);
 
             // Act
@@ -197,7 +197,7 @@ namespace DevXpert.Academy.Alunos.Domain.Tests.Alunos
             // Arrange
             var matriculaInvalida = CriarMatriculaValida();
             typeof(Matricula).GetProperty(nameof(Matricula.Concluido))?.SetValue(matriculaInvalida, false);
-            typeof(Matricula).GetProperty(nameof(Matricula.DataHoraConclusao))?.SetValue(matriculaInvalida, DateTime.Now);
+            typeof(Matricula).GetProperty(nameof(Matricula.DataHoraConclusaoDoCurso))?.SetValue(matriculaInvalida, DateTime.Now);
 
             // Act
             var valido = matriculaInvalida.EhValido();
