@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DevXpert.Academy.Alunos.Data.Mappings
 {
-     public class MatriculaMapping : IEntityTypeConfiguration<Matricula>
+    public class MatriculaMapping : IEntityTypeConfiguration<Matricula>
     {
         public void Configure(EntityTypeBuilder<Matricula> builder)
         {

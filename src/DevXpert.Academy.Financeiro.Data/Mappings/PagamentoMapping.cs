@@ -41,6 +41,12 @@ namespace DevXpert.Academy.Financeiro.Data.Mappings
 
             builder.HasKey(p => p.Id);
 
+            builder.HasOne(p => p.Matricula)
+                .WithMany(p => p.Pagamentos)
+                .HasForeignKey(p => p.MatriculaId);
+
+            builder.Navigation(p => p.Matricula).AutoInclude();
+
             builder.ToTable("Pagamentos");
         }
     }

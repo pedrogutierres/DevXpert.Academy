@@ -1,9 +1,9 @@
 ﻿using DevXpert.Academy.Core.Domain.DomainObjects;
 using DevXpert.Academy.Core.Domain.Messages.CommonMessages.IntegrationEvents;
+using DevXpert.Academy.Financeiro.Domain.Alunos;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.Validations;
 using DevXpert.Academy.Financeiro.Domain.Pagamentos.ValuesObejcts;
 using System;
-using System.Collections.Generic;
 
 namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
 {
@@ -15,6 +15,8 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos
         public PagamentoSituacao Situacao { get; private set; }
 
         // public List<PagamentoSituacao> HistoricoTransacoes { get; private set; } // Para uma próxima versão
+
+        public virtual Matricula Matricula { get; private set; }
 
         private Pagamento() { }
         public Pagamento(Guid id, Guid matriculaId, decimal valor, DadosCartao dadosCartao)

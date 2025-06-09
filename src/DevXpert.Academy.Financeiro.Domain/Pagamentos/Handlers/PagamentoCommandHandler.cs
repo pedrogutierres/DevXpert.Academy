@@ -49,6 +49,7 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Handlers
 
         public async Task Handle(PagamentoRegistradoEvent notification, CancellationToken cancellationToken)
         {
+            // Aqui quando houver fila, poderia enfileirar o pagamento para processamento assíncrono
             await _mediator.SendCommand(new ProcessarPagamentoCommand(notification.AggregateId, notification.MatriculaId), cancellationToken);
         }
 
@@ -76,25 +77,6 @@ namespace DevXpert.Academy.Financeiro.Domain.Pagamentos.Handlers
             }
 
             return false;
-        }
-
-        public Task Handle(PagamentoAprovadoEvent notification, CancellationToken cancellationToken)
-        {
-            // Enviar e-mail ao aluno informando que o pagamento foi aprovado e o curso está liberado
-
-            return Task.CompletedTask;
-        }
-
-        public Task Handle(PagamentoRecusadoEvent notification, CancellationToken cancellationToken)
-        {
-            // Enviar e-mail ao aluno informando que o pagamento foi recusado e o curso está liberado
-
-            return Task.CompletedTask;
-        }
-
-        public Task Handle(PagamentoCanceladoEvent notification, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
         }
 
         public async Task<bool> Handle(SolicitarEstornoPagamentoDaMatriculaCommand request, CancellationToken cancellationToken)
