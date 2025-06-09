@@ -32,5 +32,45 @@ namespace DevXpert.Academy.API.Tests
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.OK);
         }
+
+        [Fact(DisplayName = "Registrar novo aluno com sucesso")]
+        [Trait("Usuarios", "Integração API - Usuario")]
+        public async Task Usuarios_NovoAluno_DeveRegistrarComSucesso()
+        {
+            // Arrange
+            var novoAlunoData = new
+            {
+                Email = "novo.aluno@teste.com",
+                Senha = "Senha@123",
+                Nome = "Novo Aluno Teste"
+            };
+
+            // Act
+            var response = await _testsFixture.Client.PostAsJsonAsync("/api/usuarios/novo-aluno", novoAlunoData);
+
+            // Assert
+            response.EnsureSuccessStatusCode(); 
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Tentar registrar aluno com email já existente")]
+        [Trait("Usuarios", "Integração API - Usuario")]
+        public async Task Usuarios_NovoAluno_DeveRetornarBadRequestParaEmailExistente()
+        {
+            // Arrange
+            var novoAlunoData = new
+            {
+                Email = "pedro@gmail.com",
+                Senha = "Pedro@123456",
+                Nome = "Pedro"
+            };
+
+            await _testsFixture.Client.PostAsJsonAsync("/api/usuarios/novo-aluno", novoAlunoData);
+
+            var response = await _testsFixture.Client.PostAsJsonAsync("/api/usuarios/novo-aluno", novoAlunoData);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }

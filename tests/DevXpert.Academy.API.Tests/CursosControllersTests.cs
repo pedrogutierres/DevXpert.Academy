@@ -349,6 +349,23 @@ namespace DevXpert.Academy.API.Tests
             Assert.NotNull(cursos);
         }
 
+        [Fact(DisplayName = "Obter cursos apenas ativos para Admin como Administrador deve retornar sucesso")]
+        [Trait("Cursos", "Integração API - Cursos")]
+        [TestPriority(100)]
+        public async Task Cursos_ObterCursosApenasAtivosParaAdmin_ComoAdministrador_DeveRetornarSucesso()
+        {
+            // Arrange
+            await _testsFixture.RealizarLoginDeAdministrador();
+
+            // Act
+            var response = await _testsFixture.Client.GetAsync("/api/cursos/admin?ativo=true");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var cursos = await response.Content.ReadFromJsonAsync<List<CursoAdmViewModel>>();
+            Assert.NotNull(cursos);
+        }
+
         [Fact(DisplayName = "Obter curso por ID para Admin como Administrador com ID inválido deve retornar NotFound")]
         [Trait("Cursos", "Integração API - Cursos")]
         [TestPriority(101)]

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DevXpert.Academy.Alunos.Domain.Alunos.Interfaces;
 using DevXpert.Academy.Alunos.Domain.Cursos.Interfaces;
+using DevXpert.Academy.API.ViewModels.Alunos;
 using DevXpert.Academy.API.ViewModels.Matriculas;
 using DevXpert.Academy.Core.Domain.Communication.Mediatr;
 using DevXpert.Academy.Core.Domain.DomainObjects;

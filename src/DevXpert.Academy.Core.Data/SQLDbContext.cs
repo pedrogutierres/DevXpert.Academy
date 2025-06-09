@@ -45,7 +45,7 @@ namespace DevXpert.Academy.Core.Data
             if (_loggerFactory != null)
                 optionsBuilder.UseLoggerFactory(_loggerFactory);
 
-            if (true) // TODO: debito técnico, será resolvido em breve, verificar se é ambiente de desenvolvimento
+            if (true) // TODO: debito técnico, será resolvido no futuro, verificar se é ambiente de desenvolvimento
             {
                 var connectionString = _configuration.GetConnectionString("DefaultConnectionLite") ?? throw new InvalidOperationException("String de conexão 'DefaultConnectionLite' não encontrada para banco SQLite em ambiente de desenvolvimento.");
                 optionsBuilder.UseSqlite(connectionString);
