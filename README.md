@@ -99,8 +99,14 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 
 http://localhost:5001/swagger
 
+> **Documentação PlantUML disponível em [/docs/PlantUML](https://github.com/pedrogutierres/DevXpert.Academy/tree/master/docs/PlantUML)**
+
 ## **9. Avaliação**
 
 - Este projeto é parte de um curso acadêmico e não aceita contribuições externas. 
 - Para feedbacks ou dúvidas utilize o recurso de Issues
 - O arquivo `FEEDBACK.md` é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.
+
+## **10. Documentação PlantUML**
+
+**TAMBÉM ESTÁ DISPONÍVEL DOCUMENTAÇÃO DA ESTRUTURA E ALGUNS FLUXOS DO PROJETO, VOCÊ PODE ENCONTRAR OS ARQUIVOS PLANTUML E SUAS IMAGENS NA PASTA [/docs/PlantUML](https://github.com/pedrogutierres/DevXpert.Academy/tree/master/docs/PlantUML)**
