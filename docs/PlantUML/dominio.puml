@@ -78,10 +78,10 @@ package "Domínio" {
 
     Aluno "1" -- "0..*" Matricula : se_matricula
     Aluno "1" -- "0..*" AulaConcluida : registra
-    Curso "1" -- "0..*" Aula : tem
+    Curso "1" -- "1..*" Aula : tem
     Matricula "1" -- "1" Curso : tem
     Matricula "1" -- "1" Pagamento : tem
     AulaConcluida "1" -- "1" Aula : referencia
-    Matricula "1" -- "0..1" Certificado : gera
+    Matricula "1" -- "1" Certificado : gera
 }
 @enduml
