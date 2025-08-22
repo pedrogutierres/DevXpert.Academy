@@ -1,81 +1,127 @@
-# Feedback - Avaliação Geral
+# FEEDBACK – Avaliação Geral (Plataforma de Educação Online)
 
-## Organização do Projeto
-- **Pontos positivos:**
-  - Boa separação em múltiplos projetos (`API`, `Alunos.Domain`, `Alunos.Data`, `Financeiro`, `Conteudos`).
-  - Uso de migrations separadas por contexto (`AlunosContext`, `ApplicationDbContext`).
-  - `README.md` e `FEEDBACK.md` estão presentes e atualizados.
+## 1) Organização do Projeto
+Pontos positivos:
+- Estrutura de pastas clara separando `src/` e `tests/` e contexts por projeto (ex.: `DevXpert.Academy.Alunos.*`, `DevXpert.Academy.Conteudo.*`, `DevXpert.Academy.Financeiro.*`).
+- Arquivo de solução na raiz: `DevXpert.Academy.sln`.
+- Documentação de domínio em `docs/PlantUML/` com diagramas úteis.
 
-- **Pontos negativos:**
-  - Alguns projetos seguem nomenclatura `Domain`, outros `Business` (ex: `Financeiro.Business`), o que **fere a consistência arquitetural e conceitual do DDD**.
-  - Existe um projeto `DevXpert.Academy.Financeiro.Shared` com conteúdo que deveria estar no `Core`, misturando responsabilidades e dificultando o isolamento real dos BCs.
+Pontos negativos:
+- Avisos de compilação que merecem atenção (ex.: `src/DevXpert.Academy.Core.Data/SQLDbContext.cs(56,17): warning CS0162: Unreachable code detected`).
+- Alguns arquivos de ViewModels e migrations snapshot apresentam cobertura 0% (ver seção de cobertura).
 
-## Modelagem de Domínio
-- **Pontos positivos:**
-  - Entidades como `Aluno`, `Curso`, `Matricula`, `Pagamento`, `Certificado`, `HistoricoAprendizado` estão bem modeladas.
-  - Uso de Value Objects, Enum e agregados definidos por contexto.
+Referências: `DevXpert.Academy.sln`, `docs/PlantUML/`, `src/DevXpert.Academy.Core.Data/SQLDbContext.cs`.
 
-- **Pontos negativos:**
-  - Dominio de `Aluno` possui dependência direta do domínio financeiro, o que **quebra o isolamento entre contextos**, mesmo havendo estrutura pronta para uso de eventos via `Core`.
-  - A classe `Entity<T> : IEntity where T : Entity<T>` aplica **CRTP sem uso do tipo T**, o que **não tem propósito técnico nesse cenário**.
+## 2) Modelagem de Domínio
+Pontos positivos:
+- Bounded contexts bem representados: Conteúdo, Alunos, Financeiro, Core/EventSourcing.
+- Uso consistente de DDD: agregados e eventos (ex.: `Alunos.Domain`, `Conteudo.Domain`, `Financeiro.Domain`).
+- Event Sourcing presente (`Core.EventSourcing`).
 
-## Casos de Uso e Regras de Negócio
-- **Pontos positivos:**
-  - Uso de comandos (`Command`) e manipuladores (`CommandHandler`) por caso de uso.
-  - Serviços de domínio implementados (`PagamentoService`, `MatriculaService`).
+Pontos negativos:
+- Alguns componentes de `Core.Domain` com cobertura muito baixa (muitos validators e extensões sem testes). Isso reduz confiança em invariantes centrais.
 
-- **Pontos negativos:**
-  - **Delegação redundante entre CommandHandlers e DomainServices**: parte da lógica de negócio poderia estar encapsulada diretamente em um único ponto, gerando **duplicação conceitual**.
-  - Alguns fluxos ainda não estão implementados (ex: geração de certificado com pré-requisitos, progresso completo do aluno).
-  - Validações de autorização estão sendo feitas dentro do domínio (ex: `_user.Autenticado()`), o que **é papel exclusivo da controller/API**.
+Referências: `src/DevXpert.Academy.Alunos.Domain/`, `src/DevXpert.Academy.Conteudo.Domain/`, `src/DevXpert.Academy.Core.Domain/`.
 
-## Integração entre Contextos
-- **Pontos positivos:**
-  - Existe estrutura de eventos no `Core` (eventos de domínio, handlers, mediador).
-  
-- **Pontos negativos:**
-  - Apesar da estrutura existir, **a integração entre contextos não está efetivamente implementada por eventos**. O `Aluno` acessa diretamente lógica do `Financeiro`, gerando acoplamento.
-  - A existência do projeto `Financeiro.Shared` cria uma falsa separação que, na prática, causa dependência cruzada.
+## 3) Casos de Uso e Regras de Negócio
+Pontos positivos:
+- Implementações de casos de uso principais parecem presentes: cadastro de curso/aula, matrícula, pagamentos (handlers/commands), registro de progresso e geração de certificado (domínio presente).
+- Serviços de aplicação e handlers usando MediatR estão presentes, mantendo regras no domínio.
 
-## Estratégias Técnicas Suportando DDD
-- **Pontos positivos:**
-  - Uso de agregados, CQRS, MediatR, notificações de domínio, repositórios especializados.
-  - Persistência orientada a agregados via `Repository` e `ReadOnlyRepository`.
+Pontos negativos:
+- Cobertura insuficiente em áreas críticas (pagamentos e fluxo de matrícula têm testes, mas cobertura de branches não atinge o mínimo desejado).
 
-- **Pontos negativos:**
-  - O modelo ainda apresenta sinais de anemias parciais: parte da lógica está nos handlers, parte nos serviços, parte nas entidades.
-  - Estratégias duplicadas em camadas distintas geram complexidade sem ganho claro.
+Referências: `src/**/Handlers`, `src/**/Services`, `tests/**`.
 
-## Autenticação e Identidade
-- **Pontos positivos:**
-  - JWT e Identity implementados corretamente.
-  - Configuração de segurança bem organizada (`JwtSettings`, `AuthToken`, etc.).
+## 4) Integração de Contextos
+Pontos positivos:
+- Integração de contexts via DbContexts e migrations; event store configurado.
+- `DbMigrationHelpers` executa migrations e seed nos ambientes `Development` e `Test`.
 
-- **Pontos negativos:**
-  - Validações de usuário autenticado estão sendo feitas no domínio, o que **compromete a separação de responsabilidades**.
+Pontos negativos:
+- Algumas dependências entre contexts podem estar implícitas — recomenda-se revisar boundaries se o time pretende deploy independente.
 
-## Execução e Testes
-- **Pontos positivos:**
-  - Projeto roda com SQLite, migrations configuradas por contexto, seed funcional.
-  - Swagger presente e configurado.
+Referências: `src/DevXpert.Academy.API/Helpers/DbMigrationHelpers.cs` (seed/migrations), `src/DevXpert.Academy.API/Configurations/DatabaseConfiguration.cs` (configura UseSqlite/UseSqlServer).
 
-- **Pontos negativos:**
-  - **Poucos testes implementados**: cobertura muito baixa para as regras de domínio e serviços.
-  - Testes não validam os fluxos completos de negócio, como matrícula, pagamento e certificação.
+### Observação crítica (Seed / Migrations)
+- Migrations existentes em vários projects: `src/*/Migrations/` (ex.: `DevXpert.Academy.Conteudo.Data/Migrations/20250430120457_Inicial.cs`, `DevXpert.Academy.Alunos.Data/Migrations/20250609184417_Inicial.cs`, etc.).
+- O seed é executado automaticamente no startup via `app.UseDbMigrationHelper();` em `Program.cs`.
+- Arquivo com seed: `src/DevXpert.Academy.API/Helpers/DbMigrationHelpers.cs` — cria roles e users (Administrador/Aluno) e insere dados de exemplo (Cursos/Aulas/Alunos).
 
-## Documentação
-- **Pontos positivos:**
-  - `README.md` com escopo do projeto, estrutura, tecnologias e instruções.
-  - `FEEDBACK.md` usado para controle de revisões e feedbacks técnicos.
+Observação: a seed usa `new Random()` dentro de loop para número de aulas — para testes repetíveis, considerar Random com seed fixo ou gerar deterministically.
 
-## Conclusão
+## 5) Estratégias de Apoio ao DDD, CQRS e TDD
+Pontos positivos:
+- Uso de MediatR, handlers/commands e event sourcing — arquitetura alinhada às expectativas do escopo.
+- Testes automatizados e projetos de teste organizados.
 
-Este projeto demonstra **grande maturidade técnica e estrutura bem organizada**, mas ainda **comete erros críticos que comprometem sua aderência ao DDD de forma plena**:
+Pontos negativos:
+- Embora existam muitos testes, a cobertura global (68.2% linhas, 50.7% branches) é insuficiente para a exigência de ≥ 80%.
+- Módulos centrais (`Core.Domain`, validações e algumas extensions) com cobertura baixa.
 
-1. **Validação de autenticação feita no domínio**, o que é inaceitável e deve ser tratado exclusivamente na API.
-2. **Dependência direta entre domínios (`Aluno → Financeiro`)**, mesmo havendo estrutura para eventos no `Core`.
-3. **Inconsistência na nomenclatura de camadas (`Domain` vs `Business`)** e criação de `Shared` desnecessário.
-4. **Duplicação conceitual entre DomainService e CommandHandler**.
-5. **Pouca cobertura de testes** e **ausência de alguns fluxos essenciais**.
+Referências: `tests/`, `src/**/Handlers`, `src/DevXpert.Academy.Core.Domain/`.
 
-Com pequenos ajustes estruturais e foco em isolamento, esse projeto pode atingir um excelente padrão arquitetural.
+## 6) Autenticação e Identidade
+Pontos positivos:
+- JWT implementado: `src/DevXpert.Academy.API/Configurations/ApiSecurityConfiguration.cs` e `src/DevXpert.Academy.API/Authentication/JwtTokenGenerate.cs`.
+- Persona Admin/Aluno contempladas no seed; a persona do usuário está refletida no Identity via `ApplicationDbContext`.
+
+Pontos negativos:
+- Não detectei problemas críticos de segurança no código examinado, mas revisar segredos no `appsettings.*` e não comitá-los em texto claro é recomendável.
+
+Referências: `src/DevXpert.Academy.API/Configurations/ApiSecurityConfiguration.cs`, `src/DevXpert.Academy.API/Authentication/JwtTokenGenerate.cs`.
+
+## 7) Execução e Testes
+Principais métricas (do Summary):
+- Assemblies: 11; Classes: 182; Files: 165
+- Line coverage: 68.2% (3166 linhas cobertas de 4636 coverable)
+- Branch coverage: 50.7% (330/650)
+- Method coverage: 75.6%
+
+Áreas com cobertura baixa (exemplos):
+- `DevXpert.Academy.Core.Domain` — 41.1% (muitos validators/extensions sem testes)
+- Migrations snapshot files reportados com 0% (normalmente não testados, mas aparecem no relatório)
+- Algumas ViewModels e filtros com 0% (ex.: `Api.Filters.AuthorizationHeaderParameterOperationFilter` e certos ViewModels)
+
+Logs de execução mostram que o seed criou usuários e tentou criar duplicados em execuções repetidas (mensagem: "Falha ao criar usuário: Login 'pedro@gmail.com' já está sendo utilizado."). O seed é idempotente por verificação de existência de users, mas mensagens mostram tentativas repetidas quando já existem. Testes usam o ambiente Test com SQLite (`appsettings.Test.json` tem `DefaultConnectionLite` = `Data Source=DevXpertAcademyTest.db`).
+
+## 8) Documentação
+Pontos positivos:
+- `README.md` presente e `docs/PlantUML/` com diagramas.
+
+Pontos negativos:
+- Documentação de execução local poderia ser mais direta (ex.: comando único para preparar DB SQLite, como limpar DB de testes antes de rodar cobertura para consistência).
+
+Referências: `README.md`, `docs/`.
+
+---
+
+## Observações e recomendações práticas (priorizadas)
+1. Corrigir a cobertura para ≥ 80%:
+   - Priorizar testes para `Core.Domain` (validators, extensions) e para fluxos críticos (pagamento, matrícula, certificação).
+   - Adicionar testes que exercitem branches importantes (fail paths, exceptions) para melhorar branch coverage.
+2. Reduzir warnings e código inalcançável: revisar `SQLDbContext.cs` (warning CS0162) e outras advertências do build.
+3. Tornar seed determinístico para execução de testes locais (evitar Random sem seed) e garantir idempotência clara para evitar logs de erro repetidos.
+4. Cobrir classes com 0% (ViewModels, filtros) com testes de unidade/integração conforme aplicável ou excluir arquivos não cobráveis do relatório.
+5. Documentar passo-a-passo para execução local (incluindo uso de SQLite, como resetar DB de teste e gerar cobertura).
+
+---
+
+## Matriz de Avaliação (notas atribuídas)
+Notas atribuídas:
+- Funcionalidade (30%): 8
+- Qualidade do Código (20%): 7
+- Eficiência e Desempenho (20%): 8
+- Inovação e Diferenciais (10%): 9
+- Documentação e Organização (10%): 8
+- Resolução de Feedbacks (10%): 10
+
+Cálculo (peso * nota):
+- Funcionalidade: 30% * 8 = 2.4
+- Qualidade do Código: 20% * 7 = 1.4
+- Eficiência e Desempenho: 20% * 8 = 1.6
+- Inovação e Diferenciais: 10% * 9 = 0.9
+- Documentação e Organização: 10% * 8 = 0.8
+- Resolução de Feedbacks: 10% * 10 = 1.0
+
+Soma = 8.1 → 🎯 Nota Final: **8.1 / 10**
